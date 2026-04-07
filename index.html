@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Prime Altar | Math Things.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#0a0a0c;--spring:cubic-bezier(0.34,1.56,0.64,1);--ease-heavy:cubic-bezier(0.15,0.6,0.3,1.0);--green:#10b981;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    body{font-family:'Lexend',sans-serif;background:var(--bg);height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;color:#fff;user-select:none;}
+
+    /* ═══ SCREENS ═══ */
+    .screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity 0.4s ease;background:var(--bg);}
+    .screen.hidden{opacity:0;pointer-events:none;}
+
+    /* ═══ GRID SCREEN ═══ */
+    .grid-screen-header{display:flex;justify-content:center;align-items:center;padding:12px 14px 8px;flex-shrink:0;}
+    .logo{font-weight:900;font-size:16px;opacity:0.35;letter-spacing:-0.03em;}
+    .logo-bead{display:inline-block;width:0.22em;height:0.22em;margin-left:0.04em;margin-bottom:0.08em;border-radius:50%;background:radial-gradient(circle at 33% 28%,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.3) 40%,transparent 65%),radial-gradient(circle at 67% 72%,rgba(0,0,0,0.15) 0%,transparent 55%),linear-gradient(135deg,#efefef,#d0d0d0,#a8a8a8,#c0c0c0,#e0e0e0);box-shadow:inset 1px 1px 2px rgba(255,255,255,0.8),inset -1px -1px 2px rgba(0,0,0,0.2),0 2px 4px rgba(0,0,0,0.3);}
+    .num-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:8px 10px;flex:1;align-content:start;}
+    .nc{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;border-radius:8px;cursor:pointer;transition:all 0.15s;position:relative;background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.12);}
+    .nc.avail{color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.05);}
+    .nc.avail:active{transform:scale(0.93);}
+    .nc.done{color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.05);}
+    .nc.done::after{content:'';position:absolute;width:5px;height:5px;border-radius:50%;background:var(--green);top:4px;right:4px;box-shadow:0 0 5px var(--green);}
+    .nc.locked{opacity:0.05;pointer-events:none;}
+
+    /* ═══ ALTAR SCREEN ═══ */
+    .altar-header{display:flex;justify-content:center;align-items:center;padding:10px 14px;flex-shrink:0;position:relative;z-index:10;}
+    .altar-numeral{font-weight:900;font-size:42px;letter-spacing:-2px;color:rgba(255,255,255,0.15);transition:color 0.6s ease,text-shadow 0.6s ease;line-height:1;}
+    .altar-numeral.solved{animation:solvedPulse 3s ease-in-out infinite;cursor:pointer;}
+    @keyframes solvedPulse{
+      0%,100%{color:#6ee7b7;text-shadow:0 0 6px rgba(110,231,183,0.7),0 0 16px rgba(52,211,153,0.4),0 0 35px rgba(16,185,129,0.2),0 0 70px rgba(16,185,129,0.08);}
+      50%{color:#a7f3d0;text-shadow:0 0 8px rgba(167,243,208,0.95),0 0 22px rgba(110,231,183,0.7),0 0 55px rgba(52,211,153,0.35),0 0 110px rgba(16,185,129,0.15),0 0 180px rgba(16,185,129,0.06);}
+    }
+
+    /* ═══ ALTAR ═══ */
+    .altar{flex:1;position:relative;overflow:hidden;min-height:0;background:radial-gradient(ellipse 80% 50% at 50% 85%,rgba(20,20,25,1),var(--bg));}
+    .altar::before{content:'';position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:140px;height:110%;background:linear-gradient(to bottom,transparent,rgba(255,255,255,0.012) 20%,rgba(255,255,255,0.03) 55%,rgba(255,255,255,0.01) 80%,transparent);filter:blur(20px);pointer-events:none;}
+    .altar-rings{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);width:180px;height:24px;z-index:2;}
+    .ar{position:absolute;left:50%;transform:translateX(-50%);border-radius:50%;background:conic-gradient(from 45deg,#0d0d0f 0%,#28282b 15%,#0d0d0f 30%,#1a1a1d 50%,#0d0d0f 70%,#28282b 85%,#0d0d0f 100%);}
+    .ar1{width:180px;height:22px;bottom:0;box-shadow:0 2px 0 #333,0 3px 0 #222,0 15px 30px rgba(0,0,0,0.6);}
+    .ar2{width:120px;height:14px;bottom:5px;border:1px solid rgba(255,255,255,0.03);box-shadow:inset 0 0 12px rgba(0,0,0,0.5);}
+    .seg-stage{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;gap:3px;z-index:5;}
+
+    /* ═══ BLOCKS ═══ */
+    .blk{border-radius:5px 5px 2px 2px;position:relative;overflow:visible;flex-shrink:0;}
+    .blk-c{background:repeating-linear-gradient(180deg,rgba(255,255,255,0.04) 0px,transparent 1px,transparent 2px),linear-gradient(90deg,rgba(0,0,0,0.18) 0%,rgba(255,255,255,0.08) 10%,rgba(255,255,255,0.02) 28%,rgba(0,0,0,0.03) 50%,rgba(255,255,255,0.05) 72%,rgba(255,255,255,0.1) 90%,rgba(0,0,0,0.12) 100%),linear-gradient(135deg,#e0e0e2,#c0c0c4,#9a9aa0,#b0b0b5,#d0d0d4);box-shadow:inset 2px 2px 4px rgba(255,255,255,0.4),inset -2px -2px 4px rgba(0,0,0,0.12),3px 6px 18px rgba(0,0,0,0.45);}
+    .blk-c::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.1),transparent);border-radius:5px 5px 0 0;}
+    .blk-p{border-radius:6px;background:linear-gradient(180deg,rgba(240,242,248,0.22),rgba(230,235,245,0.16),rgba(225,230,240,0.2),rgba(220,225,238,0.18));border:1px solid rgba(255,255,255,0.2);box-shadow:inset 0 0 20px rgba(255,255,255,0.2),inset 3px 0 10px rgba(255,255,255,0.12),inset -3px 0 10px rgba(255,255,255,0.08),0 0 30px rgba(255,255,255,0.06),0 0 60px rgba(255,220,160,0.04),3px 6px 18px rgba(0,0,0,0.25);animation:pb 3s ease-in-out infinite alternate;}
+    @keyframes pb{0%{box-shadow:inset 0 0 20px rgba(255,255,255,0.2),inset 3px 0 10px rgba(255,255,255,0.12),inset -3px 0 10px rgba(255,255,255,0.08),0 0 30px rgba(255,255,255,0.06),0 0 60px rgba(255,220,160,0.04),3px 6px 18px rgba(0,0,0,0.25);}100%{box-shadow:inset 0 0 30px rgba(255,255,255,0.28),inset 3px 0 15px rgba(255,255,255,0.18),inset -3px 0 15px rgba(255,255,255,0.12),0 0 45px rgba(255,255,255,0.1),0 0 80px rgba(255,220,160,0.07),3px 6px 18px rgba(0,0,0,0.25);}}
+    .blk-p::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(180deg,rgba(255,255,255,0.55),transparent);border-radius:6px 6px 0 0;}
+    .n-stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:900;letter-spacing:-1px;color:rgba(100,100,105,0.45);text-shadow:0 1px 0 rgba(255,255,255,0.3),0 -1px 0 rgba(0,0,0,0.15);}
+    .n-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:900;letter-spacing:-1px;z-index:2;color:rgba(255,220,160,0.95);text-shadow:0 0 8px rgba(255,195,100,0.9),0 0 18px rgba(255,175,70,0.7),0 0 35px rgba(255,155,50,0.5),0 0 55px rgba(255,135,30,0.35),0 0 90px rgba(255,115,10,0.2),0 0 130px rgba(255,100,0,0.1);animation:np 2.5s ease-in-out infinite alternate;}
+    @keyframes np{0%{text-shadow:0 0 8px rgba(255,195,100,0.9),0 0 18px rgba(255,175,70,0.7),0 0 35px rgba(255,155,50,0.5),0 0 55px rgba(255,135,30,0.35),0 0 90px rgba(255,115,10,0.2);}100%{text-shadow:0 0 10px rgba(255,205,120,1),0 0 24px rgba(255,185,80,0.8),0 0 45px rgba(255,165,60,0.6),0 0 70px rgba(255,145,40,0.4),0 0 110px rgba(255,125,20,0.25),0 0 150px rgba(255,105,0,0.12);}}
+    .n-radiance{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:160%;height:160%;border-radius:50%;background:radial-gradient(circle,rgba(255,200,120,0.18) 0%,rgba(255,180,100,0.08) 35%,transparent 75%);pointer-events:none;z-index:1;}
+
+    /* ═══ HANDLE ═══ */
+    .handle{position:absolute;top:0;left:-8px;right:-8px;height:7px;border-radius:5px 5px 0 0;cursor:grab;z-index:30;background:linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.06));border-bottom:1px solid rgba(0,0,0,0.1);touch-action:none;}
+    /* Expanded invisible touch target above handle */
+    .handle::before{content:'';position:absolute;top:-16px;left:0;right:0;height:24px;}
+    .handle-caret{position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:7px;color:rgba(255,255,255,0.08);line-height:1;}
+    .handle-caret.pulse{animation:hpulse 3s ease-in-out infinite;}
+    @keyframes hpulse{
+      0%,100%{color:rgba(110,231,183,0.25);text-shadow:0 0 3px rgba(52,211,153,0.2);}
+      50%{color:#6ee7b7;text-shadow:0 0 4px rgba(110,231,183,0.8),0 0 10px rgba(52,211,153,0.4),0 0 20px rgba(16,185,129,0.2);}
+    }
+    .hm.idle{animation:hingeidle 3s ease-in-out infinite;}
+    @keyframes hingeidle{
+      0%,100%{background:linear-gradient(180deg,rgba(255,255,255,0.18),rgba(0,0,0,0.12));box-shadow:0 1px 1px rgba(0,0,0,0.35),inset 0 1px 1px rgba(255,255,255,0.2);}
+      50%{background:linear-gradient(180deg,rgba(110,231,183,0.4),rgba(16,185,129,0.12));box-shadow:0 0 5px rgba(52,211,153,0.45),0 0 12px rgba(16,185,129,0.18),inset 0 1px 2px rgba(110,231,183,0.25);}
+    }
+
+    /* ═══ HINGE ═══ */
+    .hz{position:absolute;left:-4px;right:-4px;height:32px;z-index:25;cursor:grab;display:flex;align-items:center;transform:translateY(-50%);touch-action:none;}
+    .hm{width:50%;height:4px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,0.18),rgba(0,0,0,0.12));border-radius:3px;box-shadow:0 1px 1px rgba(0,0,0,0.35),inset 0 1px 1px rgba(255,255,255,0.2);transition:all 0.12s;}
+    .hz:active .hm{background:linear-gradient(180deg,rgba(255,200,120,0.5),rgba(200,150,60,0.3));box-shadow:0 0 6px rgba(255,180,80,0.4);}
+
+    /* ═══ FACTOR TRAY — sits above Dex ═══ */
+    .f-tray{display:flex;align-items:center;justify-content:center;gap:4px;padding:6px 8px;flex-wrap:wrap;background:rgba(15,15,18,0.85);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.03);min-height:46px;flex-shrink:0;}
+    .fs{width:30px;height:36px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;transition:all 0.3s var(--spring);}
+    .fs.empty{border:1px dashed rgba(255,255,255,0.05);color:transparent;}
+    .fs.mirror{border:1px solid rgba(255,255,255,0.08);background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));color:rgba(255,255,255,0.15);font-style:italic;}
+    .fs.starter{background:repeating-linear-gradient(180deg,rgba(255,255,255,0.03) 0px,transparent 1px,transparent 2px),linear-gradient(135deg,rgba(170,170,175,0.2),rgba(130,130,135,0.12));border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.3);}
+    .fs.fc{background:repeating-linear-gradient(180deg,rgba(255,255,255,0.04) 0px,transparent 1px,transparent 2px),linear-gradient(135deg,rgba(190,190,195,0.25),rgba(150,150,155,0.15));border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);box-shadow:inset 1px 1px 2px rgba(255,255,255,0.12);animation:sl 0.4s var(--spring);}
+    .fs.fp{background:rgba(255,220,160,0.08);border:1px solid rgba(255,200,120,0.3);color:rgba(255,220,160,0.9);box-shadow:0 0 12px rgba(255,180,80,0.15);text-shadow:0 0 6px rgba(255,180,80,0.6);animation:spl 0.6s var(--spring);}
+    @keyframes sl{0%{transform:scale(0) rotate(-10deg);opacity:0;}60%{transform:scale(1.15);}100%{transform:scale(1);}}
+    @keyframes spl{0%{transform:scale(0);}50%{transform:scale(1.2);box-shadow:0 0 30px rgba(255,180,80,0.3);}100%{transform:scale(1);}}
+    @keyframes primePulse{
+      0%{opacity:0;box-shadow:inset 0 0 10px rgba(255,255,255,0.1),0 0 0px rgba(255,220,160,0.0);}
+      30%{opacity:0.6;box-shadow:inset 0 0 30px rgba(255,255,255,0.25),0 0 40px rgba(255,200,120,0.12);}
+      60%{opacity:1;box-shadow:inset 0 0 50px rgba(255,255,255,0.45),0 0 90px rgba(255,200,120,0.3),0 0 160px rgba(255,180,80,0.18);}
+      100%{opacity:1;}
+    }
+    .blk-p-reveal{animation:primePulse 1.2s ease-out forwards;}
+    .n-glow-reveal{opacity:0;animation:nReveal 0.4s ease-out 0.5s forwards;}
+    @keyframes nReveal{0%{opacity:0;transform:translate(-50%,-50%) scale(0.7);}60%{transform:translate(-50%,-50%) scale(1.08);}100%{opacity:1;transform:translate(-50%,-50%) scale(1);}}
+    .n-stamp-reveal{animation:nReveal 0.25s ease-out forwards;}
+
+    /* ═══ PRIME DEX — Relativistic Scaling ═══ */
+    .dex-container{flex-shrink:0;background:rgba(6,6,8,0.95);border-top:1px solid rgba(255,255,255,0.04);position:relative;overflow:hidden;height:120px;}
+    /* Center marker line */
+    .dex-container::after{content:'';position:absolute;top:0;bottom:0;left:50%;width:1px;background:linear-gradient(180deg,rgba(255,200,120,0.15),rgba(255,200,120,0.03));pointer-events:none;z-index:10;}
+    .dex-viewport{height:100%;overflow-x:scroll;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:flex;align-items:flex-end;}
+    .dex-viewport::-webkit-scrollbar{display:none;}
+    /* Each slot is 20vw wide (5 slots visible) */
+    .dex-slot{flex-shrink:0;width:20vw;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;position:relative;}
+    .dex-num{font-size:7px;font-weight:600;color:rgba(255,255,255,0.06);margin-top:2px;}
+    .dex-slot.has-prime .dex-num{color:rgba(255,200,120,0.3);}
+    /* Trinket container — height set dynamically by JS */
+    .dex-trinket-wrap{width:60%;position:relative;display:flex;align-items:stretch;justify-content:center;overflow:hidden;transition:height 0.15s ease-out;}
+    /* Prime trinket */
+    .dex-trinket{width:100%;border-radius:3px;position:relative;overflow:hidden;
+      background:linear-gradient(180deg,rgba(240,242,248,0.18),rgba(230,235,245,0.1),rgba(225,230,240,0.15));
+      border:1px solid rgba(255,255,255,0.15);
+      box-shadow:inset 0 0 8px rgba(255,255,255,0.1),0 0 8px rgba(255,200,120,0.05);
+      display:flex;align-items:center;justify-content:center;}
+    .dex-trinket .dt-num{font-weight:900;color:rgba(255,220,160,0.85);text-shadow:0 0 4px rgba(255,195,100,0.6),0 0 12px rgba(255,175,70,0.3);z-index:1;white-space:nowrap;}
+    .dex-trinket .dt-radiance{position:absolute;inset:0;background:radial-gradient(circle,rgba(255,200,120,0.12) 0%,transparent 70%);pointer-events:none;}
+    /* Mirror trinket (1) */
+    .dex-mirror{width:100%;border-radius:3px;background:linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;}
+    .dex-mirror .dt-num{font-weight:700;font-style:italic;color:rgba(255,255,255,0.15);white-space:nowrap;}
+    /* New capture animation */
+    .dex-trinket.new-cap{animation:dcap 0.8s var(--spring);}
+    @keyframes dcap{0%{transform:scale(0);}40%{transform:scale(1.3);box-shadow:0 0 20px rgba(255,180,80,0.4);}100%{transform:scale(1);}}
+
+    /* Trinket drop — flies from altar down into dex */
+    .trinket-drop{position:fixed;z-index:9000;pointer-events:none;border-radius:4px;
+      background:linear-gradient(180deg,rgba(240,242,248,0.22),rgba(230,235,245,0.14));
+      border:1px solid rgba(255,255,255,0.2);
+      box-shadow:inset 0 0 10px rgba(255,255,255,0.15),0 0 15px rgba(255,200,120,0.12);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Lexend',sans-serif;font-weight:900;color:rgba(255,220,160,0.9);
+      text-shadow:0 0 6px rgba(255,195,100,0.7);}
+
+    /* Dex spotlight — dims non-target slots */
+    .dex-slot.dimmed{opacity:0.12;transition:opacity 0.3s ease;}
+    .dex-slot.spotlight{transition:opacity 0.3s ease;}
+
+    /* Dex landing flash */
+    .dex-slot.land-flash .dex-trinket-wrap{animation:landFlash 0.5s ease-out;}
+    @keyframes landFlash{0%{filter:brightness(1);}25%{filter:brightness(2.5) saturate(1.5);}100%{filter:brightness(1);}}
+
+    /* Screen fade overlay */
+    .fade-overlay{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:8000;transition:opacity 0.4s ease;}
+    .fade-overlay.fading{opacity:1;}
+
+    .affirm-flash{position:fixed;inset:0;z-index:9999;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(255,200,120,0.2) 0%,rgba(255,180,80,0.08) 30%,transparent 60%);opacity:0;transition:opacity 0.15s ease-out;}
+    .affirm-flash.show{opacity:1;}
+    footer{padding:4px;text-align:center;font-size:8px;color:#222;background:rgba(8,8,10,0.9);flex-shrink:0;}
+  </style>
+</head>
+<body>
+
+<!-- FADE OVERLAY for screen transitions -->
+<div class="fade-overlay" id="fade-overlay"></div>
+
+<!-- ═══ GRID SCREEN ═══ -->
+<div class="screen hidden" id="grid-screen">
+  <div class="grid-screen-header">
+    <div class="logo">Math Things<span class="logo-bead"></span></div>
+  </div>
+  <div class="num-grid" id="num-grid"></div>
+  <!-- PRIME DEX lives on grid screen too -->
+  <div class="dex-container" id="dex-container">
+    <div class="dex-viewport" id="dex-vp"></div>
+  </div>
+</div>
+
+<!-- ═══ ALTAR SCREEN ═══ -->
+<div class="screen" id="altar-screen">
+  <div class="altar-header">
+    <div class="altar-numeral" id="altar-numeral">12</div>
+  </div>
+  <div class="altar" id="fa">
+    <div class="seg-stage" id="fo"></div>
+    <div class="altar-rings"><div class="ar ar1"></div><div class="ar ar2"></div></div>
+  </div>
+  <div class="f-tray" id="ft"></div>
+  <div class="dex-container" id="altar-dex-container">
+    <div class="dex-viewport" id="altar-dex-vp"></div>
+  </div>
+</div>
+
+<div class="affirm-flash" id="affirm"></div>
+
+<script>
+const isPrime=n=>{if(n<2)return false;for(let i=2;i*i<=n;i++)if(n%i===0)return false;return true;};
+const allFactors=n=>{const f=[1];for(let i=2;i<=n;i++)if(n%i===0)f.push(i);return f;};
+const properFactors=n=>{const f=[];for(let i=2;i<n;i++)if(n%i===0)f.push(i);return f;};
+const haptic=p=>{try{navigator.vibrate?.(p)}catch(e){}};
+
+const S={
+  primeDex:new Set(),maxLevel:1,
+  fDone:new Set([1]),fNum:null,fDisc:new Set(),
+  segs:[],unitH:0,unitW:0,folding:false,
+  foldDir:1,segSize:0,
+  newPrimes:new Set(),handleTimer:null,
+  hingeIdleTimer:null,
+  handleIndex:0,handleInverted:false,
+};
+
+// ════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════
+function goToAltar(n){
+  const overlay=document.getElementById('fade-overlay');
+  overlay.classList.add('fading');
+  setTimeout(()=>{
+    document.getElementById('grid-screen').classList.add('hidden');
+    document.getElementById('altar-screen').classList.remove('hidden');
+    enterAltar(n);
+    overlay.classList.remove('fading');
+  },400);
+}
+
+function goToGrid(){
+  const overlay=document.getElementById('fade-overlay');
+  overlay.classList.add('fading');
+  setTimeout(()=>{
+    document.getElementById('altar-screen').classList.add('hidden');
+    document.getElementById('grid-screen').classList.remove('hidden');
+    renderGrid();
+    buildDex('dex-vp');
+    overlay.classList.remove('fading');
+  },400);
+}
+
+function enterAltar(n){
+  S.fNum=n;S.fDisc=new Set([1,n]);S.segSize=0;
+  S.handleIndex=0;S.handleInverted=false;
+  const numEl=document.getElementById('altar-numeral');
+  numEl.textContent=n;
+  // Mark solved state — primes and 1 are always solved on enter
+  const presolvedOnEnter=(n===1||isPrime(n));
+  if(presolvedOnEnter){S.fDone.add(n);}
+  const isSolved=S.fDone.has(n);
+  numEl.classList.toggle('solved',isSolved);
+  numEl.onclick=isSolved?()=>goToGrid():null;
+  const altar=document.getElementById('fa');
+  S.unitH=Math.max(6,Math.min(44,Math.floor((altar.clientHeight-50)/n)));
+  S.unitW=Math.min(60,Math.max(36,S.unitH*0.85));
+  S.segs=[{units:n}];
+  buildDex('altar-dex-vp');
+  if(isPrime(n)){
+    const isNew=!S.primeDex.has(n);
+    S.primeDex.add(n);
+    renderSegs();renderFT();
+    setTimeout(()=>{
+      showAffirm();
+      if(isNew){
+        // Single segment on altar — drop from it after affirmation settles
+        setTimeout(()=>launchTrinketDrop(n,1),400);
+      }
+    },200);
+  } else {
+    renderSegs();renderFT();
+    if(!isSolved)scheduleHingeIdle();
+  }
+}
+
+
+function showAffirm(){const e=document.getElementById('affirm');e.classList.add('show');haptic([20,25,20,25,40]);setTimeout(()=>e.classList.remove('show'),350);}
+
+// ════════════════════════════════════════
+// BLOCKS
+// ════════════════════════════════════════
+function makeBlock(units,w,h,forceComposite=false,omitNumeral=false){
+  const p=!forceComposite&&isPrime(units);
+  const el=document.createElement('div');el.className='blk '+(p?'blk-p':'blk-c');
+  el.style.width=w+'px';el.style.height=h+'px';
+  el.dataset.units=units;
+  if(omitNumeral)return el;
+  if(p){
+    const rad=document.createElement('div');rad.className='n-radiance';el.appendChild(rad);
+    const num=document.createElement('div');num.className='n-glow';num.textContent=units;
+    num.style.fontSize=Math.min(w*0.6,h*0.45,38)+'px';el.appendChild(num);
+  }else{
+    const num=document.createElement('div');num.className='n-stamp';num.textContent=units;
+    num.style.fontSize=Math.min(w*0.55,h*0.4,34)+'px';el.appendChild(num);
+  }
+  return el;
+}
+
+// Reveal numerals on all segments after fold completes
+// Only targets .blk elements that are direct children of their container (not nested in hinges)
+function revealNumerals(overlay,segUnits,uW,uH){
+  const h=segUnits*uH;
+  // Walk the nest tree to find only the bottom-level blocks (one per segment)
+  // These are .blk elements whose parent container is NOT inside a hinge wrapper
+  // Simplest: collect all .blk, filter to those not contained within another .blk
+  const allBlks=Array.from(overlay.querySelectorAll('.blk'));
+  // A block is a leaf if it doesn't contain another .blk
+  const leafBlks=allBlks.filter(b=>b.querySelector('.blk')===null);
+  leafBlks.forEach(el=>{
+    const p=isPrime(segUnits);
+    if(p){
+      el.classList.remove('blk-c');el.classList.add('blk-p','blk-p-reveal');
+      if(!el.querySelector('.n-radiance')){const rad=document.createElement('div');rad.className='n-radiance';el.appendChild(rad);}
+      const num=document.createElement('div');num.className='n-glow n-glow-reveal';num.textContent=segUnits;
+      num.style.fontSize=Math.min(uW*0.6,h*0.45,38)+'px';el.appendChild(num);
+    }else{
+      const num=document.createElement('div');num.className='n-stamp n-stamp-reveal';num.textContent=segUnits;
+      num.style.fontSize=Math.min(uW*0.55,h*0.4,34)+'px';el.appendChild(num);
+    }
+  });
+}
+
+// ════════════════════════════════════════
+// PRIME DEX — Relativistic Scaling
+// ════════════════════════════════════════
+function buildDex(vpId='altar-dex-vp'){
+  const vp=document.getElementById(vpId);
+  if(!vp)return;
+  vp.innerHTML='';
+  for(let i=-1;i<=146;i++){
+    const slot=document.createElement('div');
+    slot.className='dex-slot';
+    if(i<1||i>144){
+      slot.innerHTML='<div style="height:0"></div>';
+      vp.appendChild(slot);continue;
+    }
+    slot.dataset.n=i;
+    const wrap=document.createElement('div');
+    wrap.className='dex-trinket-wrap';
+    wrap.style.height='0px';
+    if(i===1){
+      slot.classList.add('has-prime');
+      const mir=document.createElement('div');mir.className='dex-mirror';
+      const num=document.createElement('div');num.className='dt-num';num.textContent='1';
+      mir.appendChild(num);wrap.appendChild(mir);
+    }else if(isPrime(i)&&S.primeDex.has(i)){
+      slot.classList.add('has-prime');
+      const t=document.createElement('div');
+      t.className='dex-trinket'+(S.newPrimes.has(i)?' new-cap':'');
+      const rad=document.createElement('div');rad.className='dt-radiance';t.appendChild(rad);
+      const num=document.createElement('div');num.className='dt-num';num.textContent=i;
+      t.appendChild(num);wrap.appendChild(t);
+    }
+    slot.appendChild(wrap);
+    const lbl=document.createElement('div');lbl.className='dex-num';lbl.textContent=i>0&&i<=144?i:'';
+    slot.appendChild(lbl);
+    vp.appendChild(slot);
+  }
+  S.newPrimes.clear();
+  requestAnimationFrame(()=>updateDexScaling(vpId));
+  // Attach scroll listener
+  vp.onscroll=()=>requestAnimationFrame(()=>updateDexScaling(vpId));
+}
+
+function scheduleHingeIdle(){
+  clearTimeout(S.hingeIdleTimer);
+  S.hingeIdleTimer=setTimeout(()=>{
+    document.querySelectorAll('#fo .hm').forEach(hm=>hm.classList.add('idle'));
+  },3000);
+}
+
+function cancelHingeIdle(){
+  clearTimeout(S.hingeIdleTimer);
+  document.querySelectorAll('#fo .hm').forEach(hm=>hm.classList.remove('idle'));
+}
+
+function updateDexScaling(vpId='altar-dex-vp'){
+  const vp=document.getElementById(vpId);
+  const container=vp?.closest('.dex-container');
+  if(!vp||!container)return;
+  const slotW=container.clientWidth/5;
+  const scrollLeft=vp.scrollLeft;
+  const baseH=container.clientHeight-20;
+  const centerX=scrollLeft+container.clientWidth/2;
+  const centerSlotIdx=centerX/slotW;
+  const centerNum=Math.max(1,Math.round(centerSlotIdx-2+1));
+  const slots=vp.querySelectorAll('.dex-slot[data-n]');
+  slots.forEach(slot=>{
+    const n=parseInt(slot.dataset.n);
+    const wrap=slot.querySelector('.dex-trinket-wrap');
+    if(!wrap)return;
+    if(n===1||(isPrime(n)&&S.primeDex.has(n))){
+      const h=Math.max(8,(n/centerNum)*baseH);
+      wrap.style.height=h+'px';
+      const numEl=wrap.querySelector('.dt-num');
+      if(numEl){const fw=slotW*0.5;numEl.style.fontSize=Math.min(fw,h*0.35,20)+'px';}
+    }else{
+      wrap.style.height='0px';
+    }
+  });
+}
+
+// Remove old scroll listener (now attached per-vp in buildDex)
+
+function computeHandleState(numPieces, foldDir){
+  const falls = numPieces - 1;
+  const oddFalls = falls % 2 === 1;
+  // Side alternates each fall: first fall goes toward foldDir, then opposite, etc.
+  // odd falls → same side as foldDir; even falls → opposite side
+  const landsLeft = oddFalls ? (foldDir < 0) : (foldDir > 0);
+  const index = landsLeft ? 0 : numPieces - 1;
+  const inverted = landsLeft; // left landing = face-down = inverted
+  return {index, inverted};
+}
+
+// ════════════════════════════════════════
+// TRINKET DROP CEREMONY
+// ════════════════════════════════════════
+function scrollDexToSlot(n, vpId, cb){
+  const vp=document.getElementById(vpId);
+  const container=vp?.closest('.dex-container');
+  if(!vp||!container){cb&&cb();return;}
+  const slotW=container.clientWidth/5;
+  // Slot index for n: n + 2 padding slots - 1 = n+1
+  const targetScroll=(n+1)*slotW - container.clientWidth/2 + slotW/2;
+  vp.scrollTo({left:Math.max(0,targetScroll),behavior:'smooth'});
+  setTimeout(()=>{cb&&cb();},500);
+}
+
+function launchTrinketDrop(primeN, segCount){
+  const vpId='altar-dex-vp';
+  const stage=document.getElementById('fo');
+  const dexContainer=document.getElementById('altar-dex-container');
+  if(!stage||!dexContainer)return;
+
+  // Find launch position: center of stage (between middle segments)
+  const stageRect=stage.getBoundingClientRect();
+  const segEls=stage.querySelectorAll('.blk');
+  let launchX, launchY;
+  if(segCount%2===1){
+    // Odd: center segment
+    const mid=segEls[Math.floor(segCount/2)];
+    if(mid){const r=mid.getBoundingClientRect();launchX=r.left+r.width/2;launchY=r.top+r.height*0.35;}
+    else{launchX=stageRect.left+stageRect.width/2;launchY=stageRect.top+stageRect.height*0.35;}
+  }else{
+    // Even: seam between two middle segments
+    const a=segEls[segCount/2-1],b=segEls[segCount/2];
+    if(a&&b){const ra=a.getBoundingClientRect(),rb=b.getBoundingClientRect();
+      launchX=(ra.right+rb.left)/2;launchY=(ra.top+rb.top)/2+ra.height*0.35;}
+    else{launchX=stageRect.left+stageRect.width/2;launchY=stageRect.top+stageRect.height*0.35;}
+  }
+
+  // Find landing position: the dex slot for primeN
+  const vp=document.getElementById(vpId);
+  const container=document.getElementById('altar-dex-container');
+  const slotW=container.clientWidth/5;
+  const targetScroll=(primeN+1)*slotW - container.clientWidth/2 + slotW/2;
+  const slotCenterX=container.getBoundingClientRect().left + container.clientWidth/2;
+  const dexRect=container.getBoundingClientRect();
+  const landY=dexRect.top+dexRect.height*0.35;
+
+  // Trinket size
+  const tw=28,th=36;
+  const fontSize=Math.min(tw*0.55,14);
+
+  // Create flying trinket
+  const trinket=document.createElement('div');
+  trinket.className='trinket-drop';
+  trinket.style.cssText=`width:${tw}px;height:${th}px;font-size:${fontSize}px;left:${launchX-tw/2}px;top:${launchY-th/2}px;`;
+  trinket.textContent=primeN;
+  document.body.appendChild(trinket);
+
+  // Phase 1: scroll dex to center the slot, spotlight it
+  vp.querySelectorAll('.dex-slot[data-n]').forEach(sl=>{
+    sl.classList.toggle('dimmed',parseInt(sl.dataset.n)!==primeN);
+  });
+  scrollDexToSlot(primeN,vpId,()=>{
+    // Phase 2: drop the trinket
+    const dur=420;
+    trinket.style.transition=`left ${dur}ms cubic-bezier(0.4,0,1,1), top ${dur}ms cubic-bezier(0.4,0,1,1)`;
+    trinket.style.left=(slotCenterX-tw/2)+'px';
+    trinket.style.top=(landY-th/2)+'px';
+
+    setTimeout(()=>{
+      // Phase 3: land — haptic, flash, rebuild dex
+      haptic([15,10,40]);
+      trinket.remove();
+
+      // Flash the slot
+      const targetSlot=vp.querySelector(`.dex-slot[data-n="${primeN}"]`);
+      if(targetSlot)targetSlot.classList.add('land-flash');
+
+      // Rebuild dex with the new trinket
+      S.newPrimes.add(primeN);
+      buildDex(vpId);
+
+      // Remove spotlight after celebration
+      setTimeout(()=>{
+        vp.querySelectorAll('.dex-slot').forEach(sl=>sl.classList.remove('dimmed','spotlight'));
+        updateDexScaling(vpId);
+      },800);
+
+    },dur+50);
+  });
+}
+// ════════════════════════════════════════
+// NEST TREE (for fold/unspool animations)
+// ════════════════════════════════════════
+function buildNestTree(numPieces,segH,uW,foldDir,startFolded){
+  const hinges=[];
+
+  function build(level){
+    const container=document.createElement('div');
+    container.style.cssText=`position:absolute;bottom:0;left:0;width:${uW}px;height:0;`;
+    const blk=makeBlock(S.segSize||S.fNum,uW,segH,true,true);
+    blk.style.position='absolute';blk.style.bottom='0';blk.style.left='0';
+    container.appendChild(blk);
+
+    if(level<numPieces-1){
+      const hw=document.createElement('div');
+      const depth=numPieces-1-level;
+      const dir=depth%2===0?-foldDir:foldDir;
+      hw.style.cssText=`position:absolute;bottom:${segH}px;left:0;width:${uW}px;height:0;`;
+      hw.style.transformOrigin=dir<0?'0% 100%':'100% 100%';
+      if(startFolded) hw.style.transform=`rotate(${dir<0?-180:180}deg)`;
+      hw._dir=dir;
+      const child=build(level+1);
+      hw.appendChild(child);container.appendChild(hw);
+      hinges.push({hw,dir,depth});
+    }
+    return container;
+  }
+  return {root:build(0),hinges};
+}
+
+// ════════════════════════════════════════
+// RENDER SEGMENTS
+// ════════════════════════════════════════
+function makeHandle(inverted){
+  const handle=document.createElement('div');handle.className='handle';
+  const caret=document.createElement('div');caret.className='handle-caret';caret.textContent='▲';
+  if(inverted){
+    handle.style.top='auto';handle.style.bottom='0';
+    handle.style.borderRadius='0 0 5px 5px';
+    handle.style.borderBottom='none';handle.style.borderTop='1px solid rgba(0,0,0,0.12)';
+    caret.style.top='auto';caret.style.bottom='1px';
+    caret.style.transform='translateX(-50%) rotate(180deg)';
+  }
+  handle.appendChild(caret);
+  handle.style.touchAction='none';
+  handle.addEventListener('pointerdown',e=>{if(!S.folding){e.preventDefault();beginUnspool();}});
+  return handle;
+}
+
+function renderSegs(){
+  const stage=document.getElementById('fo');stage.innerHTML='';
+  if(S.segs.length===0)return;
+  const uH=S.unitH,uW=S.unitW;
+  const numSegs=S.segs.length;
+  const totalFolds=numSegs-1;
+
+  S.segs.forEach((seg,i)=>{
+    const h=seg.units*uH;
+    const el=makeBlock(seg.units,uW,h);
+
+    if(numSegs===1){
+      // Handle always at top of single obelisk
+      el.appendChild(makeHandle(false));
+      // Hinges only on composites
+      if(!isPrime(seg.units)){
+        properFactors(seg.units).forEach(f=>{
+          const hingeY=f*uH;
+          const zone=document.createElement('div');zone.className='hz';zone.style.top=hingeY+'px';
+          const mark=document.createElement('div');mark.className='hm';zone.appendChild(mark);
+          let touchSide=1;
+          zone.addEventListener('pointerdown',e=>{zone.classList.add('swiping');cancelHingeIdle();
+            const rect=el.getBoundingClientRect();touchSide=(e.clientX-rect.left)<rect.width/2?-1:1;});
+          zone.addEventListener('pointerup',e=>{zone.classList.remove('swiping');doFold(f,touchSide);});
+          el.appendChild(zone);
+        });
+      } // end if !isPrime
+    } else {
+      // Use stored handle state computed at fold time
+      if(i === S.handleIndex){
+        el.appendChild(makeHandle(S.handleInverted));
+      }
+    }
+    stage.appendChild(el);
+  });
+  // Schedule hinge idle hint if single composite obelisk
+  if(S.segs.length===1&&!isPrime(S.segs[0].units)){
+    scheduleHingeIdle();
+  }
+  // Pulse caret only in folded state — there's something to unspool
+  if(S.segs.length>1){
+    clearTimeout(S.handleTimer);
+    S.handleTimer=setTimeout(()=>{
+      const caret=stage.querySelector('.handle-caret');
+      if(caret)caret.classList.add('pulse');
+    },2500);
+  }
+}
+
+// ════════════════════════════════════════
+// FOLD
+// ════════════════════════════════════════
+function doFold(f,swipeSide){
+  if(S.folding||S.segs.length!==1)return;
+  S.folding=true;haptic(50);
+  const totalUnits=S.segs[0].units;
+  if(totalUnits%f!==0){S.folding=false;return;}
+  const numPieces=totalUnits/f;
+  const uH=S.unitH,uW=S.unitW,segH=f*uH;
+  S.foldDir=swipeSide;S.segSize=f;
+
+  const stage=document.getElementById('fo');
+  // Hide the original obelisk numeral immediately
+  stage.querySelectorAll('.n-stamp,.n-glow,.n-radiance').forEach(el=>el.remove());
+  stage.style.visibility='hidden';
+
+  const altar=document.getElementById('fa');
+  const overlay=document.createElement('div');
+  overlay.style.cssText=`position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:50;pointer-events:none;`;
+  altar.appendChild(overlay);
+
+  // Animation only — no handle in overlay
+  const{root,hinges}=buildNestTree(numPieces,segH,uW,swipeSide,false);
+  overlay.appendChild(root);
+  const sorted=[...hinges].sort((a,b)=>a.depth-b.depth);
+  const phaseDur=500,pause=80;
+
+  sorted.forEach(({hw,dir},i)=>{
+    hw.style.transition=`transform ${phaseDur}ms var(--ease-heavy)`;
+    const rot=dir<0?-180:180;
+    const delay=i*(phaseDur+pause);
+    setTimeout(()=>{
+      hw.style.transform=`rotate(${rot}deg)`;haptic(30);
+      setTimeout(()=>{
+        hw.style.transition='transform 80ms ease-out';
+        hw.style.transform=`rotate(${rot>0?rot-4:rot+4}deg)`;
+        setTimeout(()=>{hw.style.transition='transform 60ms ease-in';hw.style.transform=`rotate(${rot}deg)`;haptic(15);},80);
+      },phaseDur-20);
+    },delay);
+  });
+
+  const totalAnimTime=sorted.length*(phaseDur+pause)+200;
+  setTimeout(()=>{
+    revealNumerals(overlay,f,uW,uH);
+    const isNewPrime=isPrime(f)&&!S.primeDex.has(f);
+    if(!S.fDisc.has(f))S.fDisc.add(f);
+    if(isPrime(f))S.primeDex.add(f);
+    renderFT();checkFSolved();
+    S.segs=[];for(let i=0;i<numPieces;i++)S.segs.push({units:f});
+    const hs=computeHandleState(numPieces,swipeSide);
+    S.handleIndex=hs.index;S.handleInverted=hs.inverted;
+    S.folding=false;
+    setTimeout(()=>{
+      overlay.remove();
+      stage.style.visibility='visible';
+      renderSegs();
+      // Trigger trinket drop after reveal animation settles
+      if(isNewPrime){
+        setTimeout(()=>launchTrinketDrop(f,numPieces),isPrime(f)?900:200);
+      } else {
+        buildDex('altar-dex-vp');
+      }
+    },600);
+  },totalAnimTime);
+}
+
+// ════════════════════════════════════════
+// UNSPOOL (drag-based)
+// ════════════════════════════════════════
+let US=null;
+function beginUnspool(){
+  if(S.folding||S.segs.length<=1)return;
+  S.folding=true;
+  const stage=document.getElementById('fo');const altar=document.getElementById('fa');
+  const uH=S.unitH,uW=S.unitW,numSegs=S.segs.length,segH=S.segs[0].units*uH;
+  stage.style.visibility='hidden';
+
+  const overlay=document.createElement('div');
+  overlay.style.cssText=`position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:50;`;
+  altar.appendChild(overlay);
+
+  // withHandle=true — handle rides on the top block in the folded stack too
+  const{root,hinges}=buildNestTree(numSegs,segH,uW,S.foldDir,true);
+  overlay.appendChild(root);
+  // Sort shallowest first (outermost hinge = first to open when pulling up)
+  const sorted=[...hinges].sort((a,b)=>a.depth-b.depth);
+  sorted.forEach(({hw})=>{hw.style.transition='none';});
+
+  // Cascade mapping: each hinge has a lead window. First hinge leads, rest follow with overlap.
+  // overlap=0.5 means next hinge starts when current is 50% done.
+  const overlap=0.5;
+  const n=sorted.length;
+  // Each hinge occupies a window; windows overlap so total span is compressed
+  // window width = 1/(n - (n-1)*overlap) ... simplified: each starts at i*(1-overlap)/n_norm
+  const windowSize=1/(1+(n-1)*(1-overlap));
+  const starts=sorted.map((_,i)=>i*(1-overlap)*windowSize);
+
+  const totalDragDist=(numSegs-1)*segH*1.2;
+  US={overlay,sorted,starts,windowSize,totalDragDist,startY:null,startX:null,active:true};
+
+  const onMove=e=>{
+    if(!US||!US.active)return;e.preventDefault();
+    const t=e.touches?e.touches[0]:e;
+    if(US.startY===null){US.startY=t.clientY;US.startX=t.clientX;}
+    const dragY=US.startY-t.clientY;
+    const progress=Math.max(0,Math.min(1,dragY/US.totalDragDist));
+    US.sorted.forEach(({hw,dir},i)=>{
+      const hProg=Math.max(0,Math.min(1,(progress-US.starts[i])/US.windowSize));
+      hw.style.transform=`rotate(${(dir<0?-180:180)*(1-hProg)}deg)`;
+    });
+  };
+  const onUp=e=>{
+    if(!US||!US.active)return;
+    const t=e.changedTouches?e.changedTouches[0]:e;
+    const progress=US.startY!==null?(US.startY-t.clientY)/US.totalDragDist:0;
+    if(progress>=0.85)completeUS(onMove,onUp);else cancelUS(onMove,onUp);
+  };
+  document.addEventListener('pointermove',onMove,{passive:false});
+  document.addEventListener('pointerup',onUp);
+}
+function cancelUS(onMove,onUp){
+  if(!US)return;US.active=false;
+  US.sorted.forEach(({hw,dir})=>{hw.style.transition='transform 0.4s var(--ease-heavy)';hw.style.transform=`rotate(${dir<0?-180:180}deg)`;});
+  setTimeout(()=>{US?.overlay?.remove();document.getElementById('fo').style.visibility='visible';S.folding=false;US=null;},450);
+  document.removeEventListener('pointermove',onMove);document.removeEventListener('pointerup',onUp);
+}
+function completeUS(onMove,onUp){
+  if(!US)return;US.active=false;haptic([20,30,20]);
+  US.sorted.forEach(({hw})=>{hw.style.transition='transform 0.2s var(--spring)';hw.style.transform='rotate(0deg)';});
+  setTimeout(()=>{
+    US?.overlay?.remove();
+    document.getElementById('fo').style.visibility='visible';
+    S.segs=[{units:S.fNum}];S.folding=false;US=null;
+    renderSegs();
+    scheduleHingeIdle();
+  },250);
+  document.removeEventListener('pointermove',onMove);document.removeEventListener('pointerup',onUp);
+}
+
+function checkFSolved(){
+  const n=S.fNum;if(!n||S.fDone.has(n))return;
+  if(allFactors(n).every(f=>S.fDisc.has(f))){
+    S.fDone.add(n);
+    setTimeout(()=>{
+      showAffirm();
+      checkLvl();
+      // Pulse the header numeral green — it's now the exit button
+      const numEl=document.getElementById('altar-numeral');
+      numEl.classList.add('solved');
+      numEl.onclick=()=>goToGrid();
+    },200);
+  }
+}
+
+function checkLvl(){
+  const max=S.maxLevel*12;
+  for(let i=1;i<=max;i++)if(!S.fDone.has(i))return;
+  S.maxLevel++;
+}
+
+// ════════════════════════════════════════
+// GRID SCREEN
+// ════════════════════════════════════════
+function renderGrid(){
+  const g=document.getElementById('num-grid');g.innerHTML='';
+  const max=S.maxLevel*12;
+  for(let i=1;i<=max;i++){
+    const c=document.createElement('div');
+    c.textContent=i;
+    if(S.fDone.has(i)){
+      c.className='nc done';
+      c.addEventListener('click',()=>goToAltar(i));
+    } else {
+      c.className='nc avail';
+      c.addEventListener('click',()=>goToAltar(i));
+    }
+    g.appendChild(c);
+  }
+  // Lock everything above max
+  for(let i=max+1;i<=max+12;i++){
+    const c=document.createElement('div');c.className='nc locked';c.textContent=i;g.appendChild(c);
+  }
+}
+
+// ════════════════════════════════════════
+// FACTOR TRAY
+// ════════════════════════════════════════
+function renderFT(){
+  const tray=document.getElementById('ft');tray.innerHTML='';
+  const n=S.fNum;if(!n)return;
+  allFactors(n).forEach(f=>{
+    const s=document.createElement('div');s.className='fs';s.textContent=f;
+    if(f===1)s.classList.add('mirror');
+    else if(f===n&&!isPrime(n))s.classList.add(S.fDisc.has(f)?'starter':'empty');
+    else if(S.fDisc.has(f))s.classList.add(isPrime(f)?'fp':'fc');
+    else{s.classList.add('empty');s.textContent='';}
+    if(f===n&&!isPrime(n)&&!S.fDisc.has(f))s.textContent='';
+    tray.appendChild(s);
+  });
+}
+
+// ════════════════════════════════════════
+// INIT — cold open on 12's altar
+// ════════════════════════════════════════
+buildDex('altar-dex-vp');
+enterAltar(12);
+
+</script>
+</body>
+</html>
