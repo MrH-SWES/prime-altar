@@ -6,7 +6,7 @@
   <title>Prime Altar | Math Things.</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
-    :root{--bg:#0a0a0c;--spring:cubic-bezier(0.34,1.56,0.64,1);--ease-heavy:cubic-bezier(0.15,0.6,0.3,1.0);--green:#10b981;}
+    :root{--bg:#0a0a0c;--spring:cubic-bezier(0.34,1.56,0.64,1);--ease-heavy:cubic-bezier(0.15,0.6,0.3,1.0);--green:#01B069;}
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
     body{font-family:'Lexend',sans-serif;background:var(--bg);height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;color:#fff;user-select:none;}
 
@@ -18,58 +18,174 @@
     .grid-screen-header{display:flex;justify-content:center;align-items:center;padding:12px 14px 8px;flex-shrink:0;}
     .logo{font-weight:900;font-size:16px;opacity:0.35;letter-spacing:-0.03em;}
     .logo-bead{display:inline-block;width:0.22em;height:0.22em;margin-left:0.04em;margin-bottom:0.08em;border-radius:50%;background:radial-gradient(circle at 33% 28%,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.3) 40%,transparent 65%),radial-gradient(circle at 67% 72%,rgba(0,0,0,0.15) 0%,transparent 55%),linear-gradient(135deg,#efefef,#d0d0d0,#a8a8a8,#c0c0c0,#e0e0e0);box-shadow:inset 1px 1px 2px rgba(255,255,255,0.8),inset -1px -1px 2px rgba(0,0,0,0.2),0 2px 4px rgba(0,0,0,0.3);}
-    .num-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:8px 10px;flex:1;align-content:start;}
-    .nc{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;border-radius:8px;cursor:pointer;transition:all 0.15s;position:relative;background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.12);}
-    .nc.avail{color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.05);}
+    .num-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:6px 8px;flex:1;align-content:start;overflow-y:auto;}
+    .nc{aspect-ratio:1;border-radius:8px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden;
+      /* Stone — heavy, unmined, begging to be broken */
+      background:linear-gradient(145deg,rgba(22,22,26,0.9),rgba(14,14,17,0.95));
+      box-shadow:inset 0 3px 6px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,255,255,0.04);}
+    .nc.avail{
+      background:linear-gradient(145deg,rgba(26,26,31,0.92),rgba(16,16,20,0.96));
+      box-shadow:inset 0 3px 6px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.05);}
     .nc.avail:active{transform:scale(0.93);}
-    .nc.done{color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.05);}
-    .nc.done::after{content:'';position:absolute;width:5px;height:5px;border-radius:50%;background:var(--green);top:4px;right:4px;box-shadow:0 0 5px var(--green);}
-    .nc.locked{opacity:0.05;pointer-events:none;}
+    .nc.done{
+      /* Glassy reliquary — broken open, now holds the trinkets */
+      background:linear-gradient(145deg,rgba(35,35,44,0.7),rgba(20,20,28,0.85));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,0.08),0 2px 8px rgba(0,0,0,0.3);
+      border:1px solid rgba(255,255,255,0.06);}
+    .nc.locked{opacity:0.04;pointer-events:none;}
+    .nc.done::after{content:'';position:absolute;width:4px;height:4px;border-radius:50%;
+      background:var(--green);top:4px;right:4px;box-shadow:0 0 4px var(--green);}
+    /* Unsolved: number centered */
+    .nc-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:16px;color:rgba(255,255,255,0.45);}
+    /* Solved: number top-left small */
+    .nc-label{position:absolute;top:4px;left:5px;font-weight:700;font-size:9px;
+      color:rgba(255,255,255,0.3);line-height:1;z-index:2;}
+    /* Mini trinket grid */
+    .nc-trinkets{position:absolute;left:3px;right:3px;top:16px;bottom:3px;
+      display:flex;flex-wrap:wrap;align-content:flex-start;gap:1px;overflow:hidden;}
+    .nc-t{border-radius:2px;display:flex;align-items:center;justify-content:center;
+      font-weight:900;font-size:5.5px;flex-shrink:0;width:14px;height:16px;}
+    .nc-t.nc-tc{background:linear-gradient(135deg,#d8d8da,#b0b0b4);
+      color:rgba(50,50,55,0.85);border:0.5px solid rgba(255,255,255,0.35);}
+    .nc-t.nc-tp{background:linear-gradient(180deg,rgba(255,255,255,0.14),rgba(240,242,248,0.07));
+      border:0.5px solid rgba(255,255,255,0.22);color:rgba(255,220,160,0.9);
+      box-shadow:0 0 3px rgba(255,180,80,0.25);text-shadow:0 0 3px rgba(255,195,100,0.7);}
+    .nc-t.nc-tm{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.1);
+      color:rgba(255,255,255,0.18);font-style:italic;}
+    .nc-overflow{font-size:5px;color:rgba(255,255,255,0.2);padding:1px;}
 
     /* ═══ ALTAR SCREEN ═══ */
     .altar-header{display:flex;justify-content:center;align-items:center;padding:10px 14px;flex-shrink:0;position:relative;z-index:10;}
-    .altar-numeral{font-weight:900;font-size:42px;letter-spacing:-2px;color:rgba(255,255,255,0.15);transition:color 0.6s ease,text-shadow 0.6s ease;line-height:1;}
-    .altar-numeral.solved{animation:solvedPulse 3s ease-in-out infinite;cursor:pointer;}
-    @keyframes solvedPulse{
-      0%,100%{color:#6ee7b7;text-shadow:0 0 6px rgba(110,231,183,0.7),0 0 16px rgba(52,211,153,0.4),0 0 35px rgba(16,185,129,0.2),0 0 70px rgba(16,185,129,0.08);}
-      50%{color:#a7f3d0;text-shadow:0 0 8px rgba(167,243,208,0.95),0 0 22px rgba(110,231,183,0.7),0 0 55px rgba(52,211,153,0.35),0 0 110px rgba(16,185,129,0.15),0 0 180px rgba(16,185,129,0.06);}
+    .altar-numeral{font-weight:900;font-size:52px;letter-spacing:-2px;color:rgba(255,255,255,0.15);line-height:1;position:relative;}
+
+    /* Ambient breathing pulse — always on when solved */
+    .altar-numeral.solved{color:#01B069;animation:solvedBreathe 5s ease-in-out infinite;cursor:pointer;}
+    @keyframes solvedBreathe{
+      0%{color:rgba(1,176,105,0.25);text-shadow:0 0 4px rgba(1,176,105,0.1),0 0 8px rgba(1,176,105,0.05);}
+      50%{color:#34c98a;text-shadow:0 0 8px rgba(52,185,120,0.85),0 0 22px rgba(1,176,105,0.55),0 0 50px rgba(1,176,105,0.25),0 0 90px rgba(1,176,105,0.1);}
+      100%{color:rgba(1,176,105,0.25);text-shadow:0 0 4px rgba(1,176,105,0.1),0 0 8px rgba(1,176,105,0.05);}
     }
 
-    /* ═══ ALTAR ═══ */
-    .altar{flex:1;position:relative;overflow:hidden;min-height:0;background:radial-gradient(ellipse 80% 50% at 50% 85%,rgba(20,20,25,1),var(--bg));}
+    /* Celebration — green circle blooms out then contracts revealing green numeral */
+    .altar-numeral.celebrate{animation:none;color:rgba(255,255,255,0.15);}
+    .altar-numeral.celebrate::after{
+      content:'';
+      position:absolute;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%) scale(0);
+      width:180px;height:180px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(52,185,120,0.55) 0%,rgba(1,176,105,0.25) 45%,transparent 75%);
+      animation:celebBloom 1.1s cubic-bezier(0.2,0,0.4,1) forwards;
+      pointer-events:none;
+      z-index:-1;
+    }
+    @keyframes celebBloom{
+      0%{transform:translate(-50%,-50%) scale(0);opacity:1;}
+      55%{transform:translate(-50%,-50%) scale(1.8);opacity:1;}
+      100%{transform:translate(-50%,-50%) scale(0.6);opacity:0;}
+    }
+
+    /* ═══ ALTAR — deep dark room ═══ */
+    .altar{flex:1;position:relative;overflow:hidden;min-height:0;
+      background:radial-gradient(ellipse 80% 50% at 50% 85%,rgba(18,18,24,1),rgba(8,8,10,1));}
     .altar::before{content:'';position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:140px;height:110%;background:linear-gradient(to bottom,transparent,rgba(255,255,255,0.012) 20%,rgba(255,255,255,0.03) 55%,rgba(255,255,255,0.01) 80%,transparent);filter:blur(20px);pointer-events:none;}
-    .altar-rings{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);width:180px;height:24px;z-index:2;}
-    .ar{position:absolute;left:50%;transform:translateX(-50%);border-radius:50%;background:conic-gradient(from 45deg,#0d0d0f 0%,#28282b 15%,#0d0d0f 30%,#1a1a1d 50%,#0d0d0f 70%,#28282b 85%,#0d0d0f 100%);}
-    .ar1{width:180px;height:22px;bottom:0;box-shadow:0 2px 0 #333,0 3px 0 #222,0 15px 30px rgba(0,0,0,0.6);}
-    .ar2{width:120px;height:14px;bottom:5px;border:1px solid rgba(255,255,255,0.03);box-shadow:inset 0 0 12px rgba(0,0,0,0.5);}
-    .seg-stage{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;gap:3px;z-index:5;}
+    /* ═══ PEDESTAL — wide flat stage, never scales ═══ */
+    .altar-pedestal{position:absolute;bottom:0;left:0;right:0;height:36px;z-index:2;}
+    .ped-platform{position:absolute;bottom:16px;left:10%;right:10%;height:6px;
+      background:linear-gradient(180deg,#2a2a2e,#1a1a1e);
+      border-radius:2px;
+      box-shadow:0 1px 0 rgba(255,255,255,0.04),0 -1px 0 rgba(0,0,0,0.3);}
+    .ped-step1{position:absolute;bottom:8px;left:5%;right:5%;height:8px;
+      border-radius:50%;
+      background:conic-gradient(from 45deg,#0d0d0f 0%,#28282b 15%,#0d0d0f 30%,#1a1a1d 50%,#0d0d0f 70%,#28282b 85%,#0d0d0f 100%);
+      box-shadow:0 2px 0 #333,0 3px 0 #222,0 8px 20px rgba(0,0,0,0.5);}
+    .ped-step2{position:absolute;bottom:0;left:0;right:0;height:10px;
+      border-radius:50%;
+      background:conic-gradient(from 45deg,#0d0d0f 0%,#28282b 15%,#0d0d0f 30%,#1a1a1d 50%,#0d0d0f 70%,#28282b 85%,#0d0d0f 100%);
+      box-shadow:0 2px 0 #333,0 3px 0 #222,0 15px 30px rgba(0,0,0,0.6);}
+
+    /* ═══ ZOOM WRAPPER ═══ */
+    .seg-zoom{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:5;}
+    .seg-zoom.folded{transform:none;}
+    .seg-stage{display:flex;align-items:flex-end;gap:3px;}
 
     /* ═══ BLOCKS ═══ */
     .blk{border-radius:5px 5px 2px 2px;position:relative;overflow:visible;flex-shrink:0;}
     .blk-c{background:repeating-linear-gradient(180deg,rgba(255,255,255,0.04) 0px,transparent 1px,transparent 2px),linear-gradient(90deg,rgba(0,0,0,0.18) 0%,rgba(255,255,255,0.08) 10%,rgba(255,255,255,0.02) 28%,rgba(0,0,0,0.03) 50%,rgba(255,255,255,0.05) 72%,rgba(255,255,255,0.1) 90%,rgba(0,0,0,0.12) 100%),linear-gradient(135deg,#e0e0e2,#c0c0c4,#9a9aa0,#b0b0b5,#d0d0d4);box-shadow:inset 2px 2px 4px rgba(255,255,255,0.4),inset -2px -2px 4px rgba(0,0,0,0.12),3px 6px 18px rgba(0,0,0,0.45);}
     .blk-c::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.1),transparent);border-radius:5px 5px 0 0;}
-    .blk-p{border-radius:6px;background:linear-gradient(180deg,rgba(240,242,248,0.22),rgba(230,235,245,0.16),rgba(225,230,240,0.2),rgba(220,225,238,0.18));border:1px solid rgba(255,255,255,0.2);box-shadow:inset 0 0 20px rgba(255,255,255,0.2),inset 3px 0 10px rgba(255,255,255,0.12),inset -3px 0 10px rgba(255,255,255,0.08),0 0 30px rgba(255,255,255,0.06),0 0 60px rgba(255,220,160,0.04),3px 6px 18px rgba(0,0,0,0.25);animation:pb 3s ease-in-out infinite alternate;}
-    @keyframes pb{0%{box-shadow:inset 0 0 20px rgba(255,255,255,0.2),inset 3px 0 10px rgba(255,255,255,0.12),inset -3px 0 10px rgba(255,255,255,0.08),0 0 30px rgba(255,255,255,0.06),0 0 60px rgba(255,220,160,0.04),3px 6px 18px rgba(0,0,0,0.25);}100%{box-shadow:inset 0 0 30px rgba(255,255,255,0.28),inset 3px 0 15px rgba(255,255,255,0.18),inset -3px 0 15px rgba(255,255,255,0.12),0 0 45px rgba(255,255,255,0.1),0 0 80px rgba(255,220,160,0.07),3px 6px 18px rgba(0,0,0,0.25);}}
+    .blk-m{border-radius:4px;overflow:hidden;
+      background:linear-gradient(135deg,
+        rgba(255,255,255,0.88) 0%,rgba(215,225,232,0.65) 28%,
+        rgba(175,188,200,0.45) 50%,rgba(198,210,222,0.6) 70%,
+        rgba(238,244,248,0.72) 100%);
+      border:1px solid rgba(255,255,255,0.28);
+      border-bottom:1px solid rgba(70,80,95,0.45);
+      border-right:1px solid rgba(70,80,95,0.32);
+      box-shadow:inset 1px 1px 4px rgba(255,255,255,0.7),inset -1px -1px 4px rgba(0,0,0,0.18),
+        3px 6px 18px rgba(0,0,0,0.45);}
+    /* Left face panel */
+    .blk-m::before{content:'';position:absolute;top:0;left:0;width:42%;height:100%;
+      background:linear-gradient(180deg,rgba(148,160,174,0.55) 0%,rgba(112,124,138,0.4) 50%,rgba(142,154,168,0.52) 100%);
+      border-right:1px solid rgba(255,255,255,0.2);}
+    .n-mirror{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      font-weight:300;letter-spacing:-1px;font-style:italic;
+      color:rgba(55,65,78,0.35);text-shadow:0 1px 2px rgba(255,255,255,0.6);
+      z-index:2;}
+    .blk-p{border-radius:6px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.08),rgba(255,255,255,0.1));
+      border:1px solid rgba(255,255,255,0.25);
+      box-shadow:
+        inset 0 0 35px rgba(255,200,120,0.2),
+        inset 0 0 70px rgba(255,160,60,0.1),
+        0 0 25px rgba(255,180,80,0.15),
+        0 0 60px rgba(255,150,50,0.1),
+        3px 6px 18px rgba(0,0,0,0.25);
+      position:relative;overflow:visible;}
     .blk-p::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(180deg,rgba(255,255,255,0.55),transparent);border-radius:6px 6px 0 0;}
+    .blk-p::after{content:'';position:absolute;inset:-8px;border-radius:12px;
+      background:radial-gradient(ellipse at 50% 50%,rgba(255,180,80,0.07) 0%,rgba(255,140,40,0.03) 40%,transparent 70%);
+      pointer-events:none;}
     .n-stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:900;letter-spacing:-1px;color:rgba(100,100,105,0.45);text-shadow:0 1px 0 rgba(255,255,255,0.3),0 -1px 0 rgba(0,0,0,0.15);}
-    .n-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:900;letter-spacing:-1px;z-index:2;color:rgba(255,220,160,0.95);text-shadow:0 0 8px rgba(255,195,100,0.9),0 0 18px rgba(255,175,70,0.7),0 0 35px rgba(255,155,50,0.5),0 0 55px rgba(255,135,30,0.35),0 0 90px rgba(255,115,10,0.2),0 0 130px rgba(255,100,0,0.1);animation:np 2.5s ease-in-out infinite alternate;}
-    @keyframes np{0%{text-shadow:0 0 8px rgba(255,195,100,0.9),0 0 18px rgba(255,175,70,0.7),0 0 35px rgba(255,155,50,0.5),0 0 55px rgba(255,135,30,0.35),0 0 90px rgba(255,115,10,0.2);}100%{text-shadow:0 0 10px rgba(255,205,120,1),0 0 24px rgba(255,185,80,0.8),0 0 45px rgba(255,165,60,0.6),0 0 70px rgba(255,145,40,0.4),0 0 110px rgba(255,125,20,0.25),0 0 150px rgba(255,105,0,0.12);}}
-    .n-radiance{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:160%;height:160%;border-radius:50%;background:radial-gradient(circle,rgba(255,200,120,0.18) 0%,rgba(255,180,100,0.08) 35%,transparent 75%);pointer-events:none;z-index:1;}
+    .n-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:900;letter-spacing:-1px;z-index:2;
+      color:#fff;
+      text-shadow:
+        0 0 5px #fff,
+        0 0 12px rgba(255,242,225,1),
+        0 0 24px rgba(255,215,155,0.98),
+        0 0 48px rgba(255,185,85,0.85),
+        0 0 80px rgba(255,155,45,0.65),
+        0 0 125px rgba(255,125,15,0.45),
+        0 0 180px rgba(255,95,0,0.28),
+        0 0 250px rgba(255,65,0,0.14);}
+    .n-radiance{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200%;height:200%;border-radius:50%;
+      background:radial-gradient(circle,rgba(255,220,140,0.28) 0%,rgba(255,180,80,0.13) 25%,rgba(255,140,40,0.05) 50%,transparent 75%);
+      pointer-events:none;z-index:1;}
 
-    /* ═══ HANDLE ═══ */
-    .handle{position:absolute;top:0;left:-8px;right:-8px;height:7px;border-radius:5px 5px 0 0;cursor:grab;z-index:30;background:linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.06));border-bottom:1px solid rgba(0,0,0,0.1);touch-action:none;}
-    /* Expanded invisible touch target above handle */
-    .handle::before{content:'';position:absolute;top:-16px;left:0;right:0;height:24px;}
-    .handle-caret{position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:7px;color:rgba(255,255,255,0.08);line-height:1;}
-    .handle-caret.pulse{animation:hpulse 3s ease-in-out infinite;}
-    @keyframes hpulse{
-      0%,100%{color:rgba(110,231,183,0.25);text-shadow:0 0 3px rgba(52,211,153,0.2);}
-      50%{color:#6ee7b7;text-shadow:0 0 4px rgba(110,231,183,0.8),0 0 10px rgba(52,211,153,0.4),0 0 20px rgba(16,185,129,0.2);}
+    /* ═══ HANDLE — just the segment edge, no rectangle ═══ */
+    .handle{position:absolute;top:0;left:0;right:0;height:3px;z-index:30;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18) 20%,rgba(255,255,255,0.28) 50%,rgba(255,255,255,0.18) 80%,transparent);
+      border-radius:2px 2px 0 0;cursor:grab;touch-action:none;pointer-events:all;}
+    /* Large invisible hit zone extending upward away from obelisk */
+    .handle::before{content:'';position:absolute;top:-44px;left:-8px;right:-8px;height:52px;}
+    .handle.inverted{top:auto;bottom:0;border-radius:0 0 2px 2px;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18) 20%,rgba(255,255,255,0.28) 50%,rgba(255,255,255,0.18) 80%,transparent);}
+    .handle.inverted::before{top:auto;bottom:-44px;}
+    /* Pulse: edge glows green */
+    .handle.pulse{animation:handlePulse 5s ease-in-out infinite;}
+    @keyframes handlePulse{
+      0%{background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1) 20%,rgba(255,255,255,0.18) 50%,rgba(255,255,255,0.1) 80%,transparent);}
+      50%{background:linear-gradient(90deg,transparent,rgba(1,176,105,0.4) 15%,rgba(52,201,138,0.7) 50%,rgba(1,176,105,0.4) 85%,transparent);
+        box-shadow:0 0 8px rgba(1,176,105,0.4),0 0 16px rgba(1,176,105,0.2);}
+      100%{background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1) 20%,rgba(255,255,255,0.18) 50%,rgba(255,255,255,0.1) 80%,transparent);}
     }
-    .hm.idle{animation:hingeidle 3s ease-in-out infinite;}
+    .handle-caret{display:none;}
+    .hm.idle{animation:hingeidle 5s ease-in-out infinite;}
     @keyframes hingeidle{
-      0%,100%{background:linear-gradient(180deg,rgba(255,255,255,0.18),rgba(0,0,0,0.12));box-shadow:0 1px 1px rgba(0,0,0,0.35),inset 0 1px 1px rgba(255,255,255,0.2);}
-      50%{background:linear-gradient(180deg,rgba(110,231,183,0.4),rgba(16,185,129,0.12));box-shadow:0 0 5px rgba(52,211,153,0.45),0 0 12px rgba(16,185,129,0.18),inset 0 1px 2px rgba(110,231,183,0.25);}
+      0%{background:linear-gradient(180deg,rgba(255,255,255,0.18),rgba(0,0,0,0.12));box-shadow:0 1px 1px rgba(0,0,0,0.35),inset 0 1px 1px rgba(255,255,255,0.2);}
+      50%{background:linear-gradient(180deg,rgba(1,176,105,0.35),rgba(1,176,105,0.1));box-shadow:0 0 6px rgba(1,176,105,0.4),0 0 14px rgba(1,176,105,0.15),inset 0 1px 2px rgba(52,185,120,0.25);}
+      100%{background:linear-gradient(180deg,rgba(255,255,255,0.18),rgba(0,0,0,0.12));box-shadow:0 1px 1px rgba(0,0,0,0.35),inset 0 1px 1px rgba(255,255,255,0.2);}
     }
 
     /* ═══ HINGE ═══ */
@@ -77,14 +193,34 @@
     .hm{width:50%;height:4px;margin:0 auto;background:linear-gradient(180deg,rgba(255,255,255,0.18),rgba(0,0,0,0.12));border-radius:3px;box-shadow:0 1px 1px rgba(0,0,0,0.35),inset 0 1px 1px rgba(255,255,255,0.2);transition:all 0.12s;}
     .hz:active .hm{background:linear-gradient(180deg,rgba(255,200,120,0.5),rgba(200,150,60,0.3));box-shadow:0 0 6px rgba(255,180,80,0.4);}
 
-    /* ═══ FACTOR TRAY — sits above Dex ═══ */
-    .f-tray{display:flex;align-items:center;justify-content:center;gap:4px;padding:6px 8px;flex-wrap:wrap;background:rgba(15,15,18,0.85);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.03);min-height:46px;flex-shrink:0;}
-    .fs{width:30px;height:36px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;transition:all 0.3s var(--spring);}
-    .fs.empty{border:1px dashed rgba(255,255,255,0.05);color:transparent;}
-    .fs.mirror{border:1px solid rgba(255,255,255,0.08);background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));color:rgba(255,255,255,0.15);font-style:italic;}
-    .fs.starter{background:repeating-linear-gradient(180deg,rgba(255,255,255,0.03) 0px,transparent 1px,transparent 2px),linear-gradient(135deg,rgba(170,170,175,0.2),rgba(130,130,135,0.12));border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.3);}
-    .fs.fc{background:repeating-linear-gradient(180deg,rgba(255,255,255,0.04) 0px,transparent 1px,transparent 2px),linear-gradient(135deg,rgba(190,190,195,0.25),rgba(150,150,155,0.15));border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);box-shadow:inset 1px 1px 2px rgba(255,255,255,0.12);animation:sl 0.4s var(--spring);}
-    .fs.fp{background:rgba(255,220,160,0.08);border:1px solid rgba(255,200,120,0.3);color:rgba(255,220,160,0.9);box-shadow:0 0 12px rgba(255,180,80,0.15);text-shadow:0 0 6px rgba(255,180,80,0.6);animation:spl 0.6s var(--spring);}
+    /* ═══ FACTOR TRAY — warm amber-tinted shelf ═══ */
+    .f-tray{display:flex;align-items:center;justify-content:center;gap:4px;padding:8px 12px;flex-wrap:wrap;
+      background:linear-gradient(180deg,rgba(42,36,26,0.99),rgba(30,25,18,0.99));
+      border-top:1px solid rgba(255,180,80,0.1);
+      border-bottom:1px solid rgba(0,0,0,0.6);
+      min-height:54px;flex-shrink:0;
+      box-shadow:inset 0 1px 0 rgba(255,180,80,0.06),inset 0 -2px 16px rgba(0,0,0,0.5);}
+    /* Factor tray slots — match dex trinket style */
+    .fs{width:36px;height:44px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;transition:all 0.3s var(--spring);flex-shrink:0;}
+    .fs.empty{border:1px dashed rgba(255,255,255,0.06);color:transparent;}
+    .fs.mirror{
+      background:linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.15);font-style:italic;}
+    .fs.starter{
+      background:repeating-linear-gradient(180deg,rgba(255,255,255,0.03) 0px,transparent 1px,transparent 2px),linear-gradient(135deg,rgba(200,200,205,0.18),rgba(160,160,165,0.1));
+      border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);}
+    .fs.fc{
+      background:repeating-linear-gradient(180deg,rgba(255,255,255,0.04) 0px,transparent 1px,transparent 2px),linear-gradient(135deg,#e0e0e2,#c0c0c4,#9a9aa0,#b0b0b5);
+      border:1px solid rgba(255,255,255,0.15);color:rgba(60,60,65,0.9);
+      box-shadow:inset 2px 2px 4px rgba(255,255,255,0.4),inset -2px -2px 4px rgba(0,0,0,0.12),0 2px 6px rgba(0,0,0,0.3);
+      animation:sl 0.4s var(--spring);}
+    .fs.fp{
+      background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.07),rgba(255,255,255,0.1));
+      border:1px solid rgba(255,255,255,0.22);
+      color:#fff;
+      box-shadow:inset 0 0 16px rgba(255,200,120,0.18),inset 0 0 32px rgba(255,160,60,0.09),0 0 12px rgba(255,180,80,0.14),0 0 28px rgba(255,150,50,0.08);
+      text-shadow:0 0 4px #fff,0 0 10px rgba(255,230,180,0.95),0 0 20px rgba(255,190,90,0.8),0 0 36px rgba(255,150,45,0.55);
+      animation:spl 0.6s var(--spring);}
     @keyframes sl{0%{transform:scale(0) rotate(-10deg);opacity:0;}60%{transform:scale(1.15);}100%{transform:scale(1);}}
     @keyframes spl{0%{transform:scale(0);}50%{transform:scale(1.2);box-shadow:0 0 30px rgba(255,180,80,0.3);}100%{transform:scale(1);}}
     @keyframes primePulse{
@@ -98,41 +234,69 @@
     @keyframes nReveal{0%{opacity:0;transform:translate(-50%,-50%) scale(0.7);}60%{transform:translate(-50%,-50%) scale(1.08);}100%{opacity:1;transform:translate(-50%,-50%) scale(1);}}
     .n-stamp-reveal{animation:nReveal 0.25s ease-out forwards;}
 
-    /* ═══ PRIME DEX — Relativistic Scaling ═══ */
-    .dex-container{flex-shrink:0;background:rgba(6,6,8,0.95);border-top:1px solid rgba(255,255,255,0.04);position:relative;overflow:hidden;height:120px;}
-    /* Center marker line */
-    .dex-container::after{content:'';position:absolute;top:0;bottom:0;left:50%;width:1px;background:linear-gradient(180deg,rgba(255,200,120,0.15),rgba(255,200,120,0.03));pointer-events:none;z-index:10;}
-    .dex-viewport{height:100%;overflow-x:scroll;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:flex;align-items:flex-end;}
+    /* ═══ PRIME DEX — Uniform Trinkets ═══ */
+    .dex-container{flex-shrink:0;
+      background:linear-gradient(180deg,rgba(8,10,18,0.99),rgba(5,7,14,0.99));
+      border-top:1px solid rgba(80,100,200,0.12);
+      position:relative;overflow:hidden;height:88px;
+      box-shadow:inset 0 1px 0 rgba(100,130,255,0.06);}
+    .dex-viewport{height:100%;overflow-x:scroll;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;display:flex;align-items:center;
+      padding-left:calc(10vw);padding-right:20vw;
+      scroll-snap-type:x proximity;}
     .dex-viewport::-webkit-scrollbar{display:none;}
-    /* Each slot is 20vw wide (5 slots visible) */
-    .dex-slot{flex-shrink:0;width:20vw;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;position:relative;}
-    .dex-num{font-size:7px;font-weight:600;color:rgba(255,255,255,0.06);margin-top:2px;}
-    .dex-slot.has-prime .dex-num{color:rgba(255,200,120,0.3);}
-    /* Trinket container — height set dynamically by JS */
-    .dex-trinket-wrap{width:60%;position:relative;display:flex;align-items:stretch;justify-content:center;overflow:hidden;transition:height 0.15s ease-out;}
-    /* Prime trinket */
-    .dex-trinket{width:100%;border-radius:3px;position:relative;overflow:hidden;
-      background:linear-gradient(180deg,rgba(240,242,248,0.18),rgba(230,235,245,0.1),rgba(225,230,240,0.15));
-      border:1px solid rgba(255,255,255,0.15);
-      box-shadow:inset 0 0 8px rgba(255,255,255,0.1),0 0 8px rgba(255,200,120,0.05);
+    /* 7 slots visible, each slot 14vw */
+    .dex-slot{flex-shrink:0;width:14vw;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative;}
+    .dex-num{font-size:6px;font-weight:600;color:rgba(255,255,255,0.05);}
+    .dex-slot.has-prime .dex-num{color:rgba(255,200,120,0.25);}
+    /* Trinket wrap — fixed size, no dynamic height */
+    .dex-trinket-wrap{width:11vw;height:52px;position:relative;display:flex;align-items:stretch;justify-content:center;}
+    /* Prime trinket — uniform size */
+    .dex-trinket{width:100%;height:100%;border-radius:4px;position:relative;overflow:visible;
+      background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.06),rgba(255,255,255,0.1));
+      border:1px solid rgba(255,255,255,0.22);
+      box-shadow:
+        inset 0 0 16px rgba(255,200,120,0.18),
+        inset 0 0 32px rgba(255,160,60,0.09),
+        0 0 12px rgba(255,180,80,0.14),
+        0 0 28px rgba(255,150,50,0.08);
       display:flex;align-items:center;justify-content:center;}
-    .dex-trinket .dt-num{font-weight:900;color:rgba(255,220,160,0.85);text-shadow:0 0 4px rgba(255,195,100,0.6),0 0 12px rgba(255,175,70,0.3);z-index:1;white-space:nowrap;}
-    .dex-trinket .dt-radiance{position:absolute;inset:0;background:radial-gradient(circle,rgba(255,200,120,0.12) 0%,transparent 70%);pointer-events:none;}
-    /* Mirror trinket (1) */
-    .dex-mirror{width:100%;border-radius:3px;background:linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;}
-    .dex-mirror .dt-num{font-weight:700;font-style:italic;color:rgba(255,255,255,0.15);white-space:nowrap;}
-    /* New capture animation */
-    .dex-trinket.new-cap{animation:dcap 0.8s var(--spring);}
-    @keyframes dcap{0%{transform:scale(0);}40%{transform:scale(1.3);box-shadow:0 0 20px rgba(255,180,80,0.4);}100%{transform:scale(1);}}
+    .dex-trinket .dt-num{font-weight:900;font-size:13px;z-index:1;white-space:nowrap;
+      color:#fff;
+      text-shadow:0 0 4px #fff,0 0 10px rgba(255,230,180,0.95),0 0 20px rgba(255,190,90,0.8),0 0 36px rgba(255,150,45,0.55);}
+    .dex-trinket .dt-radiance{position:absolute;inset:-4px;border-radius:6px;
+      background:radial-gradient(circle,rgba(255,200,120,0.12) 0%,rgba(255,160,60,0.04) 50%,transparent 75%);
+      pointer-events:none;}
+    /* Mirror cube (1) — three-face mirrored look */
+    .dex-mirror{width:100%;height:100%;border-radius:3px;position:relative;overflow:hidden;
+      background:linear-gradient(135deg,
+        rgba(255,255,255,0.88) 0%,rgba(215,225,232,0.65) 28%,
+        rgba(175,188,200,0.45) 50%,rgba(198,210,222,0.6) 70%,
+        rgba(238,244,248,0.72) 100%);
+      border:1px solid rgba(255,255,255,0.28);
+      border-bottom:1px solid rgba(70,80,95,0.45);
+      border-right:1px solid rgba(70,80,95,0.32);
+      box-shadow:inset 1px 1px 3px rgba(255,255,255,0.65),inset -1px -1px 3px rgba(0,0,0,0.18),
+        0 2px 8px rgba(0,0,0,0.45),0 0 1px rgba(255,255,255,0.22);
+      display:flex;align-items:center;justify-content:center;}
+    .dex-mirror::before{content:'';position:absolute;top:0;left:0;width:45%;height:100%;
+      background:linear-gradient(180deg,rgba(155,168,180,0.52) 0%,rgba(118,130,142,0.38) 50%,rgba(148,160,172,0.48) 100%);
+      border-right:1px solid rgba(255,255,255,0.18);}
+    .dex-mirror::after{content:'';position:absolute;top:0;right:0;width:40%;height:100%;
+      background:linear-gradient(180deg,rgba(195,208,222,0.48) 0%,rgba(165,178,195,0.32) 50%,rgba(185,198,215,0.42) 100%);}
+    .dex-mirror .dt-num{font-weight:300;font-size:11px;font-style:italic;
+      color:rgba(55,65,78,0.38);text-shadow:0 1px 1px rgba(255,255,255,0.55);
+      z-index:2;position:relative;letter-spacing:-0.5px;}
+    .dex-trinket.new-cap{animation:dcap 0.6s var(--spring);}
+    @keyframes dcap{0%{transform:scale(0);opacity:0;}50%{transform:scale(1.15);box-shadow:0 0 20px rgba(255,180,80,0.5);}100%{transform:scale(1);opacity:1;}}
 
     /* Trinket drop — flies from altar down into dex */
     .trinket-drop{position:fixed;z-index:9000;pointer-events:none;border-radius:4px;
-      background:linear-gradient(180deg,rgba(240,242,248,0.22),rgba(230,235,245,0.14));
-      border:1px solid rgba(255,255,255,0.2);
-      box-shadow:inset 0 0 10px rgba(255,255,255,0.15),0 0 15px rgba(255,200,120,0.12);
+      background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.06),rgba(255,255,255,0.1));
+      border:1px solid rgba(255,255,255,0.25);
+      box-shadow:inset 0 0 15px rgba(255,200,120,0.15),0 0 20px rgba(255,180,80,0.15),0 0 50px rgba(255,140,40,0.08);
       display:flex;align-items:center;justify-content:center;
-      font-family:'Lexend',sans-serif;font-weight:900;color:rgba(255,220,160,0.9);
-      text-shadow:0 0 6px rgba(255,195,100,0.7);}
+      font-family:'Lexend',sans-serif;font-weight:900;color:#fff;
+      text-shadow:0 0 4px #fff,0 0 12px rgba(255,210,150,0.9),0 0 25px rgba(255,180,80,0.6);}
 
     /* Dex spotlight — dims non-target slots */
     .dex-slot.dimmed{opacity:0.12;transition:opacity 0.3s ease;}
@@ -146,9 +310,95 @@
     .fade-overlay{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:8000;transition:opacity 0.4s ease;}
     .fade-overlay.fading{opacity:1;}
 
-    .affirm-flash{position:fixed;inset:0;z-index:9999;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(255,200,120,0.2) 0%,rgba(255,180,80,0.08) 30%,transparent 60%);opacity:0;transition:opacity 0.15s ease-out;}
-    .affirm-flash.show{opacity:1;}
-    footer{padding:4px;text-align:center;font-size:8px;color:#222;background:rgba(8,8,10,0.9);flex-shrink:0;}
+    /* ═══ GRID MODE TOGGLE ═══ */
+    .grid-mode-toggle{display:flex;gap:2px;background:rgba(255,255,255,0.04);border-radius:8px;padding:2px;margin-top:6px;}
+    .gmt-btn{width:44px;height:32px;border-radius:6px;border:none;background:transparent;
+      cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;opacity:0.3;}
+    .gmt-btn.active{background:rgba(255,255,255,0.07);opacity:1;}
+    .gmt-btn svg{width:20px;height:20px;}
+
+    /* ═══ BUILD CALENDAR CELLS ═══ */
+    .nc-build{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:1px;padding:1px;}
+    .nc-trinket{width:12px;height:14px;border-radius:2px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.06),rgba(255,255,255,0.1));
+      border:1px solid rgba(255,255,255,0.2);
+      box-shadow:inset 0 0 6px rgba(255,200,120,0.12),0 0 4px rgba(255,180,80,0.1),0 0 10px rgba(255,150,50,0.06);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;font-size:7px;line-height:1;
+      color:#fff;text-shadow:0 0 2px #fff,0 0 5px rgba(255,200,120,0.8),0 0 10px rgba(255,160,60,0.4);}
+    /* Prime-specific glow colors for build fingerprints */
+    .nc-trinket.p2{color:#fff;text-shadow:0 0 2px #fff,0 0 5px rgba(255,200,120,0.9),0 0 10px rgba(255,160,60,0.5);
+      box-shadow:inset 0 0 6px rgba(255,200,120,0.15),0 0 5px rgba(255,180,80,0.12);}
+    .nc-trinket.p3{color:#fff;text-shadow:0 0 2px #fff,0 0 5px rgba(140,180,255,0.9),0 0 10px rgba(100,140,255,0.5);
+      box-shadow:inset 0 0 6px rgba(140,180,255,0.15),0 0 5px rgba(100,140,255,0.12);}
+    .nc-trinket.p5{color:#fff;text-shadow:0 0 2px #fff,0 0 5px rgba(120,240,140,0.9),0 0 10px rgba(80,200,100,0.5);
+      box-shadow:inset 0 0 6px rgba(120,240,140,0.15),0 0 5px rgba(80,200,100,0.12);}
+    .nc-trinket.p7{color:#fff;text-shadow:0 0 2px #fff,0 0 5px rgba(255,160,220,0.9),0 0 10px rgba(240,120,200,0.5);
+      box-shadow:inset 0 0 6px rgba(255,160,220,0.15),0 0 5px rgba(240,120,200,0.12);}
+    .nc-trinket.p11{color:#fff;text-shadow:0 0 2px #fff,0 0 5px rgba(255,220,100,0.9),0 0 10px rgba(255,200,60,0.5);
+      box-shadow:inset 0 0 6px rgba(255,220,100,0.15),0 0 5px rgba(255,200,60,0.12);}
+    .nc-trinket.p13{color:#fff;text-shadow:0 0 2px #fff,0 0 5px rgba(180,140,255,0.9),0 0 10px rgba(150,100,255,0.5);
+      box-shadow:inset 0 0 6px rgba(180,140,255,0.15),0 0 5px rgba(150,100,255,0.12);}
+    .nc-mirror{width:12px;height:14px;border-radius:2px;
+      background:linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:7px;font-style:italic;line-height:1;
+      color:rgba(255,255,255,0.15);}
+    .nc-composite{width:12px;height:14px;border-radius:2px;
+      background:linear-gradient(135deg,rgba(190,190,195,0.2),rgba(150,150,155,0.1));
+      border:1px solid rgba(255,255,255,0.06);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:800;font-size:6px;line-height:1;
+      color:rgba(255,255,255,0.3);}
+
+    /* ═══ BUILD TRAY — draggable trinket targets ═══ */
+    .build-tray-area{display:flex;align-items:center;justify-content:center;gap:4px;padding:8px 12px;flex-wrap:wrap;
+      background:linear-gradient(180deg,rgba(42,36,26,0.99),rgba(30,25,18,0.99));
+      border-top:1px solid rgba(255,180,80,0.1);
+      border-bottom:1px solid rgba(0,0,0,0.6);
+      min-height:54px;flex-shrink:0;
+      box-shadow:inset 0 1px 0 rgba(255,180,80,0.06),inset 0 -2px 16px rgba(0,0,0,0.5);}
+    .bt-trinket{width:36px;height:44px;border-radius:5px;display:flex;align-items:center;justify-content:center;
+      font-weight:900;font-size:13px;cursor:pointer;transition:all 0.2s var(--spring);
+      background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.07),rgba(255,255,255,0.1));
+      border:1px solid rgba(255,255,255,0.22);
+      color:rgba(255,220,160,0.95);
+      box-shadow:inset 0 0 12px rgba(255,200,120,0.15),0 0 10px rgba(255,180,80,0.15);
+      text-shadow:0 0 6px rgba(255,195,100,0.8),0 0 14px rgba(255,170,60,0.4);}
+    .bt-trinket:active{transform:scale(0.9);opacity:0.6;}
+    .bt-trinket.last{box-shadow:inset 0 0 12px rgba(255,200,120,0.15),0 0 10px rgba(255,180,80,0.15),0 0 0 2px rgba(255,100,80,0.3);}
+    .bt-empty{width:36px;height:44px;border-radius:5px;border:1px dashed rgba(255,180,80,0.1);}
+
+    /* ═══ BUILD LEDGER — sits between altar and tray ═══ */
+    .build-ledger{display:flex;align-items:center;justify-content:center;gap:4px;padding:5px 8px;min-height:30px;flex-shrink:0;flex-wrap:wrap;
+      background:rgba(20,16,12,0.98);
+      border-top:1px solid rgba(0,0,0,0.5);}
+    .ledger-factor{font-weight:900;font-size:13px;color:rgba(255,220,160,0.7);text-shadow:0 0 4px rgba(255,195,100,0.3);}
+    .ledger-times{font-size:9px;color:rgba(255,255,255,0.15);font-weight:600;}
+    .ledger-eq{font-size:10px;color:rgba(255,255,255,0.2);font-weight:700;margin:0 2px;}
+    .ledger-product{font-weight:900;font-size:13px;color:rgba(255,255,255,0.5);}
+
+    /* ═══ CEILING LINE ═══ */
+    .ceil-line{position:absolute;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),rgba(255,255,255,0.12),rgba(255,255,255,0.08),transparent);pointer-events:none;z-index:6;opacity:0.6;}
+
+    /* ═══ BUILD UNDO HINGE ═══ */
+    .bundo-zone{position:absolute;left:-4px;right:-4px;height:28px;z-index:25;cursor:pointer;display:flex;align-items:center;transform:translateY(-50%);touch-action:none;}
+    .bundo-mark{width:40%;height:3px;margin:0 auto;background:linear-gradient(180deg,rgba(255,100,80,0.5),rgba(200,60,40,0.3));border-radius:2px;box-shadow:0 0 5px rgba(255,80,60,0.3);transition:all 0.12s;}
+    .bundo-zone:active .bundo-mark{background:rgba(255,80,60,0.8);box-shadow:0 0 8px rgba(255,80,60,0.6);}
+
+    /* ═══ SHATTER ANIMATION ═══ */
+    /* ═══ SHATTER CANVAS ═══ */
+    .shatter-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:100;}
+    /* ═══ DRAGGING TRINKET ═══ */
+    .dragging-trinket{position:fixed;z-index:9500;pointer-events:none;border-radius:4px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.06),rgba(255,255,255,0.1));
+      border:1px solid rgba(255,255,255,0.3);
+      box-shadow:inset 0 0 15px rgba(255,200,120,0.15),0 0 25px rgba(255,180,80,0.2),0 0 50px rgba(255,140,40,0.1),0 8px 24px rgba(0,0,0,0.4);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Lexend',sans-serif;font-weight:900;
+      color:#fff;text-shadow:0 0 4px #fff,0 0 12px rgba(255,210,150,0.9),0 0 25px rgba(255,180,80,0.6);
+      transition:transform 0.1s ease;}
   </style>
 </head>
 <body>
@@ -158,28 +408,66 @@
 
 <!-- ═══ GRID SCREEN ═══ -->
 <div class="screen hidden" id="grid-screen">
-  <div class="grid-screen-header">
+  <div class="grid-screen-header" style="flex-direction:column;gap:4px;">
     <div class="logo">Math Things<span class="logo-bead"></span></div>
+    <div class="grid-mode-toggle">
+      <button class="gmt-btn active" id="gmt-factor" title="Factor">
+        <svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Single obelisk breaking at middle hinge -->
+          <rect x="7" y="1" width="6" height="10" rx="1.5" fill="currentColor" opacity="0.9"/>
+          <!-- hinge line -->
+          <line x1="5" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+          <!-- bottom half separating slightly -->
+          <rect x="7" y="13" width="6" height="10" rx="1.5" fill="currentColor" opacity="0.5"/>
+        </svg>
+      </button>
+      <button class="gmt-btn" id="gmt-build" title="Build">
+        <svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Three blocks stacking up — bottom largest, top smallest -->
+          <rect x="4" y="17" width="12" height="6" rx="1.5" fill="currentColor" opacity="0.5"/>
+          <rect x="5.5" y="10" width="9" height="6" rx="1.5" fill="currentColor" opacity="0.7"/>
+          <rect x="7" y="3" width="6" height="6" rx="1.5" fill="currentColor" opacity="0.95"/>
+        </svg>
+      </button>
+    </div>
   </div>
-  <div class="num-grid" id="num-grid"></div>
-  <!-- PRIME DEX lives on grid screen too -->
+  <div class="num-grid" id="num-grid" style="flex:1;overflow-y:auto;align-content:start;"></div>
   <div class="dex-container" id="dex-container">
     <div class="dex-viewport" id="dex-vp"></div>
   </div>
 </div>
 
-<!-- ═══ ALTAR SCREEN ═══ -->
+<!-- ═══ FACTOR ALTAR SCREEN ═══ -->
 <div class="screen" id="altar-screen">
   <div class="altar-header">
     <div class="altar-numeral" id="altar-numeral">12</div>
   </div>
   <div class="altar" id="fa">
-    <div class="seg-stage" id="fo"></div>
-    <div class="altar-rings"><div class="ar ar1"></div><div class="ar ar2"></div></div>
+    <canvas class="shatter-canvas" id="fz-canvas"></canvas>
+    <div class="seg-zoom" id="fz"><div class="seg-stage" id="fo"></div></div>
+    <div class="altar-pedestal"><div class="ped-platform"></div><div class="ped-step1"></div><div class="ped-step2"></div></div>
   </div>
   <div class="f-tray" id="ft"></div>
   <div class="dex-container" id="altar-dex-container">
     <div class="dex-viewport" id="altar-dex-vp"></div>
+  </div>
+</div>
+
+<!-- ═══ BUILD ALTAR SCREEN ═══ -->
+<div class="screen hidden" id="build-screen">
+  <div class="altar-header">
+    <div class="altar-numeral" id="build-numeral">2</div>
+  </div>
+  <div class="altar" id="ba">
+    <canvas class="shatter-canvas" id="bz-canvas"></canvas>
+    <div class="ceil-line" id="bceil"></div>
+    <div class="seg-zoom" id="bz"><div class="seg-stage" id="bo"></div></div>
+    <div class="altar-pedestal"><div class="ped-platform"></div><div class="ped-step1"></div><div class="ped-step2"></div></div>
+  </div>
+  <div class="build-ledger" id="bl"></div>
+  <div class="build-tray-area" id="bt"></div>
+  <div class="dex-container" id="build-dex-container">
+    <div class="dex-viewport" id="build-dex-vp"></div>
   </div>
 </div>
 
@@ -194,11 +482,24 @@ const haptic=p=>{try{navigator.vibrate?.(p)}catch(e){}};
 const S={
   primeDex:new Set(),maxLevel:1,
   fDone:new Set([1]),fNum:null,fDisc:new Set(),
+  fDiscMap:{},
   segs:[],unitH:0,unitW:0,folding:false,
   foldDir:1,segSize:0,
   newPrimes:new Set(),handleTimer:null,
   hingeIdleTimer:null,
   handleIndex:0,handleInverted:false,
+  // Build state
+  gridMode:'factor', // 'factor' or 'build'
+  bDone:new Set([1]),bNum:null,
+  bStack:[],        // array of prime factors placed [{p, prevProduct}]
+  bProduct:0,       // current product on altar (0 = empty)
+  bUnitH:0,bUnitW:0,
+  bAnimating:false,
+  // Zoom state
+  fZoom:1,bZoom:1,
+  currentFoldZoom:1,
+  refAltarH:0, // altar height for reference calculations
+  pinching:false,pinchBaseZoom:1,pinchBaseDist:0,
 };
 
 // ════════════════════════════════════════
@@ -215,11 +516,23 @@ function goToAltar(n){
   },400);
 }
 
+function goToBuild(n){
+  const overlay=document.getElementById('fade-overlay');
+  overlay.classList.add('fading');
+  setTimeout(()=>{
+    document.getElementById('grid-screen').classList.add('hidden');
+    document.getElementById('build-screen').classList.remove('hidden');
+    enterBuild(n);
+    overlay.classList.remove('fading');
+  },400);
+}
+
 function goToGrid(){
   const overlay=document.getElementById('fade-overlay');
   overlay.classList.add('fading');
   setTimeout(()=>{
     document.getElementById('altar-screen').classList.add('hidden');
+    document.getElementById('build-screen').classList.add('hidden');
     document.getElementById('grid-screen').classList.remove('hidden');
     renderGrid();
     buildDex('dex-vp');
@@ -227,33 +540,119 @@ function goToGrid(){
   },400);
 }
 
+// Grid mode toggle
+document.getElementById('gmt-factor').addEventListener('click',()=>{
+  S.gridMode='factor';
+  document.getElementById('gmt-factor').classList.add('active');
+  document.getElementById('gmt-build').classList.remove('active');
+  document.getElementById('grid-screen').style.background='';
+  renderGrid();
+});
+document.getElementById('gmt-build').addEventListener('click',()=>{
+  S.gridMode='build';
+  document.getElementById('gmt-build').classList.add('active');
+  document.getElementById('gmt-factor').classList.remove('active');
+  document.getElementById('grid-screen').style.background='linear-gradient(180deg,rgba(6,8,18,1),rgba(8,10,20,1))';
+  renderGrid();
+});
+
 function enterAltar(n){
-  S.fNum=n;S.fDisc=new Set([1,n]);S.segSize=0;
+  S.fNum=n;S.segSize=0;
   S.handleIndex=0;S.handleInverted=false;
+  // Restore persisted discovery set if previously solved, otherwise fresh
+  S.fDisc=S.fDiscMap[n]?new Set(S.fDiscMap[n]):new Set([1,n]);
   const numEl=document.getElementById('altar-numeral');
   numEl.textContent=n;
-  // Mark solved state — primes and 1 are always solved on enter
+  // Clear any lingering animation state from previous room
+  numEl.classList.remove('solved','celebrate');
   const presolvedOnEnter=(n===1||isPrime(n));
   if(presolvedOnEnter){S.fDone.add(n);}
   const isSolved=S.fDone.has(n);
-  numEl.classList.toggle('solved',isSolved);
+  if(isSolved){numEl.classList.add('solved');}
   numEl.onclick=isSolved?()=>goToGrid():null;
   const altar=document.getElementById('fa');
-  S.unitH=Math.max(6,Math.min(44,Math.floor((altar.clientHeight-50)/n)));
-  S.unitW=Math.min(60,Math.max(36,S.unitH*0.85));
+  const altarH=altar.clientHeight-50;
+  const altarW=altar.clientWidth;
+  S.refAltarH=altarH;
+  // Size so the full obelisk fills ~75% of altar height
+  const targetFill=0.75;
+  const rawUnitH=Math.floor((altarH*targetFill)/n);
+  // Cap: never taller than wide (square), never smaller than 20px, never larger than altar/2
+  const maxUnitH=Math.min(Math.floor(altarH*0.5), Math.floor(altarW*0.55));
+  S.unitH=Math.max(20,Math.min(rawUnitH,maxUnitH));
+  // Square segments — width matches height, capped to fit altar width comfortably
+  S.unitW=Math.min(S.unitH,Math.floor(altarW*0.45),80);
+  S.fZoom=1;
+  S.currentFoldZoom=1;
+  // Reset seg-zoom to single-obelisk centered state
+  const zEl=document.getElementById('fz');
+  if(zEl){zEl.classList.remove('folded');zEl.style.transition='none';zEl.style.transform='translateX(-50%)';}
   S.segs=[{units:n}];
   buildDex('altar-dex-vp');
   if(isPrime(n)){
     const isNew=!S.primeDex.has(n);
     S.primeDex.add(n);
     renderSegs();renderFT();
+
+    const seg=document.querySelector('#fo .blk-p');
+    const num=document.querySelector('#fo .n-glow');
+    const rad=document.querySelector('#fo .n-radiance');
+
+    // Phase 0: start completely dark
+    if(seg){
+      seg.style.transition='none';
+      seg.style.background='linear-gradient(180deg,rgba(20,20,22,1),rgba(14,14,16,1))';
+      seg.style.boxShadow='none';
+      seg.style.border='1px solid rgba(255,255,255,0.06)';
+    }
+    if(num){num.style.opacity='0';}
+    if(rad){rad.style.opacity='0';}
+
+    // Phase 1 (400ms): sudden ignition — white-hot core erupts
     setTimeout(()=>{
-      showAffirm();
-      if(isNew){
-        // Single segment on altar — drop from it after affirmation settles
-        setTimeout(()=>launchTrinketDrop(n,1),400);
+      haptic(30);
+      if(seg){
+        seg.style.transition='background 0.15s ease-in, box-shadow 0.4s ease-out, border-color 0.2s';
+        seg.style.background='linear-gradient(180deg,rgba(255,255,255,0.35),rgba(255,240,200,0.2),rgba(255,255,255,0.3))';
+        seg.style.boxShadow=`
+          inset 0 0 60px rgba(255,255,255,0.6),
+          inset 0 0 120px rgba(255,220,160,0.4),
+          0 0 60px rgba(255,220,160,0.5),
+          0 0 120px rgba(255,180,80,0.35),
+          0 0 200px rgba(255,140,40,0.2),
+          0 0 300px rgba(255,100,20,0.1)`;
+        seg.style.border='1px solid rgba(255,255,255,0.8)';
       }
-    },200);
+      if(num){
+        num.style.transition='opacity 0.15s ease-in, transform 0.15s ease-in, text-shadow 0.15s';
+        num.style.opacity='1';
+        num.style.transform='translate(-50%,-50%) scale(1.15)';
+        num.style.textShadow='0 0 8px #fff,0 0 20px #fff,0 0 40px rgba(255,240,200,1),0 0 80px rgba(255,200,100,0.9),0 0 150px rgba(255,160,60,0.7)';
+      }
+    },400);
+
+    // Phase 2 (900ms): settle to normal prime look
+    setTimeout(()=>{
+      haptic([20,30,60]);
+      if(seg){
+        seg.style.transition='background 1.2s ease-out, box-shadow 1.4s ease-out, border-color 1s ease-out';
+        seg.style.background='linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.08),rgba(255,255,255,0.1))';
+        seg.style.boxShadow='inset 0 0 35px rgba(255,200,120,0.2),inset 0 0 70px rgba(255,160,60,0.1),0 0 25px rgba(255,180,80,0.15),0 0 60px rgba(255,150,50,0.1)';
+        seg.style.border='1px solid rgba(255,255,255,0.25)';
+      }
+      if(num){
+        num.style.transition='transform 0.6s cubic-bezier(0.34,1.56,0.64,1), text-shadow 1.2s ease-out';
+        num.style.transform='translate(-50%,-50%) scale(1)';
+        num.style.textShadow='0 0 5px #fff,0 0 12px rgba(255,242,225,1),0 0 24px rgba(255,215,155,0.98),0 0 48px rgba(255,185,85,0.85),0 0 80px rgba(255,155,45,0.65)';
+      }
+      if(rad){
+        rad.style.transition='opacity 1s ease-out';
+        rad.style.opacity='1';
+      }
+      showAffirm();
+    },900);
+
+    if(isNew){setTimeout(()=>launchTrinketDrop(n,1),1800);}
   } else {
     renderSegs();renderFT();
     if(!isSolved)scheduleHingeIdle();
@@ -264,15 +663,47 @@ function enterAltar(n){
 function showAffirm(){const e=document.getElementById('affirm');e.classList.add('show');haptic([20,25,20,25,40]);setTimeout(()=>e.classList.remove('show'),350);}
 
 // ════════════════════════════════════════
+// ZOOM SYSTEM
+// ════════════════════════════════════════
+function setZoom(zoomId,scale,animate=true){
+  const el=document.getElementById(zoomId);
+  if(!el)return;
+  if(!animate)el.style.transition='none';
+  else el.style.transition='transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)';
+  el.style.transform=`translateX(-50%) scale(${scale})`;
+  if(!animate)el.offsetHeight; // force reflow
+}
+
+function calcFoldZoom(numPieces,segUnits,foldDir){
+  // After fold: segments land to one side of the base center.
+  // Total visible width needed = segments on one side + equal empty space on other side.
+  // So total framing width = 2 * numPieces * (unitW + gap).
+  const segW=S.unitW+3;
+  const totalFrameW=2*numPieces*segW;
+  const altarW=document.getElementById('fa').clientWidth;
+  const segH=segUnits*S.unitH;
+  const altarH=S.refAltarH;
+  // Zoom must fit both width and height
+  const zoomW=altarW*0.9/totalFrameW;
+  const zoomH=altarH*0.9/segH;
+  return Math.min(zoomW,zoomH,S.fZoom); // never zoom in past default
+}
+
+// ════════════════════════════════════════
 // BLOCKS
 // ════════════════════════════════════════
 function makeBlock(units,w,h,forceComposite=false,omitNumeral=false){
-  const p=!forceComposite&&isPrime(units);
-  const el=document.createElement('div');el.className='blk '+(p?'blk-p':'blk-c');
+  const isMirror=units===1&&!forceComposite;
+  const p=!forceComposite&&!isMirror&&isPrime(units);
+  const el=document.createElement('div');
+  el.className='blk '+(isMirror?'blk-m':p?'blk-p':'blk-c');
   el.style.width=w+'px';el.style.height=h+'px';
   el.dataset.units=units;
   if(omitNumeral)return el;
-  if(p){
+  if(isMirror){
+    const num=document.createElement('div');num.className='n-mirror';num.textContent='1';
+    num.style.fontSize=Math.min(w*0.55,h*0.4,34)+'px';el.appendChild(num);
+  }else if(p){
     const rad=document.createElement('div');rad.className='n-radiance';el.appendChild(rad);
     const num=document.createElement('div');num.className='n-glow';num.textContent=units;
     num.style.fontSize=Math.min(w*0.6,h*0.45,38)+'px';el.appendChild(num);
@@ -285,25 +716,13 @@ function makeBlock(units,w,h,forceComposite=false,omitNumeral=false){
 
 // Reveal numerals on all segments after fold completes
 // Only targets .blk elements that are direct children of their container (not nested in hinges)
-function revealNumerals(overlay,segUnits,uW,uH){
-  const h=segUnits*uH;
-  // Walk the nest tree to find only the bottom-level blocks (one per segment)
-  // These are .blk elements whose parent container is NOT inside a hinge wrapper
-  // Simplest: collect all .blk, filter to those not contained within another .blk
-  const allBlks=Array.from(overlay.querySelectorAll('.blk'));
-  // A block is a leaf if it doesn't contain another .blk
-  const leafBlks=allBlks.filter(b=>b.querySelector('.blk')===null);
-  leafBlks.forEach(el=>{
-    const p=isPrime(segUnits);
-    if(p){
-      el.classList.remove('blk-c');el.classList.add('blk-p','blk-p-reveal');
-      if(!el.querySelector('.n-radiance')){const rad=document.createElement('div');rad.className='n-radiance';el.appendChild(rad);}
-      const num=document.createElement('div');num.className='n-glow n-glow-reveal';num.textContent=segUnits;
-      num.style.fontSize=Math.min(uW*0.6,h*0.45,38)+'px';el.appendChild(num);
-    }else{
-      const num=document.createElement('div');num.className='n-stamp n-stamp-reveal';num.textContent=segUnits;
-      num.style.fontSize=Math.min(uW*0.55,h*0.4,34)+'px';el.appendChild(num);
-    }
+function revealNumerals(stage,segUnits,uW,uH){
+  // Stage blocks already have numerals from makeBlock — just animate them in
+  stage.querySelectorAll('.blk').forEach(el=>{
+    const glow=el.querySelector('.n-glow');
+    const stamp=el.querySelector('.n-stamp');
+    if(glow){glow.classList.add('n-glow-reveal');}
+    if(stamp){stamp.classList.add('n-stamp-reveal');}
   });
 }
 
@@ -314,17 +733,12 @@ function buildDex(vpId='altar-dex-vp'){
   const vp=document.getElementById(vpId);
   if(!vp)return;
   vp.innerHTML='';
-  for(let i=-1;i<=146;i++){
+  // No padding slots — slot 1 starts at left edge (10% padding via CSS)
+  for(let i=1;i<=144;i++){
     const slot=document.createElement('div');
     slot.className='dex-slot';
-    if(i<1||i>144){
-      slot.innerHTML='<div style="height:0"></div>';
-      vp.appendChild(slot);continue;
-    }
     slot.dataset.n=i;
-    const wrap=document.createElement('div');
-    wrap.className='dex-trinket-wrap';
-    wrap.style.height='0px';
+    const wrap=document.createElement('div');wrap.className='dex-trinket-wrap';
     if(i===1){
       slot.classList.add('has-prime');
       const mir=document.createElement('div');mir.className='dex-mirror';
@@ -339,14 +753,17 @@ function buildDex(vpId='altar-dex-vp'){
       t.appendChild(num);wrap.appendChild(t);
     }
     slot.appendChild(wrap);
-    const lbl=document.createElement('div');lbl.className='dex-num';lbl.textContent=i>0&&i<=144?i:'';
+    const lbl=document.createElement('div');lbl.className='dex-num';lbl.textContent=i;
     slot.appendChild(lbl);
     vp.appendChild(slot);
   }
   S.newPrimes.clear();
-  requestAnimationFrame(()=>updateDexScaling(vpId));
-  // Attach scroll listener
-  vp.onscroll=()=>requestAnimationFrame(()=>updateDexScaling(vpId));
+  vp.scrollLeft=0;
+  // Enforce left boundary — slot 1 can't scroll off right
+  if(!vp._scrollBound){
+    vp._scrollBound=true;
+    vp.addEventListener('scroll',()=>{if(vp.scrollLeft<0)vp.scrollLeft=0;},{passive:true});
+  }
 }
 
 function scheduleHingeIdle(){
@@ -361,43 +778,16 @@ function cancelHingeIdle(){
   document.querySelectorAll('#fo .hm').forEach(hm=>hm.classList.remove('idle'));
 }
 
-function updateDexScaling(vpId='altar-dex-vp'){
-  const vp=document.getElementById(vpId);
-  const container=vp?.closest('.dex-container');
-  if(!vp||!container)return;
-  const slotW=container.clientWidth/5;
-  const scrollLeft=vp.scrollLeft;
-  const baseH=container.clientHeight-20;
-  const centerX=scrollLeft+container.clientWidth/2;
-  const centerSlotIdx=centerX/slotW;
-  const centerNum=Math.max(1,Math.round(centerSlotIdx-2+1));
-  const slots=vp.querySelectorAll('.dex-slot[data-n]');
-  slots.forEach(slot=>{
-    const n=parseInt(slot.dataset.n);
-    const wrap=slot.querySelector('.dex-trinket-wrap');
-    if(!wrap)return;
-    if(n===1||(isPrime(n)&&S.primeDex.has(n))){
-      const h=Math.max(8,(n/centerNum)*baseH);
-      wrap.style.height=h+'px';
-      const numEl=wrap.querySelector('.dt-num');
-      if(numEl){const fw=slotW*0.5;numEl.style.fontSize=Math.min(fw,h*0.35,20)+'px';}
-    }else{
-      wrap.style.height='0px';
-    }
-  });
-}
-
-// Remove old scroll listener (now attached per-vp in buildDex)
+// Dex uses uniform fixed-size trinkets — no scaling needed
 
 function computeHandleState(numPieces, foldDir){
-  const falls = numPieces - 1;
-  const oddFalls = falls % 2 === 1;
-  // Side alternates each fall: first fall goes toward foldDir, then opposite, etc.
-  // odd falls → same side as foldDir; even falls → opposite side
-  const landsLeft = oddFalls ? (foldDir < 0) : (foldDir > 0);
-  const index = landsLeft ? 0 : numPieces - 1;
-  const inverted = landsLeft; // left landing = face-down = inverted
-  return {index, inverted};
+  const falls=numPieces-1;
+  const oddFalls=falls%2===1;
+  const landsLeft=oddFalls?(foldDir<0):(foldDir>0);
+  const index=landsLeft?0:numPieces-1;
+  // Face-down (inverted) on odd falls, face-up on even falls — same physics regardless of swipe direction
+  const inverted=oddFalls;
+  return{index,inverted};
 }
 
 // ════════════════════════════════════════
@@ -405,12 +795,16 @@ function computeHandleState(numPieces, foldDir){
 // ════════════════════════════════════════
 function scrollDexToSlot(n, vpId, cb){
   const vp=document.getElementById(vpId);
-  const container=vp?.closest('.dex-container');
-  if(!vp||!container){cb&&cb();return;}
-  const slotW=container.clientWidth/5;
-  // Slot index for n: n + 2 padding slots - 1 = n+1
-  const targetScroll=(n+1)*slotW - container.clientWidth/2 + slotW/2;
-  vp.scrollTo({left:Math.max(0,targetScroll),behavior:'smooth'});
+  if(!vp){cb&&cb();return;}
+  // Find the actual slot element and scroll so it's centered in the viewport
+  const slot=vp.querySelector(`.dex-slot[data-n="${n}"]`);
+  if(slot){
+    const slotLeft=slot.offsetLeft;
+    const slotW=slot.offsetWidth;
+    const vpW=vp.clientWidth;
+    const target=slotLeft-vpW/2+slotW/2;
+    vp.scrollTo({left:Math.max(0,target),behavior:'smooth'});
+  }
   setTimeout(()=>{cb&&cb();},500);
 }
 
@@ -420,75 +814,103 @@ function launchTrinketDrop(primeN, segCount){
   const dexContainer=document.getElementById('altar-dex-container');
   if(!stage||!dexContainer)return;
 
-  // Find launch position: center of stage (between middle segments)
-  const stageRect=stage.getBoundingClientRect();
-  const segEls=stage.querySelectorAll('.blk');
-  let launchX, launchY;
-  if(segCount%2===1){
-    // Odd: center segment
-    const mid=segEls[Math.floor(segCount/2)];
-    if(mid){const r=mid.getBoundingClientRect();launchX=r.left+r.width/2;launchY=r.top+r.height*0.35;}
-    else{launchX=stageRect.left+stageRect.width/2;launchY=stageRect.top+stageRect.height*0.35;}
-  }else{
-    // Even: seam between two middle segments
-    const a=segEls[segCount/2-1],b=segEls[segCount/2];
-    if(a&&b){const ra=a.getBoundingClientRect(),rb=b.getBoundingClientRect();
-      launchX=(ra.right+rb.left)/2;launchY=(ra.top+rb.top)/2+ra.height*0.35;}
-    else{launchX=stageRect.left+stageRect.width/2;launchY=stageRect.top+stageRect.height*0.35;}
+  // Find the source block — center segment for odd, left-of-center for even
+  const segEls=Array.from(stage.querySelectorAll('.blk'));
+  let srcEl=null;
+  if(segCount<=1){
+    srcEl=segEls[0];
+  } else if(segCount%2===1){
+    srcEl=segEls[Math.floor(segCount/2)];
+  } else {
+    srcEl=segEls[segCount/2-1];
   }
+  if(!srcEl)return;
 
-  // Find landing position: the dex slot for primeN
+  const srcRect=srcEl.getBoundingClientRect();
+  const srcW=srcRect.width;
+  const srcH=srcRect.height;
+  const srcCX=srcRect.left+srcW/2;
+  const srcCY=srcRect.top+srcH/2;
+
+  // Trinket target dimensions (match dex-trinket-wrap: 11vw × 52px)
+  const tw=Math.round(window.innerWidth*0.11);
+  const th=52;
+
   const vp=document.getElementById(vpId);
   const container=document.getElementById('altar-dex-container');
-  const slotW=container.clientWidth/5;
-  const targetScroll=(primeN+1)*slotW - container.clientWidth/2 + slotW/2;
-  const slotCenterX=container.getBoundingClientRect().left + container.clientWidth/2;
-  const dexRect=container.getBoundingClientRect();
-  const landY=dexRect.top+dexRect.height*0.35;
 
-  // Trinket size
-  const tw=28,th=36;
-  const fontSize=Math.min(tw*0.55,14);
+  // Clone the source block at its exact position, fixed over everything
+  const clone=document.createElement('div');
+  clone.style.cssText=`
+    position:fixed;z-index:9000;pointer-events:none;
+    width:${srcW}px;height:${srcH}px;
+    left:${srcRect.left}px;top:${srcRect.top}px;
+    transform-origin:center center;
+    border-radius:6px;overflow:visible;
+    background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.08),rgba(255,255,255,0.1));
+    border:1px solid rgba(255,255,255,0.25);
+    box-shadow:inset 0 0 30px rgba(255,200,120,0.15),0 0 30px rgba(255,180,80,0.15),0 0 70px rgba(255,140,40,0.08);
+    display:flex;align-items:center;justify-content:center;
+  `;
+  // Numeral — same font size as the obelisk numeral
+  const numEl=document.createElement('div');
+  const numFontSize=Math.min(srcW*0.6,srcH*0.45,38);
+  numEl.style.cssText=`font-family:'Lexend',sans-serif;font-weight:900;font-size:${numFontSize}px;
+    letter-spacing:-1px;color:#fff;
+    text-shadow:0 0 4px #fff,0 0 12px rgba(255,220,160,1),0 0 25px rgba(255,180,80,0.8),0 0 50px rgba(255,140,40,0.5);
+    position:relative;z-index:2;`;
+  numEl.textContent=primeN;
+  clone.appendChild(numEl);
+  document.body.appendChild(clone);
 
-  // Create flying trinket
-  const trinket=document.createElement('div');
-  trinket.className='trinket-drop';
-  trinket.style.cssText=`width:${tw}px;height:${th}px;font-size:${fontSize}px;left:${launchX-tw/2}px;top:${launchY-th/2}px;`;
-  trinket.textContent=primeN;
-  document.body.appendChild(trinket);
-
-  // Phase 1: scroll dex to center the slot, spotlight it
+  // Phase 1: scroll dex to slot and spotlight simultaneously
   vp.querySelectorAll('.dex-slot[data-n]').forEach(sl=>{
     sl.classList.toggle('dimmed',parseInt(sl.dataset.n)!==primeN);
   });
-  scrollDexToSlot(primeN,vpId,()=>{
-    // Phase 2: drop the trinket
-    const dur=420;
-    trinket.style.transition=`left ${dur}ms cubic-bezier(0.4,0,1,1), top ${dur}ms cubic-bezier(0.4,0,1,1)`;
-    trinket.style.left=(slotCenterX-tw/2)+'px';
-    trinket.style.top=(landY-th/2)+'px';
+  scrollDexToSlot(primeN,vpId,null);
+
+  // Phase 2: compress to trinket size over 600ms
+  const compressDur=600;
+  const scaleY=th/srcH;
+  const scaleX=tw/srcW;
+  clone.style.transition=`transform ${compressDur}ms cubic-bezier(0.4,0,0.6,1)`;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    clone.style.transform=`scaleX(${scaleX}) scaleY(${scaleY})`;
+  }));
+
+  // Phase 3: after compress + scroll settle, drop to actual slot position
+  setTimeout(()=>{
+    // Get slot position now that scroll has settled
+    const slot=vp.querySelector(`.dex-slot[data-n="${primeN}"]`);
+    const dexRect=container.getBoundingClientRect();
+    let landX=dexRect.left+dexRect.width/2; // fallback
+    let landY=dexRect.top+dexRect.height/2;
+    if(slot){
+      const slotRect=slot.getBoundingClientRect();
+      landX=slotRect.left+slotRect.width/2;
+      landY=slotRect.top+slotRect.height/2;
+    }
+
+    const dropDur=400;
+    const dx=landX-srcCX;
+    const dy=landY-srcCY;
+    clone.style.transition=`transform ${dropDur}ms cubic-bezier(0.4,0,1,1)`;
+    clone.style.transform=`scaleX(${scaleX}) scaleY(${scaleY}) translate(${dx/scaleX}px,${dy/scaleY}px)`;
 
     setTimeout(()=>{
-      // Phase 3: land — haptic, flash, rebuild dex
       haptic([15,10,40]);
-      trinket.remove();
-
-      // Flash the slot
+      clone.remove();
       const targetSlot=vp.querySelector(`.dex-slot[data-n="${primeN}"]`);
       if(targetSlot)targetSlot.classList.add('land-flash');
-
-      // Rebuild dex with the new trinket
       S.newPrimes.add(primeN);
       buildDex(vpId);
-
-      // Remove spotlight after celebration
+      // Re-scroll to slot after buildDex rebuilds the DOM
+      setTimeout(()=>scrollDexToSlot(primeN,vpId,null),50);
       setTimeout(()=>{
         vp.querySelectorAll('.dex-slot').forEach(sl=>sl.classList.remove('dimmed','spotlight'));
-        updateDexScaling(vpId);
       },800);
-
-    },dur+50);
-  });
+    },dropDur+40);
+  },compressDur+200); // extra 200ms for scroll to settle
 }
 // ════════════════════════════════════════
 // NEST TREE (for fold/unspool animations)
@@ -524,16 +946,8 @@ function buildNestTree(numPieces,segH,uW,foldDir,startFolded){
 // RENDER SEGMENTS
 // ════════════════════════════════════════
 function makeHandle(inverted){
-  const handle=document.createElement('div');handle.className='handle';
-  const caret=document.createElement('div');caret.className='handle-caret';caret.textContent='▲';
-  if(inverted){
-    handle.style.top='auto';handle.style.bottom='0';
-    handle.style.borderRadius='0 0 5px 5px';
-    handle.style.borderBottom='none';handle.style.borderTop='1px solid rgba(0,0,0,0.12)';
-    caret.style.top='auto';caret.style.bottom='1px';
-    caret.style.transform='translateX(-50%) rotate(180deg)';
-  }
-  handle.appendChild(caret);
+  const handle=document.createElement('div');
+  handle.className='handle'+(inverted?' inverted':'');
   handle.style.touchAction='none';
   handle.addEventListener('pointerdown',e=>{if(!S.folding){e.preventDefault();beginUnspool();}});
   return handle;
@@ -544,16 +958,37 @@ function renderSegs(){
   if(S.segs.length===0)return;
   const uH=S.unitH,uW=S.unitW;
   const numSegs=S.segs.length;
-  const totalFolds=numSegs-1;
+  const gap=3;
+
+  // Offset stage so the BASE SEGMENT is always centered at screen center.
+  // seg-zoom left edge = screen center (left:50%, no translateX).
+  // For single obelisk and right-fold base (i=0): shift left by uW/2.
+  // For left-fold base (i=numSegs-1): shift left by (numSegs*(uW+gap)-gap) - uW/2.
+  const zoomEl=document.getElementById('fz');
+  if(numSegs===1){
+    zoomEl.classList.remove('folded');
+    stage.style.marginLeft='';
+    zoomEl.style.transition='transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94)';
+    zoomEl.style.transform='translateX(-50%)';
+    S.currentFoldZoom=1;
+  } else {
+    const falls=numSegs-1;
+    const oddFalls=falls%2===1;
+    const landsLeft=oddFalls?(S.foldDir<0):(S.foldDir>0);
+    const baseCenter=landsLeft?((numSegs-1)*(uW+gap)+uW/2):(uW/2);
+    stage.style.marginLeft=(-baseCenter)+'px';
+    const zoom=S.currentFoldZoom||calcFoldZoom(numSegs,S.segs[0].units,S.foldDir);
+    // Switch to folded class (removes translateX), apply scale without re-triggering transition
+    zoomEl.style.transition='none';
+    zoomEl.style.transform=`scale(${zoom})`;
+    zoomEl.classList.add('folded');
+  }
 
   S.segs.forEach((seg,i)=>{
     const h=seg.units*uH;
     const el=makeBlock(seg.units,uW,h);
-
     if(numSegs===1){
-      // Handle always at top of single obelisk
       el.appendChild(makeHandle(false));
-      // Hinges only on composites
       if(!isPrime(seg.units)){
         properFactors(seg.units).forEach(f=>{
           const hingeY=f*uH;
@@ -565,25 +1000,18 @@ function renderSegs(){
           zone.addEventListener('pointerup',e=>{zone.classList.remove('swiping');doFold(f,touchSide);});
           el.appendChild(zone);
         });
-      } // end if !isPrime
-    } else {
-      // Use stored handle state computed at fold time
-      if(i === S.handleIndex){
-        el.appendChild(makeHandle(S.handleInverted));
       }
+    } else {
+      if(i===S.handleIndex){el.appendChild(makeHandle(S.handleInverted));}
     }
     stage.appendChild(el);
   });
-  // Schedule hinge idle hint if single composite obelisk
-  if(S.segs.length===1&&!isPrime(S.segs[0].units)){
-    scheduleHingeIdle();
-  }
-  // Pulse caret only in folded state — there's something to unspool
+  if(S.segs.length===1&&!isPrime(S.segs[0].units)){scheduleHingeIdle();}
   if(S.segs.length>1){
     clearTimeout(S.handleTimer);
     S.handleTimer=setTimeout(()=>{
-      const caret=stage.querySelector('.handle-caret');
-      if(caret)caret.classList.add('pulse');
+      const handle=stage.querySelector('.handle');
+      if(handle)handle.classList.add('pulse');
     },2500);
   }
 }
@@ -607,7 +1035,19 @@ function doFold(f,swipeSide){
 
   const altar=document.getElementById('fa');
   const overlay=document.createElement('div');
-  overlay.style.cssText=`position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:50;pointer-events:none;`;
+  overlay.style.cssText=`position:absolute;bottom:36px;left:50%;margin-left:${-uW/2}px;z-index:50;pointer-events:none;`;
+
+  // Calculate zoom needed and apply to seg-zoom concurrently with cascade
+  const foldZoom=calcFoldZoom(numPieces,f,swipeSide);
+  const zoomEl=document.getElementById('fz');
+  if(foldZoom<(S.fZoom-0.02)){
+    // Zoom out needed — animate scale only, translateX(-50%) stays until renderSegs switches to folded
+    zoomEl.style.transition='transform 1.2s cubic-bezier(0.25,0.46,0.45,0.94)';
+    zoomEl.style.transform=`translateX(-50%) scale(${foldZoom})`;
+    S.currentFoldZoom=foldZoom;
+  } else {
+    S.currentFoldZoom=1;
+  }
   altar.appendChild(overlay);
 
   // Animation only — no handle in overlay
@@ -632,7 +1072,6 @@ function doFold(f,swipeSide){
 
   const totalAnimTime=sorted.length*(phaseDur+pause)+200;
   setTimeout(()=>{
-    revealNumerals(overlay,f,uW,uH);
     const isNewPrime=isPrime(f)&&!S.primeDex.has(f);
     if(!S.fDisc.has(f))S.fDisc.add(f);
     if(isPrime(f))S.primeDex.add(f);
@@ -645,7 +1084,8 @@ function doFold(f,swipeSide){
       overlay.remove();
       stage.style.visibility='visible';
       renderSegs();
-      // Trigger trinket drop after reveal animation settles
+      // Reveal numerals on real stage after segments render correctly oriented
+      revealNumerals(document.getElementById('fo'),f,uW,uH);
       if(isNewPrime){
         setTimeout(()=>launchTrinketDrop(f,numPieces),isPrime(f)?900:200);
       } else {
@@ -667,7 +1107,9 @@ function beginUnspool(){
   stage.style.visibility='hidden';
 
   const overlay=document.createElement('div');
-  overlay.style.cssText=`position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:50;`;
+  // Nest tree level 0 = base. Base is always at screen center.
+  // So overlay left edge should be at screen_center - uW/2 (base center at screen center).
+  overlay.style.cssText=`position:absolute;bottom:36px;left:50%;margin-left:${-uW/2}px;z-index:50;`;
   altar.appendChild(overlay);
 
   // withHandle=true — handle rides on the top block in the folded stack too
@@ -687,23 +1129,44 @@ function beginUnspool(){
   const starts=sorted.map((_,i)=>i*(1-overlap)*windowSize);
 
   const totalDragDist=(numSegs-1)*segH*1.2;
-  US={overlay,sorted,starts,windowSize,totalDragDist,startY:null,startX:null,active:true};
+  // Determine which direction is "toward center" based on landing side
+  const falls=numSegs-1;
+  const oddFalls=falls%2===1;
+  const landsLeft=oddFalls?(S.foldDir<0):(S.foldDir>0);
+  // landsLeft: handle is on left side, toward-center = rightward (positive dx)
+  // !landsLeft: handle is on right side, toward-center = leftward (negative dx)
+  const centerSign=landsLeft?1:-1;
+  const startZoom=S.currentFoldZoom||1;
+  US={overlay,sorted,starts,windowSize,totalDragDist,startY:null,startX:null,active:true,centerSign,startZoom};
 
+  const zoomEl=document.getElementById('fz');
   const onMove=e=>{
     if(!US||!US.active)return;e.preventDefault();
     const t=e.touches?e.touches[0]:e;
     if(US.startY===null){US.startY=t.clientY;US.startX=t.clientX;}
     const dragY=US.startY-t.clientY;
-    const progress=Math.max(0,Math.min(1,dragY/US.totalDragDist));
+    const dragX=(t.clientX-US.startX)*US.centerSign;
+    const combined=dragY+Math.max(0,dragX)*0.4;
+    const progress=Math.max(0,Math.min(1,combined/US.totalDragDist));
     US.sorted.forEach(({hw,dir},i)=>{
       const hProg=Math.max(0,Math.min(1,(progress-US.starts[i])/US.windowSize));
       hw.style.transform=`rotate(${(dir<0?-180:180)*(1-hProg)}deg)`;
     });
+    // Ease zoom back toward 1 as progress increases
+    if(US.startZoom<1){
+      const dragZoom=US.startZoom+(1-US.startZoom)*progress;
+      zoomEl.style.transition='none';
+      zoomEl.style.transform=`scale(${dragZoom})`;
+    }
   };
   const onUp=e=>{
     if(!US||!US.active)return;
     const t=e.changedTouches?e.changedTouches[0]:e;
-    const progress=US.startY!==null?(US.startY-t.clientY)/US.totalDragDist:0;
+    if(US.startY===null){cancelUS(onMove,onUp);return;}
+    const dragY=US.startY-t.clientY;
+    const dragX=(t.clientX-US.startX)*US.centerSign;
+    const combined=dragY+Math.max(0,dragX)*0.4;
+    const progress=combined/US.totalDragDist;
     if(progress>=0.85)completeUS(onMove,onUp);else cancelUS(onMove,onUp);
   };
   document.addEventListener('pointermove',onMove,{passive:false});
@@ -712,12 +1175,23 @@ function beginUnspool(){
 function cancelUS(onMove,onUp){
   if(!US)return;US.active=false;
   US.sorted.forEach(({hw,dir})=>{hw.style.transition='transform 0.4s var(--ease-heavy)';hw.style.transform=`rotate(${dir<0?-180:180}deg)`;});
+  // Ease zoom back to fold zoom
+  if(US.startZoom<1){
+    const zoomEl=document.getElementById('fz');
+    zoomEl.style.transition='transform 0.4s ease';
+    zoomEl.style.transform=`scale(${US.startZoom})`;
+  }
   setTimeout(()=>{US?.overlay?.remove();document.getElementById('fo').style.visibility='visible';S.folding=false;US=null;},450);
   document.removeEventListener('pointermove',onMove);document.removeEventListener('pointerup',onUp);
 }
 function completeUS(onMove,onUp){
   if(!US)return;US.active=false;haptic([20,30,20]);
   US.sorted.forEach(({hw})=>{hw.style.transition='transform 0.2s var(--spring)';hw.style.transform='rotate(0deg)';});
+  // Ease zoom back to 1 (single obelisk)
+  const zoomEl=document.getElementById('fz');
+  zoomEl.style.transition='transform 0.3s var(--spring)';
+  zoomEl.style.transform='translateX(-50%)';
+  S.currentFoldZoom=1;
   setTimeout(()=>{
     US?.overlay?.remove();
     document.getElementById('fo').style.visibility='visible';
@@ -732,14 +1206,21 @@ function checkFSolved(){
   const n=S.fNum;if(!n||S.fDone.has(n))return;
   if(allFactors(n).every(f=>S.fDisc.has(f))){
     S.fDone.add(n);
+    S.fDiscMap[n]=new Set(S.fDisc);
+    checkLvl();
+    const numEl=document.getElementById('altar-numeral');
+    numEl.onclick=()=>goToGrid();
+    // Delay celebration until after trinket drop lands (~600 compress + 380 drop + 40 land + 500 pause)
     setTimeout(()=>{
       showAffirm();
-      checkLvl();
-      // Pulse the header numeral green — it's now the exit button
-      const numEl=document.getElementById('altar-numeral');
-      numEl.classList.add('solved');
-      numEl.onclick=()=>goToGrid();
-    },200);
+      // Green circle bloom
+      numEl.classList.add('celebrate');
+      // After bloom settles, swap to breathing solved state
+      setTimeout(()=>{
+        numEl.classList.remove('celebrate');
+        numEl.classList.add('solved');
+      },1100);
+    },1600);
   }
 }
 
@@ -752,24 +1233,93 @@ function checkLvl(){
 // ════════════════════════════════════════
 // GRID SCREEN
 // ════════════════════════════════════════
+function getPrimeFactors(n){
+  const f=[];let x=n;
+  for(let p=2;p*p<=x;p++){while(x%p===0){f.push(p);x/=p;}}
+  if(x>1)f.push(x);
+  return f;
+}
+
+function makeCellSolved(n, factors, clickFn){
+  const c=document.createElement('div');
+  c.className='nc done';
+  // Number top-left
+  const lbl=document.createElement('div');lbl.className='nc-label';lbl.textContent=n;
+  c.appendChild(lbl);
+  // Trinkets
+  if(factors.length>0){
+    const wrap=document.createElement('div');wrap.className='nc-trinkets';
+    // Show up to ~12 trinkets, overflow indicator if more
+    const maxShow=12;
+    factors.slice(0,maxShow).forEach(f=>{
+      const t=document.createElement('div');
+      t.className='nc-t '+(f===1?'nc-tm':isPrime(f)?'nc-tp':'nc-tc');
+      t.textContent=f;
+      wrap.appendChild(t);
+    });
+    if(factors.length>maxShow){
+      const ov=document.createElement('div');ov.className='nc-overflow';
+      ov.textContent='+';wrap.appendChild(ov);
+    }
+    c.appendChild(wrap);
+  }
+  c.addEventListener('click',clickFn);
+  return c;
+}
+
 function renderGrid(){
   const g=document.getElementById('num-grid');g.innerHTML='';
   const max=S.maxLevel*12;
-  for(let i=1;i<=max;i++){
-    const c=document.createElement('div');
-    c.textContent=i;
-    if(S.fDone.has(i)){
-      c.className='nc done';
-      c.addEventListener('click',()=>goToAltar(i));
-    } else {
-      c.className='nc avail';
-      c.addEventListener('click',()=>goToAltar(i));
+  if(S.gridMode==='factor'){
+    for(let i=1;i<=max;i++){
+      let c;
+      if(S.fDone.has(i)){
+        const factors=allFactors(i); // includes 1 and i
+        c=makeCellSolved(i,factors,()=>goToAltar(i));
+      } else {
+        c=document.createElement('div');
+        c.className='nc avail';
+        const num=document.createElement('div');num.className='nc-num';num.textContent=i;
+        c.appendChild(num);
+        c.addEventListener('click',()=>goToAltar(i));
+      }
+      g.appendChild(c);
     }
-    g.appendChild(c);
-  }
-  // Lock everything above max
-  for(let i=max+1;i<=max+12;i++){
-    const c=document.createElement('div');c.className='nc locked';c.textContent=i;g.appendChild(c);
+    for(let i=max+1;i<=max+12;i++){
+      const c=document.createElement('div');c.className='nc locked';
+      const num=document.createElement('div');num.className='nc-num';num.textContent=i;
+      c.appendChild(num);g.appendChild(c);
+    }
+  } else {
+    // Build mode
+    for(let i=1;i<=max;i++){
+      let c;
+      const canBuild=i===1||S.bDone.has(i)||(i>1&&S.bDone.has(i-1));
+      const built=S.bDone.has(i);
+      const neededPrimes=i>1?getPrimeFactors(i):[];
+      const hasAllPrimes=neededPrimes.every(p=>S.primeDex.has(p));
+      if(built||i===1){
+        const factors=i===1?[1]:getPrimeFactors(i);
+        c=makeCellSolved(i,factors,i>1?()=>goToBuild(i):null);
+      } else if(canBuild&&hasAllPrimes){
+        c=document.createElement('div');c.className='nc avail';
+        const num=document.createElement('div');num.className='nc-num';num.textContent=i;
+        c.appendChild(num);
+        c.addEventListener('click',()=>goToBuild(i));
+      } else {
+        c=document.createElement('div');c.className='nc locked';
+        if(canBuild){c.className='nc';c.style.background='rgba(255,255,255,0.02)';}
+        const num=document.createElement('div');num.className='nc-num';
+        num.textContent=i;num.style.color='rgba(255,255,255,0.12)';
+        c.appendChild(num);
+      }
+      g.appendChild(c);
+    }
+    for(let i=max+1;i<=max+12;i++){
+      const c=document.createElement('div');c.className='nc locked';
+      const num=document.createElement('div');num.className='nc-num';num.textContent=i;
+      c.appendChild(num);g.appendChild(c);
+    }
   }
 }
 
@@ -791,10 +1341,639 @@ function renderFT(){
 }
 
 // ════════════════════════════════════════
-// INIT — cold open on 12's altar
+// BUILD TAB
 // ════════════════════════════════════════
+function enterBuild(n){
+  S.bNum=n;S.bStack=[];S.bProduct=0;S.bAnimating=false;
+  const numEl=document.getElementById('build-numeral');
+  numEl.textContent=n;
+  numEl.classList.remove('solved','celebrate');
+  const isSolved=S.bDone.has(n);
+  if(isSolved){numEl.classList.add('solved');}
+  numEl.onclick=isSolved?()=>goToGrid():null;
+
+  // Size units to altar — use 12-reference like factor altar
+  const altar=document.getElementById('ba');
+  const altarH=altar.clientHeight-50;
+  const refUnitH=Math.max(6,Math.min(44,Math.floor(altarH/12)));
+  S.bUnitH=refUnitH;
+  S.bUnitW=Math.min(60,Math.max(36,S.bUnitH*0.85));
+  S.bZoom=n<=12?1:Math.min(1,12/n);
+  setZoom('bz',S.bZoom,false);
+
+  // Position ceiling line — must account for zoom
+  const ceil=document.getElementById('bceil');
+  const ceilPx=n*S.bUnitH*S.bZoom;
+  const ceilTop=altar.clientHeight-36-ceilPx;
+  ceil.style.top=Math.max(8,ceilTop)+'px';
+
+  buildDex('build-dex-vp');
+  renderBuildStage();
+  renderBuildTray();
+  renderBuildLedger();
+  // Make dex trinkets draggable
+  setupBuildDexDrag();
+}
+
+function renderBuildStage(){
+  const stage=document.getElementById('bo');stage.innerHTML='';
+  if(S.bProduct===0)return;
+  const uH=S.bUnitH,uW=S.bUnitW;
+  const h=S.bProduct*uH;
+  const el=makeBlock(S.bProduct,uW,h);
+  // Undo hinge at the prev product height
+  if(S.bStack.length>0){
+    const prev=S.bStack[S.bStack.length-1].prevProduct;
+    if(prev>0){
+      const hingeY=prev*uH;
+      const zone=document.createElement('div');zone.className='bundo-zone';zone.style.top=hingeY+'px';
+      const mark=document.createElement('div');mark.className='bundo-mark';zone.appendChild(mark);
+      zone.addEventListener('pointerdown',e=>{e.preventDefault();undoBuild();});
+      el.appendChild(zone);
+    }
+  }
+  stage.appendChild(el);
+}
+
+function renderBuildTray(){
+  const tray=document.getElementById('bt');tray.innerHTML='';
+  if(S.bStack.length===0){
+    const hint=document.createElement('div');hint.className='bt-empty';
+    tray.appendChild(hint);
+    return;
+  }
+  S.bStack.forEach((entry,i)=>{
+    const s=document.createElement('div');
+    s.className='bt-trinket';
+    s.textContent=entry.p;
+    if(i===S.bStack.length-1){
+      s.classList.add('last');
+      s.style.touchAction='none';
+      s.addEventListener('pointerdown',e=>{
+        if(S.bAnimating)return;
+        e.preventDefault();
+        s.setPointerCapture(e.pointerId);
+        const startY=e.clientY;
+        let removed=false;
+        const onMove=ev=>{
+          if(ev.clientY-startY>20&&!removed){
+            removed=true;
+            s.removeEventListener('pointermove',onMove);
+            s.removeEventListener('pointerup',onUp);
+            undoBuild();
+          }
+        };
+        const onUp=()=>{
+          s.removeEventListener('pointermove',onMove);
+          s.removeEventListener('pointerup',onUp);
+        };
+        s.addEventListener('pointermove',onMove,{passive:false});
+        s.addEventListener('pointerup',onUp);
+      });
+    }
+    tray.appendChild(s);
+  });
+}
+
+function renderBuildLedger(){
+  const led=document.getElementById('bl');led.innerHTML='';
+  if(S.bStack.length===0)return;
+  S.bStack.forEach((entry,i)=>{
+    if(i>0){const x=document.createElement('span');x.className='ledger-times';x.textContent='×';led.appendChild(x);}
+    const t=document.createElement('div');t.className='ledger-factor';t.textContent=entry.p;led.appendChild(t);
+  });
+  if(S.bStack.length>1){
+    const eq=document.createElement('span');eq.className='ledger-eq';eq.textContent='=';led.appendChild(eq);
+    const prod=document.createElement('div');prod.className='ledger-product';prod.textContent=S.bProduct;led.appendChild(prod);
+  }
+}
+
+function setupBuildDexDrag(){
+  const vp=document.getElementById('build-dex-vp');
+  if(!vp)return;
+  // Remove previous handler
+  vp._dragHandler&&vp.removeEventListener('pointerdown',vp._dragHandler);
+  delete vp._dragHandler;
+
+  // Attach to each prime trinket individually with touch-action:none
+  // This lets the viewport scroll normally while trinkets are draggable
+  vp.querySelectorAll('.dex-slot[data-n]').forEach(slot=>{
+    const n=parseInt(slot.dataset.n);
+    if(!isPrime(n)||!S.primeDex.has(n))return;
+    const trinket=slot.querySelector('.dex-trinket');
+    if(!trinket)return;
+    trinket.style.touchAction='none';
+    trinket.style.cursor='grab';
+    // Remove old listeners by cloning
+    const fresh=trinket.cloneNode(true);
+    fresh.style.touchAction='none';
+    slot.querySelector('.dex-trinket-wrap').replaceChild(fresh,trinket);
+    fresh.addEventListener('pointerdown',e=>{
+      if(S.bAnimating)return;
+      e.preventDefault();
+      e.stopPropagation();
+      fresh.setPointerCapture(e.pointerId);
+      startBuildDrag(e,n,fresh);
+    },{passive:false});
+  });
+}
+
+function startBuildDrag(e,p,sourceEl){
+  const size=Math.round(window.innerWidth*0.11);
+  const dexRect=document.getElementById('build-dex-container').getBoundingClientRect();
+
+  // Create floating trinket at finger position
+  const drag=document.createElement('div');
+  drag.className='dragging-trinket';
+  drag.style.cssText=`width:${size}px;height:52px;font-size:13px;left:${e.clientX-size/2}px;top:${e.clientY-26}px;`;
+  drag.textContent=p;
+  document.body.appendChild(drag);
+
+  // Visual feedback on source
+  sourceEl.style.opacity='0.4';
+
+  const onMove=ev=>{
+    drag.style.left=(ev.clientX-size/2)+'px';
+    drag.style.top=(ev.clientY-26)+'px';
+  };
+
+  const onUp=ev=>{
+    sourceEl.removeEventListener('pointermove',onMove);
+    sourceEl.removeEventListener('pointerup',onUp);
+    sourceEl.removeEventListener('pointercancel',onUp);
+    sourceEl.style.opacity='';
+    drag.remove();
+    // Accept drop anywhere above the dex
+    if(ev.clientY<dexRect.top-10){
+      placeBuildPrime(p);
+    }
+  };
+
+  sourceEl.addEventListener('pointermove',onMove,{passive:true});
+  sourceEl.addEventListener('pointerup',onUp);
+  sourceEl.addEventListener('pointercancel',onUp);
+}
+
+function placeBuildPrime(p){
+  if(S.bAnimating)return;
+  const n=S.bNum;
+  const prevProduct=S.bProduct;
+  const newProduct=prevProduct===0?p:prevProduct*p;
+
+  // Push to stack
+  S.bStack.push({p,prevProduct});
+  S.bProduct=newProduct;
+
+  if(newProduct>n){
+    // OVERSHOOT
+    S.bAnimating=true;
+    if(prevProduct===0){
+      // First placement already overshoots — simple haptic+shatter, no animation
+      haptic([60,30,60]);
+      S.bStack.pop();S.bProduct=0;
+      S.bAnimating=false;
+      renderBuildStage();renderBuildTray();renderBuildLedger();
+    } else {
+      animateBuildOvershoot(prevProduct,p,newProduct,n,()=>{
+        S.bStack.pop();S.bProduct=prevProduct;
+        S.bAnimating=false;
+        renderBuildStage();renderBuildTray();renderBuildLedger();
+      });
+    }
+    return;
+  }
+
+  if(prevProduct===0){
+    // First placement — just appear
+    renderBuildStage();renderBuildTray();renderBuildLedger();
+    if(newProduct===n)checkBuildSolved();
+    return;
+  }
+
+  // Clone-and-hinge animation: P-1 new copies of prevProduct hinge up
+  S.bAnimating=true;
+  renderBuildStage();renderBuildTray();renderBuildLedger();
+  animateBuildHinge(prevProduct,p,newProduct,n,()=>{
+    S.bAnimating=false;
+    if(newProduct===n)checkBuildSolved();
+  });
+}
+
+function animateBuildHinge(prevH,p,finalH,target,cb){
+  const stage=document.getElementById('bo');
+  const altar=document.getElementById('ba');
+  const uH=S.bUnitH,uW=S.bUnitW;
+  const segH=prevH*uH;
+
+  // Hide real stage
+  stage.style.visibility='hidden';
+
+  // Build overlay with base block + P-1 hinge copies
+  const overlay=document.createElement('div');
+  overlay.style.cssText=`position:absolute;bottom:36px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;height:${segH}px;overflow:visible;`;
+  altar.appendChild(overlay);
+
+  // Base block
+  const base=makeBlock(prevH,uW,segH);
+  base.style.position='absolute';base.style.bottom='0';base.style.left='0';
+  overlay.appendChild(base);
+
+  // Create P-1 hinge arms, each one stacks on top of prev
+  const copies=p-1;
+  const phaseDur=400,pause=60;
+
+  let topEl=base;
+  const arms=[];
+  for(let i=0;i<copies;i++){
+    const hw=document.createElement('div');
+    hw.style.cssText=`position:absolute;bottom:${segH}px;left:0;width:${uW}px;height:0;`;
+    hw.style.transformOrigin='50% 100%'; // CENTER pivot
+    hw.style.transform='rotate(180deg)'; // starts folded behind
+    const blk=makeBlock(prevH,uW,segH,false,false);
+    blk.style.position='absolute';blk.style.bottom='0';blk.style.left='0';
+    hw.appendChild(blk);
+    topEl.appendChild(hw);
+    arms.push(hw);
+    topEl=hw;
+  }
+
+  // Animate each arm unfolding sequentially
+  arms.forEach((hw,i)=>{
+    setTimeout(()=>{
+      hw.style.transition=`transform ${phaseDur}ms var(--ease-heavy)`;
+      hw.style.transform='rotate(0deg)';
+      haptic(20);
+    },i*(phaseDur+pause));
+  });
+
+  const totalTime=copies*(phaseDur+pause)+200;
+  setTimeout(()=>{
+    overlay.remove();
+    stage.style.visibility='visible';
+    renderBuildStage();
+    cb&&cb();
+  },totalTime);
+}
+
+function animateBuildOvershoot(prevH,p,finalH,target,cb){
+  const stage=document.getElementById('bo');
+  const altar=document.getElementById('ba');
+  const uH=S.bUnitH,uW=S.bUnitW;
+  const segH=prevH*uH;
+  const ceilPx=target*uH; // ceiling height in pixels from base
+
+  stage.style.visibility='hidden';
+
+  const overlay=document.createElement('div');
+  overlay.style.cssText=`position:absolute;bottom:36px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;height:${segH}px;overflow:visible;`;
+  altar.appendChild(overlay);
+
+  const base=makeBlock(prevH,uW,segH);
+  base.style.position='absolute';base.style.bottom='0';base.style.left='0';
+  overlay.appendChild(base);
+
+  const copies=p-1;
+  const phaseDur=400,pause=60;
+
+  let topEl=base;
+  const arms=[];
+  for(let i=0;i<copies;i++){
+    const hw=document.createElement('div');
+    hw.style.cssText=`position:absolute;bottom:${segH}px;left:0;width:${uW}px;height:0;`;
+    hw.style.transformOrigin='50% 100%';
+    hw.style.transform='rotate(180deg)';
+    const blk=makeBlock(prevH,uW,segH,false,false);
+    blk.style.position='absolute';blk.style.bottom='0';blk.style.left='0';
+    hw.appendChild(blk);
+    topEl.appendChild(hw);
+    arms.push(hw);
+    topEl=hw;
+  }
+
+  // For each arm, figure out if it clears or collides with ceiling.
+  // Arm i, when fully upright, puts the top at: (i+2)*segH above base.
+  // The ceiling is at ceilPx. Find which arm collides.
+  let collisionArm=-1;
+  let collisionAngle=0; // degrees from 180 (folded) — 0=folded, 180=upright
+  for(let i=0;i<copies;i++){
+    const pivotHeight=(i+1)*segH; // height of this arm's pivot above base
+    const headroom=ceilPx-pivotHeight; // space between pivot and ceiling
+    if(headroom>=segH){
+      // This arm clears — fully upright tip at pivotHeight+segH <= ceilPx
+      continue;
+    }
+    // Collision! The arm's tip height above pivot = segH * (1 - cos(theta))/2
+    // Wait — center pivot. When rotation goes from 180° to 0°, the tip traces:
+    //   At rotation R (CSS rotate), the segment hangs at angle R from vertical.
+    //   Tip height above pivot = segH * cos(R in radians) ... but at 180° tip is -segH (behind/below)
+    //   and at 0° tip is +segH (above). So tip above pivot = segH * cos(R_rad) where R goes 180->0.
+    //   Actually for center pivot: tip above pivot = segH * cos(R_rad).
+    //   At R=180°: cos(π) = -1, tip = -segH (folded down behind)
+    //   At R=0°: cos(0) = 1, tip = +segH (upright)
+    // Collision when pivotHeight + segH*cos(R_rad) >= ceilPx
+    // cos(R_rad) >= (ceilPx - pivotHeight) / segH = headroom/segH
+    // R_rad <= acos(headroom/segH)
+    // CSS rotation goes from 180 toward 0, so collision rotation = acos(headroom/segH) in degrees
+    const cosCollision=Math.max(-1,Math.min(1,headroom/segH));
+    const collisionRotDeg=Math.acos(cosCollision)*(180/Math.PI);
+    collisionArm=i;
+    collisionAngle=collisionRotDeg;
+    break;
+  }
+
+  // Animate safe arms fully, then animate collision arm to collision angle
+  const safeCount=collisionArm>=0?collisionArm:copies;
+
+  // Animate safe arms
+  arms.forEach((hw,i)=>{
+    if(i<safeCount){
+      setTimeout(()=>{
+        hw.style.transition=`transform ${phaseDur}ms var(--ease-heavy)`;
+        hw.style.transform='rotate(0deg)';
+        haptic(20);
+      },i*(phaseDur+pause));
+    }
+  });
+
+  if(collisionArm>=0){
+    // Animate collision arm — it starts at the same time as it would normally
+    const collisionDelay=collisionArm*(phaseDur+pause);
+    // Calculate what fraction of the full swing gets us to collision angle
+    // Full swing = 180° to 0°. Collision at collisionAngle degrees.
+    // Fraction traveled = (180 - collisionAngle) / 180
+    const fraction=(180-collisionAngle)/180;
+    const collisionDur=Math.max(120,Math.round(phaseDur*fraction));
+
+    setTimeout(()=>{
+      const hw=arms[collisionArm];
+      hw.style.transition=`transform ${collisionDur}ms var(--ease-heavy)`;
+      hw.style.transform=`rotate(${collisionAngle}deg)`;
+      haptic(20);
+
+      // Shatter at the moment it reaches ceiling
+      setTimeout(()=>{
+        const rect=overlay.getBoundingClientRect();
+        const altarEl=document.getElementById('ba');
+        const altarRect=altarEl.getBoundingClientRect();
+        haptic([60,30,60]);
+        const fx=(rect.left+rect.width/2-altarRect.left)/altarRect.width;
+        const fy=(rect.top-altarRect.top)/altarRect.height;
+        canvasShatter('bz-canvas',altarEl,fx,Math.max(0.1,fy),28);
+        overlay.remove();
+        stage.style.visibility='visible';
+        setTimeout(()=>{cb&&cb();},400);
+      },collisionDur+30);
+    },collisionDelay);
+  }
+}
+
+function shatterBuildObelisk(){
+  const stage=document.getElementById('bo');
+  const blk=stage.querySelector('.blk');
+  const altarEl=document.getElementById('ba');
+  if(!blk||!altarEl)return;
+  haptic([60,30,60]);
+  const blkRect=blk.getBoundingClientRect();
+  const altarRect=altarEl.getBoundingClientRect();
+  const fx=(blkRect.left+blkRect.width/2-altarRect.left)/altarRect.width;
+  const fy=(blkRect.top+blkRect.height*0.3-altarRect.top)/altarRect.height;
+  canvasShatter('bz-canvas',altarEl,fx,Math.max(0.05,fy),28);
+}
+
+function undoBuild(){
+  if(S.bAnimating||S.bStack.length===0)return;
+  const entry=S.bStack[S.bStack.length-1]; // peek, don't pop yet
+  const p=entry.p;
+  const prevProduct=entry.prevProduct;
+  const currentProduct=S.bProduct;
+  const uH=S.bUnitH,uW=S.bUnitW;
+
+  // If first trinket (prevProduct=0), just clear instantly — nothing to animate down
+  if(prevProduct===0){
+    S.bStack.pop();
+    S.bProduct=0;
+    haptic(20);
+    renderBuildStage();renderBuildTray();renderBuildLedger();
+    return;
+  }
+
+  S.bAnimating=true;
+  haptic(20);
+  const stage=document.getElementById('bo');
+  const altar=document.getElementById('ba');
+  const segH=prevProduct*uH;
+  const copies=p-1;
+  const phaseDur=350,pause=50;
+
+  // Build overlay matching current state (full product height)
+  stage.style.visibility='hidden';
+  const overlay=document.createElement('div');
+  overlay.style.cssText=`position:absolute;bottom:36px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;height:${segH}px;overflow:visible;`;
+  altar.appendChild(overlay);
+
+  // Base block at prevProduct height
+  const base=makeBlock(prevProduct,uW,segH);
+  base.style.position='absolute';base.style.bottom='0';base.style.left='0';
+  overlay.appendChild(base);
+
+  // Arms start UPRIGHT (rotate 0) — they will fold DOWN (rotate 180)
+  let topEl=base;
+  const arms=[];
+  for(let i=0;i<copies;i++){
+    const hw=document.createElement('div');
+    hw.style.cssText=`position:absolute;bottom:${segH}px;left:0;width:${uW}px;height:0;`;
+    hw.style.transformOrigin='50% 100%';
+    hw.style.transform='rotate(0deg)'; // start upright
+    const blk=makeBlock(prevProduct,uW,segH,false,false);
+    blk.style.position='absolute';blk.style.bottom='0';blk.style.left='0';
+    hw.appendChild(blk);
+    topEl.appendChild(hw);
+    arms.push(hw);
+    topEl=hw;
+  }
+
+  // Fold DOWN — reverse order (innermost first so outermost follows)
+  const reversedArms=[...arms].reverse();
+  reversedArms.forEach((hw,i)=>{
+    setTimeout(()=>{
+      hw.style.transition=`transform ${phaseDur}ms var(--ease-heavy)`;
+      hw.style.transform='rotate(180deg)';
+      haptic(15);
+    },i*(phaseDur+pause));
+  });
+
+  const totalTime=reversedArms.length*(phaseDur+pause)+150;
+  setTimeout(()=>{
+    overlay.remove();
+    S.bStack.pop();
+    S.bProduct=prevProduct;
+    stage.style.visibility='visible';
+    S.bAnimating=false;
+    renderBuildStage();renderBuildTray();renderBuildLedger();
+  },totalTime);
+}
+
+function checkBuildSolved(){
+  const n=S.bNum;if(!n||S.bDone.has(n))return;
+  S.bDone.add(n);
+  const numEl=document.getElementById('build-numeral');
+  numEl.onclick=()=>goToGrid();
+  setTimeout(()=>{
+    showAffirm();
+    numEl.classList.add('celebrate');
+    haptic([20,25,20,25,40]);
+    setTimeout(()=>{
+      numEl.classList.remove('celebrate');
+      numEl.classList.add('solved');
+    },1100);
+  },300);
+}
+
+// ════════════════════════════════════════
+// PINCH-TO-ZOOM on altar areas
+// ════════════════════════════════════════
+function setupPinchZoom(altarId,zoomId,getDefaultZoom){
+  const altar=document.getElementById(altarId);
+  if(!altar)return;
+  let activeTouches=[];
+  let baseZoom=1,baseDist=0;
+
+  altar.addEventListener('touchstart',e=>{
+    if(e.touches.length===2){
+      e.preventDefault();
+      activeTouches=[e.touches[0],e.touches[1]];
+      baseDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+      const el=document.getElementById(zoomId);
+      const cur=el.style.transform.match(/scale\(([\d.]+)\)/);
+      baseZoom=cur?parseFloat(cur[1]):getDefaultZoom();
+    }
+  },{passive:false});
+
+  altar.addEventListener('touchmove',e=>{
+    if(e.touches.length===2){
+      e.preventDefault();
+      const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+      const ratio=dist/baseDist;
+      const newZoom=Math.max(0.15,Math.min(3,baseZoom*ratio));
+      const el=document.getElementById(zoomId);
+      el.style.transition='none';
+      el.style.transform=`translateX(-50%) scale(${newZoom})`;
+    }
+  },{passive:false});
+
+  altar.addEventListener('touchend',e=>{
+    if(e.touches.length<2&&activeTouches.length===2){
+      activeTouches=[];
+      // After pinch release, don't snap back — let student explore
+      // Auto-zoom reasserts on unspool or room entry
+    }
+  });
+}
+
+// ════════════════════════════════════════
+// THE 1 ROOM — special mirror handling
+// ════════════════════════════════════════
+// 1 is handled in enterAltar: isPrime(1)=false, but we pre-solve it.
+// The obelisk for 1 should show as the mirror trinket material.
+
+// ════════════════════════════════════════
+// CANVAS PARTICLE ENGINE
+// ════════════════════════════════════════
+const _cvState={};
+
+function _initCanvas(canvasId){
+  if(_cvState[canvasId])return _cvState[canvasId];
+  const el=document.getElementById(canvasId);
+  if(!el)return null;
+  const parent=el.parentElement;
+  const dpr=window.devicePixelRatio||1;
+  const w=parent.clientWidth, h=parent.clientHeight;
+  el.width=w*dpr; el.height=h*dpr;
+  el.style.width=w+'px'; el.style.height=h+'px';
+  const ctx=el.getContext('2d');
+  ctx.scale(dpr,dpr);
+  const state={el,ctx,w,h,particles:[],raf:null};
+  _cvState[canvasId]=state;
+  return state;
+}
+
+function canvasShatter(canvasId, altarEl, fracX, fracY, count=24){
+  // fracX/fracY are 0-1 fractions of the altar element dimensions
+  const cv=_initCanvas(canvasId);
+  if(!cv)return;
+  // Refresh dimensions in case layout changed
+  const dpr=window.devicePixelRatio||1;
+  const w=altarEl.clientWidth, h=altarEl.clientHeight;
+  cv.w=w; cv.h=h;
+  cv.el.width=w*dpr; cv.el.height=h*dpr;
+  cv.el.style.width=w+'px'; cv.el.style.height=h+'px';
+  cv.ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  const cx=w*fracX, cy=h*fracY;
+  // Chunky Minecraft-style palette — brushed aluminum fragments + prime amber sparks
+  const colors=[
+    'rgba(220,222,226,0.95)','rgba(195,198,204,0.9)','rgba(240,241,243,0.95)',
+    'rgba(170,173,180,0.85)','rgba(255,200,100,0.8)','rgba(255,255,255,0.9)',
+    'rgba(150,153,160,0.8)'
+  ];
+  for(let i=0;i<count;i++){
+    const angle=Math.random()*Math.PI*2;
+    const speed=Math.random()*16+6;
+    cv.particles.push({
+      x:cx+(Math.random()-0.5)*30,
+      y:cy+(Math.random()-0.5)*20,
+      vx:Math.cos(angle)*speed*(0.6+Math.random()*0.8),
+      vy:Math.sin(angle)*speed*(0.6+Math.random()*0.8)-8,
+      size:Math.random()*9+4,
+      angle:Math.random()*Math.PI*2,
+      spin:(Math.random()-0.5)*0.35,
+      life:1.0,
+      decay:Math.random()*0.018+0.012,
+      color:colors[Math.floor(Math.random()*colors.length)]
+    });
+  }
+  if(!cv.raf)_runParticles(cv);
+}
+
+function _runParticles(cv){
+  const {ctx,w,h}=cv;
+  ctx.clearRect(0,0,w,h);
+  cv.particles=cv.particles.filter(p=>p.life>0);
+  for(const p of cv.particles){
+    p.x+=p.vx; p.y+=p.vy;
+    p.vy+=0.55; // gravity
+    p.vx*=0.98; // drag
+    p.angle+=p.spin;
+    p.life-=p.decay;
+    ctx.save();
+    ctx.translate(p.x,p.y);
+    ctx.rotate(p.angle);
+    ctx.globalAlpha=Math.max(0,p.life*p.life); // quadratic fade = stays solid then drops fast
+    ctx.fillStyle=p.color;
+    // Chunky square fragments
+    ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+    // Edge highlight for 3D feel
+    ctx.fillStyle='rgba(255,255,255,0.3)';
+    ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.25);
+    ctx.restore();
+  }
+  if(cv.particles.length>0){
+    cv.raf=requestAnimationFrame(()=>_runParticles(cv));
+  } else {
+    ctx.clearRect(0,0,w,h);
+    cv.raf=null;
+  }
+}
+
+// ════════════════════════════════════════
+// INIT — cold open on 12's altar
+S.fDone.add(1);
 buildDex('altar-dex-vp');
 enterAltar(12);
+
+// Setup pinch-to-zoom on both altars
+setupPinchZoom('fa','fz',()=>S.fZoom);
+setupPinchZoom('ba','bz',()=>S.bZoom);
 
 </script>
 </body>
