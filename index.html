@@ -19,19 +19,11 @@
     .logo{font-weight:900;font-size:16px;opacity:0.35;letter-spacing:-0.03em;}
     .logo-bead{display:inline-block;width:0.22em;height:0.22em;margin-left:0.04em;margin-bottom:0.08em;border-radius:50%;background:radial-gradient(circle at 33% 28%,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.3) 40%,transparent 65%),radial-gradient(circle at 67% 72%,rgba(0,0,0,0.15) 0%,transparent 55%),linear-gradient(135deg,#efefef,#d0d0d0,#a8a8a8,#c0c0c0,#e0e0e0);box-shadow:inset 1px 1px 2px rgba(255,255,255,0.8),inset -1px -1px 2px rgba(0,0,0,0.2),0 2px 4px rgba(0,0,0,0.3);}
     .num-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:6px 8px;flex:1;align-content:start;overflow-y:auto;}
-    .nc{aspect-ratio:1;border-radius:8px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden;
-      /* Stone — heavy, unmined, begging to be broken */
-      background:linear-gradient(145deg,rgba(22,22,26,0.9),rgba(14,14,17,0.95));
-      box-shadow:inset 0 3px 6px rgba(0,0,0,0.7),inset 0 1px 0 rgba(255,255,255,0.04);}
-    .nc.avail{
-      background:linear-gradient(145deg,rgba(26,26,31,0.92),rgba(16,16,20,0.96));
-      box-shadow:inset 0 3px 6px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.05);}
+    .nc{aspect-ratio:1;border-radius:8px;cursor:pointer;transition:all 0.15s;position:relative;
+      background:rgba(255,255,255,0.03);overflow:hidden;}
+    .nc.avail{background:rgba(255,255,255,0.055);}
     .nc.avail:active{transform:scale(0.93);}
-    .nc.done{
-      /* Glassy reliquary — broken open, now holds the trinkets */
-      background:linear-gradient(145deg,rgba(35,35,44,0.7),rgba(20,20,28,0.85));
-      box-shadow:inset 0 1px 0 rgba(255,255,255,0.08),0 2px 8px rgba(0,0,0,0.3);
-      border:1px solid rgba(255,255,255,0.06);}
+    .nc.done{background:rgba(255,255,255,0.04);}
     .nc.locked{opacity:0.04;pointer-events:none;}
     .nc.done::after{content:'';position:absolute;width:4px;height:4px;border-radius:50%;
       background:var(--green);top:4px;right:4px;box-shadow:0 0 4px var(--green);}
@@ -88,23 +80,112 @@
     }
 
     /* ═══ ALTAR — deep dark room ═══ */
-    .altar{flex:1;position:relative;overflow:hidden;min-height:0;
-      background:radial-gradient(ellipse 80% 50% at 50% 85%,rgba(18,18,24,1),rgba(8,8,10,1));}
-    .altar::before{content:'';position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:140px;height:110%;background:linear-gradient(to bottom,transparent,rgba(255,255,255,0.012) 20%,rgba(255,255,255,0.03) 55%,rgba(255,255,255,0.01) 80%,transparent);filter:blur(20px);pointer-events:none;}
+    .altar {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      min-height: 0;
+      background-color: #1a1a1a;
+      background-image:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,0.2) 0%, transparent 50%),
+        linear-gradient(90deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.1) 25%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.9) 100%),
+        repeating-linear-gradient(180deg, transparent 0, transparent 20%, rgba(0,0,0,0.3) 20.2%, rgba(255,255,255,0.03) 20.5%, transparent 20.8%, transparent 40%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+    }
+
+    /* Single Center Spotlight Cone */
+    .altar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 240px;
+      height: 100%;
+      background: radial-gradient(ellipse 100% 100% at 50% -5%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 45%, transparent 80%);
+      filter: blur(12px);
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: screen;
+    }
+
+    /* Light Fixture Bulb */
+    .altar::after {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 35px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 0 20px 8px #fff, 0 0 60px 20px rgba(255,255,255,0.4);
+      z-index: 2;
+    }
+
     /* ═══ PEDESTAL — wide flat stage, never scales ═══ */
-    .altar-pedestal{position:absolute;bottom:0;left:0;right:0;height:36px;z-index:2;}
-    .ped-platform{position:absolute;bottom:16px;left:10%;right:10%;height:6px;
-      background:linear-gradient(180deg,#2a2a2e,#1a1a1e);
-      border-radius:2px;
-      box-shadow:0 1px 0 rgba(255,255,255,0.04),0 -1px 0 rgba(0,0,0,0.3);}
-    .ped-step1{position:absolute;bottom:8px;left:5%;right:5%;height:8px;
-      border-radius:50%;
-      background:conic-gradient(from 45deg,#0d0d0f 0%,#28282b 15%,#0d0d0f 30%,#1a1a1d 50%,#0d0d0f 70%,#28282b 85%,#0d0d0f 100%);
-      box-shadow:0 2px 0 #333,0 3px 0 #222,0 8px 20px rgba(0,0,0,0.5);}
-    .ped-step2{position:absolute;bottom:0;left:0;right:0;height:10px;
-      border-radius:50%;
-      background:conic-gradient(from 45deg,#0d0d0f 0%,#28282b 15%,#0d0d0f 30%,#1a1a1d 50%,#0d0d0f 70%,#28282b 85%,#0d0d0f 100%);
-      box-shadow:0 2px 0 #333,0 3px 0 #222,0 15px 30px rgba(0,0,0,0.6);}
+    .altar-pedestal {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 36px;
+      z-index: 2;
+    }
+
+    .altar-pedestal::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0; height: 100px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, #050505 100%);
+      z-index: 0;
+    }
+
+    /* Long continuous stage extending off-screen */
+    .ped-platform {
+      position: absolute;
+      top: 0;
+      left: -5%;
+      right: -5%;
+      height: 14px;
+      background: linear-gradient(180deg, #5a5a5c 0%, #2a2a2c 100%);
+      border-top: 1px solid rgba(255,255,255,0.25);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.8);
+      z-index: 3;
+    }
+
+    /* Semi-circle step 1 */
+    .ped-step1 {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      max-width: 280px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #444 0%, #222 100%);
+      border-top: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.9);
+      z-index: 2;
+    }
+
+    /* Semi-circle step 2 */
+    .ped-step2 {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 380px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #2a2a2c 0%, #111 100%);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 8px 20px rgba(0,0,0,1);
+      z-index: 1;
+    }
 
     /* ═══ ZOOM WRAPPER ═══ */
     .seg-zoom{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:5;}
@@ -147,6 +228,14 @@
     .blk-p::after{content:'';position:absolute;inset:-8px;border-radius:12px;
       background:radial-gradient(ellipse at 50% 50%,rgba(255,180,80,0.07) 0%,rgba(255,140,40,0.03) 40%,transparent 70%);
       pointer-events:none;}
+    /* Static prime — for fold overlay segments (no heavy animations) */
+    .blk-p-static{border-radius:6px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.08),rgba(255,255,255,0.1));
+      border:1px solid rgba(255,255,255,0.25);
+      box-shadow:inset 0 0 30px rgba(255,200,120,0.15),0 0 20px rgba(255,180,80,0.12),0 0 50px rgba(255,150,50,0.08),3px 6px 18px rgba(0,0,0,0.25);}
+    .blk-p-static::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(180deg,rgba(255,255,255,0.55),transparent);border-radius:6px 6px 0 0;}
+    .n-glow-static{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:900;letter-spacing:-1px;z-index:2;
+      color:#fff;text-shadow:0 0 4px #fff,0 0 10px rgba(255,240,220,1),0 0 20px rgba(255,210,150,0.95),0 0 40px rgba(255,180,80,0.8),0 0 70px rgba(255,150,40,0.6);}
     .n-stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:900;letter-spacing:-1px;color:rgba(100,100,105,0.45);text-shadow:0 1px 0 rgba(255,255,255,0.3),0 -1px 0 rgba(0,0,0,0.15);}
     .n-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:900;letter-spacing:-1px;z-index:2;
       color:#fff;
@@ -163,24 +252,22 @@
       background:radial-gradient(circle,rgba(255,220,140,0.28) 0%,rgba(255,180,80,0.13) 25%,rgba(255,140,40,0.05) 50%,transparent 75%);
       pointer-events:none;z-index:1;}
 
-    /* ═══ HANDLE — just the segment edge, no rectangle ═══ */
-    .handle{position:absolute;top:0;left:0;right:0;height:3px;z-index:30;
-      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18) 20%,rgba(255,255,255,0.28) 50%,rgba(255,255,255,0.18) 80%,transparent);
-      border-radius:2px 2px 0 0;cursor:grab;touch-action:none;pointer-events:all;}
-    /* Large invisible hit zone extending upward away from obelisk */
+    /* ═══ HANDLE ═══ */
+    .handle{position:absolute;top:0;left:-6px;right:-6px;height:8px;border-radius:4px 4px 0 0;cursor:grab;z-index:30;
+      background:linear-gradient(180deg,rgba(255,255,255,0.22),rgba(255,255,255,0.08));
+      border-bottom:1px solid rgba(0,0,0,0.1);touch-action:none;}
+    /* Hit zone extends AWAY from the obelisk — upward for top handle, downward for bottom */
     .handle::before{content:'';position:absolute;top:-44px;left:-8px;right:-8px;height:52px;}
-    .handle.inverted{top:auto;bottom:0;border-radius:0 0 2px 2px;
-      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18) 20%,rgba(255,255,255,0.28) 50%,rgba(255,255,255,0.18) 80%,transparent);}
+    /* Inverted handle (bottom edge) — extend downward */
     .handle.inverted::before{top:auto;bottom:-44px;}
-    /* Pulse: edge glows green */
+    /* Handle pulses green via box-shadow only — background stays metal */
     .handle.pulse{animation:handlePulse 5s ease-in-out infinite;}
     @keyframes handlePulse{
-      0%{background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1) 20%,rgba(255,255,255,0.18) 50%,rgba(255,255,255,0.1) 80%,transparent);}
-      50%{background:linear-gradient(90deg,transparent,rgba(1,176,105,0.4) 15%,rgba(52,201,138,0.7) 50%,rgba(1,176,105,0.4) 85%,transparent);
-        box-shadow:0 0 8px rgba(1,176,105,0.4),0 0 16px rgba(1,176,105,0.2);}
-      100%{background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1) 20%,rgba(255,255,255,0.18) 50%,rgba(255,255,255,0.1) 80%,transparent);}
+      0%{box-shadow:0 0 2px rgba(1,176,105,0.05);}
+      50%{box-shadow:0 0 6px rgba(1,176,105,0.6),0 -2px 10px rgba(1,176,105,0.35),0 0 20px rgba(1,176,105,0.15),inset 0 0 6px rgba(1,176,105,0.2);}
+      100%{box-shadow:0 0 2px rgba(1,176,105,0.05);}
     }
-    .handle-caret{display:none;}
+    .handle-caret{position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:7px;color:rgba(255,255,255,0.25);line-height:1;}
     .hm.idle{animation:hingeidle 5s ease-in-out infinite;}
     @keyframes hingeidle{
       0%{background:linear-gradient(180deg,rgba(255,255,255,0.18),rgba(0,0,0,0.12));box-shadow:0 1px 1px rgba(0,0,0,0.35),inset 0 1px 1px rgba(255,255,255,0.2);}
@@ -312,10 +399,8 @@
 
     /* ═══ GRID MODE TOGGLE ═══ */
     .grid-mode-toggle{display:flex;gap:2px;background:rgba(255,255,255,0.04);border-radius:8px;padding:2px;margin-top:6px;}
-    .gmt-btn{width:44px;height:32px;border-radius:6px;border:none;background:transparent;
-      cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;opacity:0.3;}
-    .gmt-btn.active{background:rgba(255,255,255,0.07);opacity:1;}
-    .gmt-btn svg{width:20px;height:20px;}
+    .gmt-btn{padding:5px 18px;border-radius:6px;border:none;background:transparent;color:rgba(255,255,255,0.25);font-family:'Lexend';font-weight:700;font-size:10px;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.5px;}
+    .gmt-btn.active{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.65);}
 
     /* ═══ BUILD CALENDAR CELLS ═══ */
     .nc-build{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:1px;padding:1px;}
@@ -380,7 +465,8 @@
     .ledger-product{font-weight:900;font-size:13px;color:rgba(255,255,255,0.5);}
 
     /* ═══ CEILING LINE ═══ */
-    .ceil-line{position:absolute;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),rgba(255,255,255,0.12),rgba(255,255,255,0.08),transparent);pointer-events:none;z-index:6;opacity:0.6;}
+    .ceil-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,80,80,0.4),rgba(255,80,80,0.6),rgba(255,80,80,0.4),transparent);pointer-events:none;z-index:6;}
+    .ceil-line::after{content:'';position:absolute;left:0;right:0;top:-6px;height:14px;background:linear-gradient(180deg,transparent,rgba(255,60,60,0.04),transparent);}
 
     /* ═══ BUILD UNDO HINGE ═══ */
     .bundo-zone{position:absolute;left:-4px;right:-4px;height:28px;z-index:25;cursor:pointer;display:flex;align-items:center;transform:translateY(-50%);touch-action:none;}
@@ -388,8 +474,14 @@
     .bundo-zone:active .bundo-mark{background:rgba(255,80,60,0.8);box-shadow:0 0 8px rgba(255,80,60,0.6);}
 
     /* ═══ SHATTER ANIMATION ═══ */
-    /* ═══ SHATTER CANVAS ═══ */
-    .shatter-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:100;}
+    .shatter-piece{position:fixed;pointer-events:none;z-index:8500;border-radius:3px;
+      background:linear-gradient(135deg,rgba(255,255,255,0.3),rgba(200,200,210,0.2));
+      border:1px solid rgba(255,255,255,0.2);}
+    @keyframes shatterFly{
+      0%{opacity:1;transform:translate(0,0) rotate(0deg);}
+      100%{opacity:0;transform:var(--tx) rotate(var(--rot));}
+    }
+
     /* ═══ DRAGGING TRINKET ═══ */
     .dragging-trinket{position:fixed;z-index:9500;pointer-events:none;border-radius:4px;
       background:linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.06),rgba(255,255,255,0.1));
@@ -403,32 +495,14 @@
 </head>
 <body>
 
-<!-- FADE OVERLAY for screen transitions -->
 <div class="fade-overlay" id="fade-overlay"></div>
 
-<!-- ═══ GRID SCREEN ═══ -->
 <div class="screen hidden" id="grid-screen">
   <div class="grid-screen-header" style="flex-direction:column;gap:4px;">
     <div class="logo">Math Things<span class="logo-bead"></span></div>
     <div class="grid-mode-toggle">
-      <button class="gmt-btn active" id="gmt-factor" title="Factor">
-        <svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Single obelisk breaking at middle hinge -->
-          <rect x="7" y="1" width="6" height="10" rx="1.5" fill="currentColor" opacity="0.9"/>
-          <!-- hinge line -->
-          <line x1="5" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
-          <!-- bottom half separating slightly -->
-          <rect x="7" y="13" width="6" height="10" rx="1.5" fill="currentColor" opacity="0.5"/>
-        </svg>
-      </button>
-      <button class="gmt-btn" id="gmt-build" title="Build">
-        <svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Three blocks stacking up — bottom largest, top smallest -->
-          <rect x="4" y="17" width="12" height="6" rx="1.5" fill="currentColor" opacity="0.5"/>
-          <rect x="5.5" y="10" width="9" height="6" rx="1.5" fill="currentColor" opacity="0.7"/>
-          <rect x="7" y="3" width="6" height="6" rx="1.5" fill="currentColor" opacity="0.95"/>
-        </svg>
-      </button>
+      <button class="gmt-btn active" id="gmt-factor">Factor</button>
+      <button class="gmt-btn" id="gmt-build">Build</button>
     </div>
   </div>
   <div class="num-grid" id="num-grid" style="flex:1;overflow-y:auto;align-content:start;"></div>
@@ -437,13 +511,11 @@
   </div>
 </div>
 
-<!-- ═══ FACTOR ALTAR SCREEN ═══ -->
 <div class="screen" id="altar-screen">
   <div class="altar-header">
     <div class="altar-numeral" id="altar-numeral">12</div>
   </div>
   <div class="altar" id="fa">
-    <canvas class="shatter-canvas" id="fz-canvas"></canvas>
     <div class="seg-zoom" id="fz"><div class="seg-stage" id="fo"></div></div>
     <div class="altar-pedestal"><div class="ped-platform"></div><div class="ped-step1"></div><div class="ped-step2"></div></div>
   </div>
@@ -453,13 +525,11 @@
   </div>
 </div>
 
-<!-- ═══ BUILD ALTAR SCREEN ═══ -->
 <div class="screen hidden" id="build-screen">
   <div class="altar-header">
     <div class="altar-numeral" id="build-numeral">2</div>
   </div>
   <div class="altar" id="ba">
-    <canvas class="shatter-canvas" id="bz-canvas"></canvas>
     <div class="ceil-line" id="bceil"></div>
     <div class="seg-zoom" id="bz"><div class="seg-stage" id="bo"></div></div>
     <div class="altar-pedestal"><div class="ped-platform"></div><div class="ped-step1"></div><div class="ped-step2"></div></div>
@@ -545,14 +615,12 @@ document.getElementById('gmt-factor').addEventListener('click',()=>{
   S.gridMode='factor';
   document.getElementById('gmt-factor').classList.add('active');
   document.getElementById('gmt-build').classList.remove('active');
-  document.getElementById('grid-screen').style.background='';
   renderGrid();
 });
 document.getElementById('gmt-build').addEventListener('click',()=>{
   S.gridMode='build';
   document.getElementById('gmt-build').classList.add('active');
   document.getElementById('gmt-factor').classList.remove('active');
-  document.getElementById('grid-screen').style.background='linear-gradient(180deg,rgba(6,8,18,1),rgba(8,10,20,1))';
   renderGrid();
 });
 
@@ -572,87 +640,23 @@ function enterAltar(n){
   numEl.onclick=isSolved?()=>goToGrid():null;
   const altar=document.getElementById('fa');
   const altarH=altar.clientHeight-50;
-  const altarW=altar.clientWidth;
   S.refAltarH=altarH;
-  // Size so the full obelisk fills ~75% of altar height
-  const targetFill=0.75;
-  const rawUnitH=Math.floor((altarH*targetFill)/n);
-  // Cap: never taller than wide (square), never smaller than 20px, never larger than altar/2
-  const maxUnitH=Math.min(Math.floor(altarH*0.5), Math.floor(altarW*0.55));
-  S.unitH=Math.max(20,Math.min(rawUnitH,maxUnitH));
-  // Square segments — width matches height, capped to fit altar width comfortably
-  S.unitW=Math.min(S.unitH,Math.floor(altarW*0.45),80);
-  S.fZoom=1;
-  S.currentFoldZoom=1;
-  // Reset seg-zoom to single-obelisk centered state
-  const zEl=document.getElementById('fz');
-  if(zEl){zEl.classList.remove('folded');zEl.style.transition='none';zEl.style.transform='translateX(-50%)';}
+  // Unit height sized so a 12-stick fills the altar comfortably
+  const refUnitH=Math.max(6,Math.min(44,Math.floor(altarH/12)));
+  S.unitH=refUnitH;
+  S.unitW=Math.min(60,Math.max(36,S.unitH*0.85));
+  // Zoom: 1-12 natural size. 13+ scale down so obelisk fits same visual space as 12
+  S.fZoom=n<=12?1:1; // kept for reference, no visual zoom yet
   S.segs=[{units:n}];
   buildDex('altar-dex-vp');
   if(isPrime(n)){
     const isNew=!S.primeDex.has(n);
     S.primeDex.add(n);
     renderSegs();renderFT();
-
-    const seg=document.querySelector('#fo .blk-p');
-    const num=document.querySelector('#fo .n-glow');
-    const rad=document.querySelector('#fo .n-radiance');
-
-    // Phase 0: start completely dark
-    if(seg){
-      seg.style.transition='none';
-      seg.style.background='linear-gradient(180deg,rgba(20,20,22,1),rgba(14,14,16,1))';
-      seg.style.boxShadow='none';
-      seg.style.border='1px solid rgba(255,255,255,0.06)';
-    }
-    if(num){num.style.opacity='0';}
-    if(rad){rad.style.opacity='0';}
-
-    // Phase 1 (400ms): sudden ignition — white-hot core erupts
     setTimeout(()=>{
-      haptic(30);
-      if(seg){
-        seg.style.transition='background 0.15s ease-in, box-shadow 0.4s ease-out, border-color 0.2s';
-        seg.style.background='linear-gradient(180deg,rgba(255,255,255,0.35),rgba(255,240,200,0.2),rgba(255,255,255,0.3))';
-        seg.style.boxShadow=`
-          inset 0 0 60px rgba(255,255,255,0.6),
-          inset 0 0 120px rgba(255,220,160,0.4),
-          0 0 60px rgba(255,220,160,0.5),
-          0 0 120px rgba(255,180,80,0.35),
-          0 0 200px rgba(255,140,40,0.2),
-          0 0 300px rgba(255,100,20,0.1)`;
-        seg.style.border='1px solid rgba(255,255,255,0.8)';
-      }
-      if(num){
-        num.style.transition='opacity 0.15s ease-in, transform 0.15s ease-in, text-shadow 0.15s';
-        num.style.opacity='1';
-        num.style.transform='translate(-50%,-50%) scale(1.15)';
-        num.style.textShadow='0 0 8px #fff,0 0 20px #fff,0 0 40px rgba(255,240,200,1),0 0 80px rgba(255,200,100,0.9),0 0 150px rgba(255,160,60,0.7)';
-      }
-    },400);
-
-    // Phase 2 (900ms): settle to normal prime look
-    setTimeout(()=>{
-      haptic([20,30,60]);
-      if(seg){
-        seg.style.transition='background 1.2s ease-out, box-shadow 1.4s ease-out, border-color 1s ease-out';
-        seg.style.background='linear-gradient(180deg,rgba(255,255,255,0.12),rgba(240,242,248,0.08),rgba(255,255,255,0.1))';
-        seg.style.boxShadow='inset 0 0 35px rgba(255,200,120,0.2),inset 0 0 70px rgba(255,160,60,0.1),0 0 25px rgba(255,180,80,0.15),0 0 60px rgba(255,150,50,0.1)';
-        seg.style.border='1px solid rgba(255,255,255,0.25)';
-      }
-      if(num){
-        num.style.transition='transform 0.6s cubic-bezier(0.34,1.56,0.64,1), text-shadow 1.2s ease-out';
-        num.style.transform='translate(-50%,-50%) scale(1)';
-        num.style.textShadow='0 0 5px #fff,0 0 12px rgba(255,242,225,1),0 0 24px rgba(255,215,155,0.98),0 0 48px rgba(255,185,85,0.85),0 0 80px rgba(255,155,45,0.65)';
-      }
-      if(rad){
-        rad.style.transition='opacity 1s ease-out';
-        rad.style.opacity='1';
-      }
       showAffirm();
-    },900);
-
-    if(isNew){setTimeout(()=>launchTrinketDrop(n,1),1800);}
+      if(isNew){setTimeout(()=>launchTrinketDrop(n,1),400);}
+    },200);
   } else {
     renderSegs();renderFT();
     if(!isSolved)scheduleHingeIdle();
@@ -716,13 +720,25 @@ function makeBlock(units,w,h,forceComposite=false,omitNumeral=false){
 
 // Reveal numerals on all segments after fold completes
 // Only targets .blk elements that are direct children of their container (not nested in hinges)
-function revealNumerals(stage,segUnits,uW,uH){
-  // Stage blocks already have numerals from makeBlock — just animate them in
-  stage.querySelectorAll('.blk').forEach(el=>{
-    const glow=el.querySelector('.n-glow');
-    const stamp=el.querySelector('.n-stamp');
-    if(glow){glow.classList.add('n-glow-reveal');}
-    if(stamp){stamp.classList.add('n-stamp-reveal');}
+function revealNumerals(overlay,segUnits,uW,uH){
+  const h=segUnits*uH;
+  // Walk the nest tree to find only the bottom-level blocks (one per segment)
+  // These are .blk elements whose parent container is NOT inside a hinge wrapper
+  // Simplest: collect all .blk, filter to those not contained within another .blk
+  const allBlks=Array.from(overlay.querySelectorAll('.blk'));
+  // A block is a leaf if it doesn't contain another .blk
+  const leafBlks=allBlks.filter(b=>b.querySelector('.blk')===null);
+  leafBlks.forEach(el=>{
+    const p=isPrime(segUnits);
+    if(p){
+      // Use blk-p-static to avoid heavy animation glitches in overlay
+      el.classList.remove('blk-c');el.classList.add('blk-p-static','blk-p-reveal');
+      const num=document.createElement('div');num.className='n-glow-static n-glow-reveal';num.textContent=segUnits;
+      num.style.fontSize=Math.min(uW*0.6,h*0.45,38)+'px';el.appendChild(num);
+    }else{
+      const num=document.createElement('div');num.className='n-stamp n-stamp-reveal';num.textContent=segUnits;
+      num.style.fontSize=Math.min(uW*0.55,h*0.4,34)+'px';el.appendChild(num);
+    }
   });
 }
 
@@ -795,16 +811,12 @@ function computeHandleState(numPieces, foldDir){
 // ════════════════════════════════════════
 function scrollDexToSlot(n, vpId, cb){
   const vp=document.getElementById(vpId);
-  if(!vp){cb&&cb();return;}
-  // Find the actual slot element and scroll so it's centered in the viewport
-  const slot=vp.querySelector(`.dex-slot[data-n="${n}"]`);
-  if(slot){
-    const slotLeft=slot.offsetLeft;
-    const slotW=slot.offsetWidth;
-    const vpW=vp.clientWidth;
-    const target=slotLeft-vpW/2+slotW/2;
-    vp.scrollTo({left:Math.max(0,target),behavior:'smooth'});
-  }
+  const container=vp?.closest('.dex-container');
+  if(!vp||!container){cb&&cb();return;}
+  const slotW=container.clientWidth/5;
+  // Slot index for n: n + 2 padding slots - 1 = n+1
+  const targetScroll=(n+1)*slotW - container.clientWidth/2 + slotW/2;
+  vp.scrollTo({left:Math.max(0,targetScroll),behavior:'smooth'});
   setTimeout(()=>{cb&&cb();},500);
 }
 
@@ -836,8 +848,12 @@ function launchTrinketDrop(primeN, segCount){
   const tw=Math.round(window.innerWidth*0.11);
   const th=52;
 
+  // Dex landing coords
   const vp=document.getElementById(vpId);
   const container=document.getElementById('altar-dex-container');
+  const dexRect=container.getBoundingClientRect();
+  const slotCenterX=dexRect.left+dexRect.width/2;
+  const landCY=dexRect.top+dexRect.height/2;
 
   // Clone the source block at its exact position, fixed over everything
   const clone=document.createElement('div');
@@ -863,54 +879,53 @@ function launchTrinketDrop(primeN, segCount){
   clone.appendChild(numEl);
   document.body.appendChild(clone);
 
-  // Phase 1: scroll dex to slot and spotlight simultaneously
+  // Phase 1: scroll dex to slot and spotlight simultaneously with compress
   vp.querySelectorAll('.dex-slot[data-n]').forEach(sl=>{
     sl.classList.toggle('dimmed',parseInt(sl.dataset.n)!==primeN);
   });
-  scrollDexToSlot(primeN,vpId,null);
+  scrollDexToSlot(primeN,vpId,null); // fire and don't wait
 
-  // Phase 2: compress to trinket size over 600ms
+  // Phase 2: compress vertically to trinket size over 600ms
   const compressDur=600;
   const scaleY=th/srcH;
   const scaleX=tw/srcW;
+  // Move to trinket size centered on source position
   clone.style.transition=`transform ${compressDur}ms cubic-bezier(0.4,0,0.6,1)`;
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    clone.style.transform=`scaleX(${scaleX}) scaleY(${scaleY})`;
-  }));
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      clone.style.transform=`scaleX(${scaleX}) scaleY(${scaleY})`;
+    });
+  });
 
-  // Phase 3: after compress + scroll settle, drop to actual slot position
+  // Phase 3: after compress, drop to dex
   setTimeout(()=>{
-    // Get slot position now that scroll has settled
-    const slot=vp.querySelector(`.dex-slot[data-n="${primeN}"]`);
-    const dexRect=container.getBoundingClientRect();
-    let landX=dexRect.left+dexRect.width/2; // fallback
-    let landY=dexRect.top+dexRect.height/2;
-    if(slot){
-      const slotRect=slot.getBoundingClientRect();
-      landX=slotRect.left+slotRect.width/2;
-      landY=slotRect.top+slotRect.height/2;
-    }
+    const compressedCX=srcCX; // still horizontally centered on source
+    const compressedCY=srcCY; // still vertically centered on source
 
-    const dropDur=400;
-    const dx=landX-srcCX;
-    const dy=landY-srcCY;
+    // Now translate to landing position
+    const dropDur=380;
+    const dx=slotCenterX-compressedCX;
+    const dy=landCY-compressedCY;
     clone.style.transition=`transform ${dropDur}ms cubic-bezier(0.4,0,1,1)`;
     clone.style.transform=`scaleX(${scaleX}) scaleY(${scaleY}) translate(${dx/scaleX}px,${dy/scaleY}px)`;
 
     setTimeout(()=>{
+      // Land
       haptic([15,10,40]);
       clone.remove();
+
       const targetSlot=vp.querySelector(`.dex-slot[data-n="${primeN}"]`);
       if(targetSlot)targetSlot.classList.add('land-flash');
+
       S.newPrimes.add(primeN);
       buildDex(vpId);
-      // Re-scroll to slot after buildDex rebuilds the DOM
-      setTimeout(()=>scrollDexToSlot(primeN,vpId,null),50);
+
       setTimeout(()=>{
         vp.querySelectorAll('.dex-slot').forEach(sl=>sl.classList.remove('dimmed','spotlight'));
       },800);
+
     },dropDur+40);
-  },compressDur+200); // extra 200ms for scroll to settle
+  },compressDur+40);
 }
 // ════════════════════════════════════════
 // NEST TREE (for fold/unspool animations)
@@ -946,8 +961,20 @@ function buildNestTree(numPieces,segH,uW,foldDir,startFolded){
 // RENDER SEGMENTS
 // ════════════════════════════════════════
 function makeHandle(inverted){
-  const handle=document.createElement('div');
-  handle.className='handle'+(inverted?' inverted':'');
+  const handle=document.createElement('div');handle.className='handle';
+  const caret=document.createElement('div');caret.className='handle-caret';caret.textContent='▲';
+  if(inverted){
+    handle.classList.add('inverted');
+    handle.style.top='auto';handle.style.bottom='0';
+    handle.style.borderRadius='0 0 4px 4px';
+    handle.style.borderBottom='none';handle.style.borderTop='1px solid rgba(0,0,0,0.1)';
+    caret.style.top='auto';caret.style.bottom='1px';
+    caret.style.transform='translateX(-50%) rotate(180deg)';
+    // Flip hit zone to extend downward
+    handle.style.setProperty('--hit-top','auto');
+    handle.style.setProperty('--hit-bottom','-4px');
+  }
+  handle.appendChild(caret);
   handle.style.touchAction='none';
   handle.addEventListener('pointerdown',e=>{if(!S.folding){e.preventDefault();beginUnspool();}});
   return handle;
@@ -1713,12 +1740,20 @@ function animateBuildOvershoot(prevH,p,finalH,target,cb){
       // Shatter at the moment it reaches ceiling
       setTimeout(()=>{
         const rect=overlay.getBoundingClientRect();
-        const altarEl=document.getElementById('ba');
-        const altarRect=altarEl.getBoundingClientRect();
         haptic([60,30,60]);
-        const fx=(rect.left+rect.width/2-altarRect.left)/altarRect.width;
-        const fy=(rect.top-altarRect.top)/altarRect.height;
-        canvasShatter('bz-canvas',altarEl,fx,Math.max(0.1,fy),28);
+        const pieces=7;
+        for(let i=0;i<pieces;i++){
+          const piece=document.createElement('div');
+          piece.className='shatter-piece';
+          const pw=Math.random()*20+10,ph=Math.random()*20+10;
+          const sx=rect.left+Math.random()*rect.width;
+          const sy=rect.top+Math.random()*rect.height;
+          const dx=`${(Math.random()-0.5)*160}px,${(Math.random()*120+60)}px`;
+          const rot=`${(Math.random()-0.5)*360}deg`;
+          piece.style.cssText=`width:${pw}px;height:${ph}px;left:${sx}px;top:${sy}px;--tx:translate(${dx});--rot:${rot};animation:shatterFly 0.5s ease-out forwards;`;
+          document.body.appendChild(piece);
+          setTimeout(()=>piece.remove(),550);
+        }
         overlay.remove();
         stage.style.visibility='visible';
         setTimeout(()=>{cb&&cb();},400);
@@ -1730,14 +1765,24 @@ function animateBuildOvershoot(prevH,p,finalH,target,cb){
 function shatterBuildObelisk(){
   const stage=document.getElementById('bo');
   const blk=stage.querySelector('.blk');
-  const altarEl=document.getElementById('ba');
-  if(!blk||!altarEl)return;
+  if(!blk)return;
+  const rect=blk.getBoundingClientRect();
   haptic([60,30,60]);
-  const blkRect=blk.getBoundingClientRect();
-  const altarRect=altarEl.getBoundingClientRect();
-  const fx=(blkRect.left+blkRect.width/2-altarRect.left)/altarRect.width;
-  const fy=(blkRect.top+blkRect.height*0.3-altarRect.top)/altarRect.height;
-  canvasShatter('bz-canvas',altarEl,fx,Math.max(0.05,fy),28);
+
+  // Create 6-8 shatter pieces
+  const pieces=7;
+  for(let i=0;i<pieces;i++){
+    const piece=document.createElement('div');
+    piece.className='shatter-piece';
+    const pw=Math.random()*20+10,ph=Math.random()*20+10;
+    const sx=rect.left+Math.random()*rect.width;
+    const sy=rect.top+Math.random()*rect.height;
+    const dx=`${(Math.random()-0.5)*160}px,${(Math.random()*120+60)}px`;
+    const rot=`${(Math.random()-0.5)*360}deg`;
+    piece.style.cssText=`width:${pw}px;height:${ph}px;left:${sx}px;top:${sy}px;--tx:translate(${dx});--rot:${rot};animation:shatterFly 0.5s ease-out forwards;`;
+    document.body.appendChild(piece);
+    setTimeout(()=>piece.remove(),550);
+  }
 }
 
 function undoBuild(){
@@ -1876,96 +1921,6 @@ function setupPinchZoom(altarId,zoomId,getDefaultZoom){
 // 1 is handled in enterAltar: isPrime(1)=false, but we pre-solve it.
 // The obelisk for 1 should show as the mirror trinket material.
 
-// ════════════════════════════════════════
-// CANVAS PARTICLE ENGINE
-// ════════════════════════════════════════
-const _cvState={};
-
-function _initCanvas(canvasId){
-  if(_cvState[canvasId])return _cvState[canvasId];
-  const el=document.getElementById(canvasId);
-  if(!el)return null;
-  const parent=el.parentElement;
-  const dpr=window.devicePixelRatio||1;
-  const w=parent.clientWidth, h=parent.clientHeight;
-  el.width=w*dpr; el.height=h*dpr;
-  el.style.width=w+'px'; el.style.height=h+'px';
-  const ctx=el.getContext('2d');
-  ctx.scale(dpr,dpr);
-  const state={el,ctx,w,h,particles:[],raf:null};
-  _cvState[canvasId]=state;
-  return state;
-}
-
-function canvasShatter(canvasId, altarEl, fracX, fracY, count=24){
-  // fracX/fracY are 0-1 fractions of the altar element dimensions
-  const cv=_initCanvas(canvasId);
-  if(!cv)return;
-  // Refresh dimensions in case layout changed
-  const dpr=window.devicePixelRatio||1;
-  const w=altarEl.clientWidth, h=altarEl.clientHeight;
-  cv.w=w; cv.h=h;
-  cv.el.width=w*dpr; cv.el.height=h*dpr;
-  cv.el.style.width=w+'px'; cv.el.style.height=h+'px';
-  cv.ctx.setTransform(dpr,0,0,dpr,0,0);
-
-  const cx=w*fracX, cy=h*fracY;
-  // Chunky Minecraft-style palette — brushed aluminum fragments + prime amber sparks
-  const colors=[
-    'rgba(220,222,226,0.95)','rgba(195,198,204,0.9)','rgba(240,241,243,0.95)',
-    'rgba(170,173,180,0.85)','rgba(255,200,100,0.8)','rgba(255,255,255,0.9)',
-    'rgba(150,153,160,0.8)'
-  ];
-  for(let i=0;i<count;i++){
-    const angle=Math.random()*Math.PI*2;
-    const speed=Math.random()*16+6;
-    cv.particles.push({
-      x:cx+(Math.random()-0.5)*30,
-      y:cy+(Math.random()-0.5)*20,
-      vx:Math.cos(angle)*speed*(0.6+Math.random()*0.8),
-      vy:Math.sin(angle)*speed*(0.6+Math.random()*0.8)-8,
-      size:Math.random()*9+4,
-      angle:Math.random()*Math.PI*2,
-      spin:(Math.random()-0.5)*0.35,
-      life:1.0,
-      decay:Math.random()*0.018+0.012,
-      color:colors[Math.floor(Math.random()*colors.length)]
-    });
-  }
-  if(!cv.raf)_runParticles(cv);
-}
-
-function _runParticles(cv){
-  const {ctx,w,h}=cv;
-  ctx.clearRect(0,0,w,h);
-  cv.particles=cv.particles.filter(p=>p.life>0);
-  for(const p of cv.particles){
-    p.x+=p.vx; p.y+=p.vy;
-    p.vy+=0.55; // gravity
-    p.vx*=0.98; // drag
-    p.angle+=p.spin;
-    p.life-=p.decay;
-    ctx.save();
-    ctx.translate(p.x,p.y);
-    ctx.rotate(p.angle);
-    ctx.globalAlpha=Math.max(0,p.life*p.life); // quadratic fade = stays solid then drops fast
-    ctx.fillStyle=p.color;
-    // Chunky square fragments
-    ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
-    // Edge highlight for 3D feel
-    ctx.fillStyle='rgba(255,255,255,0.3)';
-    ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.25);
-    ctx.restore();
-  }
-  if(cv.particles.length>0){
-    cv.raf=requestAnimationFrame(()=>_runParticles(cv));
-  } else {
-    ctx.clearRect(0,0,w,h);
-    cv.raf=null;
-  }
-}
-
-// ════════════════════════════════════════
 // INIT — cold open on 12's altar
 S.fDone.add(1);
 buildDex('altar-dex-vp');
