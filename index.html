@@ -118,51 +118,71 @@
     .altar-numeral.celebrate::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(0); width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(1,176,105,0.7) 0%,rgba(52,185,120,0.4) 30%,rgba(1,176,105,0.15) 60%,transparent 80%); animation:celebBloom 1.4s cubic-bezier(0.2,0,0.4,1) forwards; pointer-events:none; z-index:-1; }
     @keyframes celebBloom { 0% { transform:translate(-50%,-50%) scale(0); opacity:1; } 40% { transform:translate(-50%,-50%) scale(2.5); opacity:1; } 100% { transform:translate(-50%,-50%) scale(0.5); opacity:0; } }
 
-    /* ═══ 1. SUBTERRANEAN ARCHITECTURE (3D Room) ═══ */
+    /* ═══ 1. SUBTERRANEAN ARCHITECTURE (3D Bunker) ═══ */
     .altar {
-      flex: 1; position: relative; overflow: hidden; background-color: #020202;
+      flex: 1; position: relative; overflow: hidden; background-color: #0a0a0a;
     }
     .vault-room {
-      position: absolute; inset: 0; perspective: 1200px; overflow: hidden; pointer-events: none; z-index: 1;
-    }
-    .vault-wall-back {
-      position: absolute; width: 140%; height: 120%; left: -20%; top: -10%;
-      transform: translateZ(-400px);
-      background-color: #0a0a0a;
-      background-image: 
-        radial-gradient(circle at 25% 10%, rgba(255,255,255,0.5) 0%, transparent 45%),
-        radial-gradient(circle at 50% 5%, rgba(255,255,255,0.7) 0%, transparent 55%),
-        radial-gradient(circle at 75% 10%, rgba(255,255,255,0.5) 0%, transparent 45%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
-    }
-    .vault-floor {
-      position: absolute; width: 200%; height: 100%; left: -50%; bottom: -50%;
-      transform-origin: bottom center;
-      transform: rotateX(75deg) translateZ(0);
-      background-color: #050505;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
-      box-shadow: inset 0 100px 200px rgba(0,0,0,0.9);
+      position: absolute; inset: 0; perspective: 800px; perspective-origin: 50% 85%;
+      overflow: hidden; pointer-events: none; z-index: 1;
     }
 
-    /* ═══ 2. FURNITURE: CONCRETE PODIUM ═══ */
+    .vault-ceiling {
+      position: absolute; width: 120%; left: -10%; top: -5%; height: 45%;
+      transform-origin: top center; transform: rotateX(-25deg) translateZ(-80px);
+      background: linear-gradient(180deg, #0e0e10 0%, #141416 40%, #18181a 100%);
+      box-shadow: inset 0 -30px 60px rgba(0,0,0,0.6);
+    }
+    .vault-wall-back {
+      position: absolute; width: 70%; height: 55%; left: 15%; top: 5%;
+      transform: translateZ(-200px) scale(1.3);
+      background: linear-gradient(180deg, #141416 0%, #1a1a1c 30%, #161618 70%, #121214 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .vault-wall-left {
+      position: absolute; left: 0; top: 0; width: 25%; height: 100%;
+      background: linear-gradient(90deg, #0c0c0e 0%, #111113 60%, #161618 100%);
+      clip-path: polygon(0 0, 100% 15%, 100% 80%, 0 100%);
+    }
+    .vault-wall-right {
+      position: absolute; right: 0; top: 0; width: 25%; height: 100%;
+      background: linear-gradient(-90deg, #0c0c0e 0%, #111113 60%, #161618 100%);
+      clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 80%);
+    }
+    .vault-floor {
+      position: absolute; width: 120%; left: -10%; bottom: 0; height: 55%;
+      transform-origin: bottom center; transform: rotateX(35deg);
+      background: linear-gradient(180deg, #1a1a1c 0%, #141416 30%, #0e0e10 80%, #080808 100%);
+      box-shadow: inset 0 40px 80px rgba(0,0,0,0.5);
+    }
+
+    .vault-spot {
+      position: absolute; pointer-events: none; z-index: 2;
+      width: 80px; height: 200px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 30%, transparent 70%);
+    }
+    .vault-spot-1 { top: 2%; left: 20%; }
+    .vault-spot-2 { top: 0; left: 50%; transform: translateX(-50%); width: 100px; background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 35%, transparent 70%); }
+    .vault-spot-3 { top: 2%; right: 20%; }
+
+    /* ═══ 2. CONCRETE PODIUM TABLE ═══ */
     .soapstone-altar {
-      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80%; max-width: 360px; height: 75px; z-index: 15;
+      position: absolute; bottom: 0; left: 0; right: 0; height: 65px; z-index: 15;
       pointer-events: none;
     }
     .soapstone-altar::before {
       content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 40%; height: 35px;
-      background: linear-gradient(180deg, #1a1a1a 0%, #111 100%);
-      border-left: 1px solid rgba(255,255,255,0.06); border-right: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.9);
+      width: 30%; height: 100%;
+      background: linear-gradient(180deg, #222224 0%, #1a1a1c 30%, #141416 100%);
+      border-left: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05);
+      box-shadow: -8px 0 20px rgba(0,0,0,0.5), 8px 0 20px rgba(0,0,0,0.5);
     }
     .soapstone-altar::after {
-      content: ''; position: absolute; bottom: 30px; left: 0; right: 0; height: 22px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(40,40,42,1) 2%, rgba(30,30,32,1) 50%, rgba(20,20,22,1) 100%);
-      border-top: 1px solid rgba(255,255,255,0.12);
-      border-radius: 2px 2px 0 0;
-      box-shadow: 0 -2px 15px rgba(0,0,0,0.5), 0 8px 30px rgba(0,0,0,0.95), inset 0 2px 8px rgba(255,255,255,0.04);
+      content: ''; position: absolute; top: 0; left: 3%; right: 3%; height: 28px;
+      background: linear-gradient(180deg, #2a2a2e 0%, #222226 40%, #1e1e22 100%);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      border-radius: 3px 3px 0 0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.4), 0 6px 30px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.06);
     }
     
     /* ZOOM WRAPPER & OBELISK STAGE */
@@ -404,8 +424,14 @@
   </div>
   <div class="altar" id="fa">
     <div class="vault-room">
+      <div class="vault-ceiling"></div>
       <div class="vault-wall-back"></div>
+      <div class="vault-wall-left"></div>
+      <div class="vault-wall-right"></div>
       <div class="vault-floor"></div>
+      <div class="vault-spot vault-spot-1"></div>
+      <div class="vault-spot vault-spot-2"></div>
+      <div class="vault-spot vault-spot-3"></div>
     </div>
     <div class="seg-zoom" id="fz"><div class="seg-stage" id="fo"></div></div>
     <div class="soapstone-altar"></div>
@@ -426,8 +452,14 @@
   </div>
   <div class="altar" id="ba">
     <div class="vault-room">
+      <div class="vault-ceiling"></div>
       <div class="vault-wall-back"></div>
+      <div class="vault-wall-left"></div>
+      <div class="vault-wall-right"></div>
       <div class="vault-floor"></div>
+      <div class="vault-spot vault-spot-1"></div>
+      <div class="vault-spot vault-spot-2"></div>
+      <div class="vault-spot vault-spot-3"></div>
     </div>
     <div class="ceil-line" id="bceil"></div>
     <div class="seg-zoom" id="bz"><div class="seg-stage" id="bo"></div></div>
