@@ -1257,20 +1257,27 @@ function placeBuildPrime(p){
   const n=S.bNum, prevProduct=S.bProduct, newProduct=prevProduct===0?p:prevProduct*p;
   S.bStack.push({p,prevProduct}); S.bProduct=newProduct;
   
-  if (newProduct > n) {
-    S.bAnimating = true;
-    const baseH = prevProduct === 0 ? 1 : prevProduct;
-    animateBuildOvershoot(baseH, p, newProduct, n, () => { 
+  if(prevProduct === 0) {
+    if(newProduct > n) {
+      S.bStack.pop(); S.bProduct=0;
+      renderBuildStage(); renderBuildTray(); renderBuildLedger();
+      return;
+    }
+    renderBuildStage(); renderBuildTray(); renderBuildLedger();
+    if(newProduct === n) checkBuildSolved();
+    return;
+  }
+
+  S.bAnimating = true;
+  if(newProduct > n) {
+    animateBuildOvershoot(prevProduct, p, newProduct, n, () => { 
       S.bStack.pop(); S.bProduct=prevProduct; S.bAnimating=false; 
       renderBuildStage(); renderBuildTray(); renderBuildLedger(); 
     });
-    return;
+  } else {
+    renderBuildStage(); renderBuildTray(); renderBuildLedger();
+    animateBuildHinge(prevProduct, p, newProduct, n, () => { S.bAnimating=false; if(newProduct===n)checkBuildSolved(); });
   }
-  
-  S.bAnimating = true;
-  const baseH = prevProduct === 0 ? 1 : prevProduct;
-  renderBuildStage(); renderBuildTray(); renderBuildLedger();
-  animateBuildHinge(baseH, p, newProduct, n, () => { S.bAnimating=false; if(newProduct===n)checkBuildSolved(); });
 }
 
 function animateStackingOnes(p, target, uH, uW, onComplete, onShatter) {
@@ -1320,24 +1327,19 @@ function animateBuildHinge(prevH, p, finalH, target, cb){
   const stage = document.getElementById('bo'), altar = document.getElementById('ba'), uH = S.bUnitH, uW = S.bUnitW, segH = prevH * uH;
   stage.style.visibility = 'hidden';
   const overlay = document.createElement('div');
-  overlay.style.cssText = `position:absolute;bottom:85px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;height:${segH}px;overflow:visible;`;
+  overlay.style.cssText = `position:absolute;bottom:85px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
   const base = makeBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; overlay.appendChild(base);
   
-  const copies = p - 1, phaseDur = 400, pause = 60; let topEl = base; const arms = [];
+  const copies = p - 1, phaseDur = 500, pause = 80;
+  const arms = [];
   for(let i=0; i<copies; i++){
-    const dir = i % 2 === 0 ? -1 : 1; 
-    const origin = dir < 0 ? '0% 100%' : '100% 100%';
-    const rot = dir < 0 ? -180 : 180;
-    const hw = document.createElement('div'); 
-    hw.style.cssText = `position:absolute;bottom:${segH}px;left:0;width:${uW}px;height:0;transform-origin:${origin};transform:rotate(${rot}deg);`;
-    const blk = makeBlock(prevH, uW, segH, false, false); blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
-    if(i % 2 === 0) {
-        blk.style.transform = 'rotate(180deg)';
-        const num = blk.querySelector('.n-stamp, .n-glow, .n-mirror');
-        if (num) num.style.setProperty('--rot', '180deg');
-    }
-    hw.appendChild(blk); topEl.appendChild(hw); arms.push(hw); topEl = hw;
+    const pivotBottom = (i + 1) * segH;
+    const hw = document.createElement('div');
+    hw.style.cssText = `position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(180deg);`;
+    const blk = makeBlock(prevH, uW, segH, false, false);
+    blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
+    hw.appendChild(blk); overlay.appendChild(hw); arms.push(hw);
   }
   arms.forEach((hw,i) => { setTimeout(() => { hw.style.transition = `transform ${phaseDur}ms var(--ease-heavy)`; hw.style.transform = 'rotate(0deg)'; haptic(20); }, i * (phaseDur+pause)); });
   setTimeout(() => { overlay.remove(); stage.style.visibility = 'visible'; renderBuildStage(); cb&&cb(); }, copies*(phaseDur+pause)+200);
@@ -1348,49 +1350,42 @@ function animateBuildOvershoot(prevH, p, finalH, target, cb){
   stage.style.visibility = 'hidden';
   
   const overlay = document.createElement('div');
-  overlay.style.cssText = `position:absolute;bottom:85px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;height:${segH}px;overflow:visible;`;
+  overlay.style.cssText = `position:absolute;bottom:85px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
   
   const base = makeBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; overlay.appendChild(base);
   
-  const copies = p - 1, phaseDur = 400, pause = 60; let topEl = base; const arms = [];
+  const copies = p - 1, phaseDur = 500, pause = 80;
+  const arms = [];
   for(let i=0; i<copies; i++){
-    const dir = i % 2 === 0 ? -1 : 1; 
-    const origin = dir < 0 ? '0% 100%' : '100% 100%';
-    const rot = dir < 0 ? -180 : 180;
-    const hw = document.createElement('div'); 
-    hw.style.cssText = `position:absolute;bottom:${segH}px;left:0;width:${uW}px;height:0;transform-origin:${origin};transform:rotate(${rot}deg);`;
-    const blk = makeBlock(prevH, uW, segH, false, false); blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
-    if(i % 2 === 0) {
-        blk.style.transform = 'rotate(180deg)';
-        const num = blk.querySelector('.n-stamp, .n-glow, .n-mirror');
-        if (num) num.style.setProperty('--rot', '180deg');
-    }
-    hw.appendChild(blk); topEl.appendChild(hw); arms.push({hw, rot, dir}); topEl = hw;
+    const pivotBottom = (i + 1) * segH;
+    const hw = document.createElement('div');
+    hw.style.cssText = `position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(180deg);`;
+    const blk = makeBlock(prevH, uW, segH, false, false);
+    blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
+    hw.appendChild(blk); overlay.appendChild(hw); arms.push(hw);
   }
   
   let collisionArm = -1, collisionAngle = 0;
   for(let i=0; i<copies; i++){
-    const pivotHeight = (i + 1) * segH;
-    const headroom = ceilPx - pivotHeight;
+    const pivotY = (i + 1) * segH;
+    const headroom = ceilPx - pivotY;
     if(headroom >= segH) continue;
-    
-    const cosCollision = Math.max(-1, Math.min(1, headroom / segH));
-    const absAngle = Math.acos(cosCollision) * (180 / Math.PI); 
-    collisionAngle = arms[i].dir < 0 ? -absAngle : absAngle; 
+    const cosA = Math.max(-1, Math.min(1, headroom / segH));
+    collisionAngle = Math.acos(cosA) * (180 / Math.PI);
     collisionArm = i; break;
   }
   const safeCount = collisionArm >= 0 ? collisionArm : copies;
   
-  arms.forEach((item,i) => { if(i < safeCount) setTimeout(() => { item.hw.style.transition = `transform ${phaseDur}ms var(--ease-heavy)`; item.hw.style.transform = 'rotate(0deg)'; haptic(20); }, i * (phaseDur+pause)); });
+  arms.forEach((hw,i) => { if(i < safeCount) setTimeout(() => { hw.style.transition = `transform ${phaseDur}ms var(--ease-heavy)`; hw.style.transform = 'rotate(0deg)'; haptic(20); }, i * (phaseDur+pause)); });
   
   if(collisionArm >= 0){
-    const fraction = (180 - Math.abs(collisionAngle)) / 180; 
+    const fraction = (180 - collisionAngle) / 180;
     const collisionDur = Math.max(120, Math.round(phaseDur * fraction));
     setTimeout(() => {
-      const hw = arms[collisionArm].hw; hw.style.transition = `transform ${collisionDur}ms var(--ease-heavy)`; hw.style.transform = `rotate(${collisionAngle}deg)`; haptic(20);
+      const hw = arms[collisionArm]; hw.style.transition = `transform ${collisionDur}ms var(--ease-heavy)`; hw.style.transform = `rotate(${collisionAngle}deg)`; haptic(20);
       setTimeout(() => {
-        hw.style.display = 'none'; 
+        arms.forEach(a => { a.style.display = 'none'; });
         triggerShatter(overlay);
         setTimeout(() => { overlay.remove(); stage.style.visibility = 'visible'; cb&&cb(); }, 400);
       }, collisionDur + 30);
@@ -1406,25 +1401,20 @@ function undoBuild(){
   const stage=document.getElementById('bo'), altar=document.getElementById('ba'), uH=S.bUnitH, uW=S.bUnitW, segH=prevProduct*uH;
   stage.style.visibility='hidden';
   const overlay=document.createElement('div');
-  overlay.style.cssText=`position:absolute;bottom:85px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;height:${segH}px;overflow:visible;`;
+  overlay.style.cssText=`position:absolute;bottom:85px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
   const base=makeBlock(prevProduct,uW,segH); base.style.position='absolute';base.style.bottom='0';base.style.left='0'; overlay.appendChild(base);
-  const copies=p-1, phaseDur=350, pause=50; let topEl=base; const arms=[];
+  const copies=p-1, phaseDur=350, pause=50;
+  const arms=[];
   for(let i=0;i<copies;i++){
-    const dir = i % 2 === 0 ? -1 : 1; 
-    const origin = dir < 0 ? '0% 100%' : '100% 100%';
-    const rot = dir < 0 ? -180 : 180;
-    const hw=document.createElement('div'); hw.style.cssText=`position:absolute;bottom:${segH}px;left:0;width:${uW}px;height:0;transform-origin:${origin};transform:rotate(0deg);`;
+    const pivotBottom = (i + 1) * segH;
+    const hw=document.createElement('div');
+    hw.style.cssText=`position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(0deg);`;
     const blk=makeBlock(prevProduct,uW,segH,false,false); blk.style.position='absolute';blk.style.bottom='0';blk.style.left='0';
-    if(i % 2 === 0) {
-        blk.style.transform = 'rotate(180deg)';
-        const num = blk.querySelector('.n-stamp, .n-glow, .n-mirror');
-        if (num) num.style.setProperty('--rot', '180deg');
-    }
-    hw.appendChild(blk); topEl.appendChild(hw); arms.push({hw, rot}); topEl=hw;
+    hw.appendChild(blk); overlay.appendChild(hw); arms.push(hw);
   }
   const reversedArms=[...arms].reverse();
-  reversedArms.forEach((item,i)=>{ setTimeout(()=>{ item.hw.style.transition=`transform ${phaseDur}ms var(--ease-heavy)`; item.hw.style.transform=`rotate(${item.rot}deg)`; haptic(15); },i*(phaseDur+pause)); });
+  reversedArms.forEach((hw,i)=>{ setTimeout(()=>{ hw.style.transition=`transform ${phaseDur}ms var(--ease-heavy)`; hw.style.transform='rotate(180deg)'; haptic(15); },i*(phaseDur+pause)); });
   setTimeout(()=>{ overlay.remove(); S.bStack.pop(); S.bProduct=prevProduct; stage.style.visibility='visible'; S.bAnimating=false; renderBuildStage();renderBuildTray();renderBuildLedger(); }, reversedArms.length*(phaseDur+pause)+150);
 }
 
