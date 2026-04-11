@@ -48,8 +48,12 @@
       transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
     .footer-bead {
-      display:inline-block; width:0.22em; height:0.22em; border-radius:50%; margin-bottom:0.08em;
-      background: linear-gradient(135deg,#d8d8d8,#a0a0a0,#d0d0d0);
+      display:inline-block; width:0.22em; height:0.22em; border-radius:50%;
+      margin-left:0.04em; margin-bottom:0.08em;
+      background:
+        radial-gradient(circle at 33% 28%,rgba(255,255,255,0.7) 0%,rgba(255,255,255,0.2) 40%,transparent 65%),
+        radial-gradient(circle at 67% 72%,rgba(0,0,0,0.1) 0%,transparent 55%),
+        linear-gradient(135deg,#d8d8d8,#a8a8a8,#c0c0c0);
       vertical-align: baseline;
     }
 
@@ -180,29 +184,34 @@
     .blk-p, .blk-p-static, .fs.fp, .dex-trinket {
       border-radius: 4px;
       background:
-        repeating-linear-gradient(180deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 3px),
-        linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(200,180,160,0.06) 30%, rgba(120,80,40,0.04) 70%, rgba(255,255,255,0.1) 100%);
-      border: 1px solid rgba(255,200,120,0.25);
+        repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 3px),
+        radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.12) 0%, rgba(255,220,150,0.08) 20%, rgba(255,140,40,0.06) 40%, rgba(140,40,80,0.04) 60%, rgba(40,10,30,0.15) 80%, rgba(10,5,15,0.4) 100%);
+      border: 1px solid rgba(255,180,80,0.3);
       box-shadow:
-        inset 0 0 20px rgba(255,160,60,0.5),
-        inset 0 0 50px rgba(255,120,30,0.35),
-        inset 0 0 90px rgba(200,60,20,0.2),
-        inset 0 0 130px rgba(140,40,80,0.15),
-        0 0 15px rgba(255,140,40,0.3),
-        0 4px 10px rgba(0,0,0,0.5);
+        inset 0 0 15px rgba(255,255,220,0.3),
+        inset 0 0 35px rgba(255,180,60,0.5),
+        inset 0 0 65px rgba(255,120,20,0.4),
+        inset 0 0 100px rgba(200,50,15,0.3),
+        inset 0 0 140px rgba(140,30,70,0.2),
+        0 0 20px rgba(255,160,40,0.4),
+        0 0 40px rgba(255,100,20,0.15),
+        0 4px 12px rgba(0,0,0,0.5);
       overflow: hidden; position: relative;
     }
     .blk-p::before {
       content: ''; position: absolute; inset: 0; border-radius: 3px; pointer-events: none;
       background:
-        radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 60%),
-        radial-gradient(ellipse at 30% 40%, rgba(180,80,200,0.12) 0%, transparent 40%),
-        radial-gradient(ellipse at 70% 60%, rgba(200,40,60,0.1) 0%, transparent 40%);
+        radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.15) 0%, rgba(255,240,200,0.08) 25%, transparent 55%),
+        radial-gradient(ellipse at 35% 30%, rgba(200,80,220,0.15) 0%, rgba(160,40,120,0.08) 30%, transparent 50%),
+        radial-gradient(ellipse at 65% 70%, rgba(220,40,60,0.12) 0%, rgba(180,30,50,0.06) 30%, transparent 50%),
+        radial-gradient(ellipse at 50% 20%, rgba(255,200,100,0.1) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 80%, rgba(255,200,100,0.1) 0%, transparent 40%);
     }
     .blk-p::after {
-      content: ''; position: absolute; top: 2px; bottom: 2px; left: 0; right: 0; pointer-events: none; border-radius: 3px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 8%, transparent 92%, rgba(255,255,255,0.15) 100%);
-      border-top: 1px solid rgba(255,200,120,0.2); border-bottom: 1px solid rgba(80,40,20,0.3);
+      content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: 3px;
+      background:
+        linear-gradient(180deg, rgba(200,160,100,0.25) 0%, rgba(200,160,100,0.05) 4%, transparent 10%, transparent 90%, rgba(200,160,100,0.05) 96%, rgba(200,160,100,0.2) 100%);
+      border-top: 1px solid rgba(255,200,100,0.3); border-bottom: 1px solid rgba(60,30,15,0.4);
     }
     
     .blk-m {
@@ -222,13 +231,14 @@
       position: absolute; top: 50%; left: 50%; font-weight: 900; letter-spacing: -1px; z-index: 3; color: #fff; 
       transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
       text-shadow:
-        0 0 3px #fff,
-        0 0 8px #fff,
-        0 0 18px rgba(255,245,230,0.95),
-        0 0 35px rgba(255,200,120,0.85),
-        0 0 60px rgba(255,160,60,0.6),
-        0 0 100px rgba(255,120,20,0.4),
-        0 0 160px rgba(200,60,10,0.25);
+        0 0 2px #fff,
+        0 0 6px #fff,
+        0 0 14px rgba(255,255,255,0.95),
+        0 0 28px rgba(255,240,200,0.9),
+        0 0 50px rgba(255,200,100,0.7),
+        0 0 80px rgba(255,150,40,0.5),
+        0 0 120px rgba(255,100,15,0.35),
+        0 0 180px rgba(200,50,10,0.2);
     }
 
     /* ═══ 3. SIGNATURE BEAD HINGE (Door-hinge profile) ═══ */
@@ -1079,9 +1089,9 @@ function checkFSolved(){
     const numEl=document.getElementById('altar-numeral');
     numEl.onclick=()=>goToGrid();
     setTimeout(()=>{
-      showAffirm(); numEl.classList.add('celebrate');
-      setTimeout(()=>{ numEl.classList.remove('celebrate'); numEl.classList.add('solved'); },1100);
-    },1600);
+      showAffirm(); numEl.classList.add('celebrate'); haptic([20,25,20,25,40]);
+      setTimeout(()=>{ numEl.classList.remove('celebrate'); numEl.classList.add('solved'); },1400);
+    },300);
   }
 }
 
@@ -1391,7 +1401,7 @@ function animateBuildHinge(prevH, p, finalH, target, cb){
     const pivotBottom = (i + 1) * segH;
     const hw = document.createElement('div');
     hw.style.cssText = `position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(180deg);z-index:${5-i};`;
-    const blk = makeBlock(prevH, uW, segH, true, true);
+    const blk = makeBlock(prevH, uW, segH, false, true);
     blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
     hw.appendChild(blk); overlay.appendChild(hw); arms.push({hw, blk});
   }
@@ -1399,8 +1409,11 @@ function animateBuildHinge(prevH, p, finalH, target, cb){
   const allLandedTime = copies*(phaseDur+pause)+200;
   setTimeout(() => {
     arms.forEach(({blk},i) => {
-      const num = document.createElement('div'); num.className = 'n-stamp'; num.textContent = prevH;
-      num.style.fontSize = Math.min(uW*0.55, segH*0.4, 34)+'px'; num.style.opacity='0';
+      const p2 = isPrime(prevH);
+      const num = document.createElement('div');
+      num.className = p2 ? 'n-glow' : 'n-stamp';
+      num.textContent = prevH;
+      num.style.fontSize = Math.min(uW*(p2?0.6:0.55), segH*(p2?0.45:0.4), p2?38:34)+'px'; num.style.opacity='0';
       blk.appendChild(num);
       gsap.to(num, {opacity:1, duration:0.25, delay:i*0.08});
     });
@@ -1426,7 +1439,7 @@ function animateBuildOvershoot(prevH, p, finalH, target, cb){
     const pivotBottom = (i + 1) * segH;
     const hw = document.createElement('div');
     hw.style.cssText = `position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(180deg);z-index:${5-i};`;
-    const blk = makeBlock(prevH, uW, segH, true, true);
+    const blk = makeBlock(prevH, uW, segH, false, true);
     blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
     hw.appendChild(blk); overlay.appendChild(hw); arms.push(hw);
   }
