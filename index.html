@@ -1253,32 +1253,18 @@ function placeBuildPrime(p){
   
   if (newProduct > n) {
     S.bAnimating = true;
-    if(prevProduct === 0) {
-      animateStackingOnes(p, n, S.bUnitH, S.bUnitW, null, () => {
-        S.bStack.pop(); S.bProduct=0; S.bAnimating=false; 
-        renderBuildStage(); renderBuildTray(); renderBuildLedger();
-      });
-    } else { 
-      animateBuildOvershoot(prevProduct, p, newProduct, n, () => { 
-        S.bStack.pop(); S.bProduct=prevProduct; S.bAnimating=false; 
-        renderBuildStage(); renderBuildTray(); renderBuildLedger(); 
-      }); 
-    }
+    const baseH = prevProduct === 0 ? 1 : prevProduct;
+    animateBuildOvershoot(baseH, p, newProduct, n, () => { 
+      S.bStack.pop(); S.bProduct=prevProduct; S.bAnimating=false; 
+      renderBuildStage(); renderBuildTray(); renderBuildLedger(); 
+    });
     return;
   }
   
   S.bAnimating = true;
-  if(prevProduct === 0) {
-    animateStackingOnes(p, n, S.bUnitH, S.bUnitW, () => {
-        S.bAnimating = false;
-        renderBuildStage(); renderBuildTray(); renderBuildLedger();
-        if (newProduct === n) checkBuildSolved();
-    }, null);
-    return;
-  }
-  
+  const baseH = prevProduct === 0 ? 1 : prevProduct;
   renderBuildStage(); renderBuildTray(); renderBuildLedger();
-  animateBuildHinge(prevProduct, p, newProduct, n, () => { S.bAnimating=false; if(newProduct===n)checkBuildSolved(); });
+  animateBuildHinge(baseH, p, newProduct, n, () => { S.bAnimating=false; if(newProduct===n)checkBuildSolved(); });
 }
 
 function animateStackingOnes(p, target, uH, uW, onComplete, onShatter) {
