@@ -68,8 +68,10 @@
     }
     .logo { display: inline-flex; align-items: baseline; font-weight:900; font-size:1.5rem; color: var(--brand-text-main); letter-spacing:-0.05em; user-select: none; }
     .grid-mode-toggle { display:flex; gap:2px; background:rgba(0,0,0,0.06); border-radius:12px; padding:3px; }
-    .gmt-btn { padding:6px 16px; border-radius:9px; border:none; background:transparent; color:var(--brand-text-gray); font-family:'Lexend',sans-serif; font-weight:600; font-size:0.78rem; cursor:pointer; transition:all 0.2s ease; }
-    .gmt-btn.active { background:var(--brand-surface); color:var(--brand-text-main); box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    .gmt-btn { padding:6px 12px; border-radius:9px; border:none; background:transparent; cursor:pointer; transition:all 0.2s ease; display:flex; align-items:center; justify-content:center; line-height:0; }
+    .gmt-btn.active { background:var(--brand-surface); box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    .gmt-btn svg { width:32px; height:28px; opacity:0.45; transition:opacity 0.2s; }
+    .gmt-btn.active svg { opacity:0.85; }
     
     .num-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(70px, 1fr)); gap:16px; padding:24px 20px; flex:1; align-content:start; overflow-y:auto; }
     .nc { 
@@ -341,8 +343,26 @@
   <div class="grid-screen-header">
     <div class="logo">Math Things<span class="logo-bead"></span></div>
     <div class="grid-mode-toggle">
-      <button class="gmt-btn active" id="gmt-factor">Factor</button>
-      <button class="gmt-btn" id="gmt-build">Build</button>
+      <button class="gmt-btn active" id="gmt-factor"><svg viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="al" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#d8d8dc"/><stop offset="50%" stop-color="#a0a0a5"/><stop offset="100%" stop-color="#c0c0c5"/></linearGradient>
+        </defs>
+        <rect x="10" y="14" width="8" height="12" rx="1" fill="url(#al)" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+        <rect x="10" y="2" width="8" height="12" rx="1" fill="url(#al)" stroke="rgba(255,255,255,0.3)" stroke-width="0.5" transform="rotate(-20 10 14)"/>
+        <circle cx="10.5" cy="14" r="2" fill="#555" stroke="#888" stroke-width="0.5"/>
+        <path d="M5 5 Q2 8 4 11" stroke="#86868B" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M4 11 L2.5 9 M4 11 L5.8 9.5" stroke="#86868B" stroke-width="1.2" stroke-linecap="round"/>
+      </svg></button>
+      <button class="gmt-btn" id="gmt-build"><svg viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="pr" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#e8b060"/><stop offset="50%" stop-color="#c07030"/><stop offset="100%" stop-color="#e0a050"/></linearGradient>
+        </defs>
+        <rect x="12" y="14" width="8" height="12" rx="1" fill="url(#pr)" stroke="rgba(255,200,100,0.4)" stroke-width="0.5"/>
+        <rect x="12" y="2" width="8" height="12" rx="1" fill="url(#pr)" stroke="rgba(255,200,100,0.4)" stroke-width="0.5" transform="rotate(40 16 14)"/>
+        <circle cx="16" cy="14" r="2" fill="#555" stroke="#888" stroke-width="0.5"/>
+        <path d="M27 8 Q29 12 26 16" stroke="#86868B" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M26 16 L28 14.2 M26 16 L24.5 14" stroke="#86868B" stroke-width="1.2" stroke-linecap="round"/>
+      </svg></button>
     </div>
   </div>
   <div class="num-grid" id="num-grid"></div>
