@@ -48,13 +48,11 @@
       transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
     .footer-bead {
-      display:inline-block; width:0.2em; height:0.2em; border-radius:50%;
-      margin-left:0.02em;
-      background:
-        radial-gradient(circle at 33% 28%,rgba(255,255,255,0.7) 0%,rgba(255,255,255,0.2) 40%,transparent 65%),
-        radial-gradient(circle at 67% 72%,rgba(0,0,0,0.1) 0%,transparent 55%),
-        linear-gradient(135deg,#d8d8d8,#a8a8a8,#c0c0c0);
-      vertical-align: 0.08em;
+      display:inline-block; width:0.22em; height:0.22em; border-radius:50%;
+      margin-bottom:0.08em;
+      background: linear-gradient(135deg, #d8d8d8, #a0a0a0, #d0d0d0);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      vertical-align: baseline;
     }
 
     /* GRID SCREEN */
@@ -96,8 +94,8 @@
     .app-footer {
       text-align: center; padding: 24px; font-size: 0.65rem; font-weight: 700;
       letter-spacing: 1.5px; text-transform: uppercase; color: var(--brand-text-light);
-      background: var(--brand-bg); border-top: 1px solid var(--brand-border);
-      flex-shrink: 0; z-index: 10; display: flex; justify-content: center; align-items: center; gap: 4px;
+      background: var(--brand-bg);
+      flex-shrink: 0; z-index: 10;
     }
     .altar-screen-footer { background: #050505; border-top: 1px solid #111; color: #444; }
 
@@ -167,27 +165,27 @@
 
     /* ═══ 2. CONCRETE PODIUM TABLE ═══ */
     .soapstone-altar {
-      position: absolute; bottom: 0; left: 0; right: 0; height: 65px; z-index: 15;
+      position: absolute; bottom: 0; left: 0; right: 0; height: 85px; z-index: 15;
       pointer-events: none;
     }
     .soapstone-altar::before {
       content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 30%; height: 100%;
-      background: linear-gradient(180deg, #222224 0%, #1a1a1c 30%, #141416 100%);
+      width: 35%; height: 100%;
+      background: linear-gradient(180deg, #242426 0%, #1c1c1e 30%, #141416 100%);
       border-left: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05);
-      box-shadow: -8px 0 20px rgba(0,0,0,0.5), 8px 0 20px rgba(0,0,0,0.5);
+      box-shadow: -10px 0 25px rgba(0,0,0,0.6), 10px 0 25px rgba(0,0,0,0.6);
     }
     .soapstone-altar::after {
-      content: ''; position: absolute; top: 0; left: 3%; right: 3%; height: 28px;
-      background: linear-gradient(180deg, #2a2a2e 0%, #222226 40%, #1e1e22 100%);
-      border-top: 1px solid rgba(255,255,255,0.1);
-      border-radius: 3px 3px 0 0;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.4), 0 6px 30px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.06);
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 32px;
+      background: linear-gradient(180deg, #2e2e32 0%, #26262a 30%, #202024 100%);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      border-radius: 2px 2px 0 0;
+      box-shadow: 0 -6px 25px rgba(0,0,0,0.5), 0 8px 35px rgba(0,0,0,0.95), inset 0 2px 0 rgba(255,255,255,0.06);
     }
     
-    /* ZOOM WRAPPER & OBELISK STAGE */
-    .seg-zoom { position: absolute; bottom: 55px; left: 50%; transform: translateX(0); transform-origin: 0% 100%; z-index: 5; filter: drop-shadow(0 25px 25px rgba(0,0,0,0.8)); }
-    .seg-zoom.folded { transform: none; z-index: 16; }
+    /* ZOOM WRAPPER & OBELISK STAGE — sits on the back stage, behind the podium */
+    .seg-zoom { position: absolute; bottom: 100px; left: 50%; transform: translateX(0) scale(0.85); transform-origin: 50% 100%; z-index: 4; filter: drop-shadow(0 20px 20px rgba(0,0,0,0.7)); }
+    .seg-zoom.folded { transform: scale(0.85); z-index: 4; }
     .seg-stage { display: flex; align-items: flex-end; gap: 3px; }
 
     /* GREEN NUDGES */
@@ -301,7 +299,7 @@
 
     /* FACTOR TRAY (On Concrete Podium) */
     .f-tray {
-      position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%);
+      position: absolute; bottom: 58px; left: 50%; transform: translateX(-50%);
       width: 85vw; max-width: 450px; padding: 8px 10px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
       z-index: 20; pointer-events: all;
     }
@@ -576,7 +574,7 @@ function enterAltar(n) {
   numEl.onclick = isSolved ? () => goToGrid() : null;
   
   const altar = document.getElementById('fa');
-  let safeAltarH = altar.clientHeight - 100;
+  let safeAltarH = altar.clientHeight - 145;
   if (safeAltarH <= 0) safeAltarH = 500; 
   S.refAltarH = safeAltarH; 
   
@@ -986,7 +984,7 @@ function doFold(f, swipeSide, clickedZone) {
   const altar = document.getElementById('fa');
   const overlay = document.createElement('div');
   
-  overlay.style.cssText = `position:absolute;bottom:55px;left:50%;margin-left:${-uW/2}px;z-index:50;pointer-events:none;`;
+  overlay.style.cssText = `position:absolute;bottom:100px;left:50%;margin-left:${-uW/2}px;z-index:50;pointer-events:none;`;
 
   const foldZoom = calcFoldZoom(numPieces, f, S.foldDir);
   const zoomEl = document.getElementById('fz');
@@ -1067,7 +1065,7 @@ function beginUnspool(){
   stage.style.visibility='hidden';
 
   const overlay=document.createElement('div');
-  overlay.style.cssText=`position:absolute;bottom:55px;left:50%;margin-left:${-uW/2}px;z-index:50;`;
+  overlay.style.cssText=`position:absolute;bottom:100px;left:50%;margin-left:${-uW/2}px;z-index:50;`;
   altar.appendChild(overlay);
 
   const{root,hinges}=buildNestTree(numSegs,segH,uW,S.foldDir,true);
@@ -1267,7 +1265,7 @@ function enterBuild(n){
   numEl.onclick=isSolved?()=>goToGrid():null;
 
   const altar=document.getElementById('ba');
-  let safeAltarH = altar.clientHeight - 100;
+  let safeAltarH = altar.clientHeight - 145;
   if(safeAltarH <= 0) safeAltarH = window.innerHeight * 0.5; 
   const neededHeight = n * S.bUnitH;
   S.bZoom = neededHeight > safeAltarH ? (safeAltarH / neededHeight) : 1;
@@ -1277,7 +1275,7 @@ function enterBuild(n){
 
   const ceil=document.getElementById('bceil');
   const ceilPx=n*S.bUnitH;
-  ceil.style.bottom = `calc(55px + ${ceilPx * S.bZoom}px)`;
+  ceil.style.bottom = `calc(100px + ${ceilPx * S.bZoom}px)`;
   ceil.style.top = 'auto';
 
   buildDex('build-dex-vp');
@@ -1464,7 +1462,7 @@ function animateBuildHinge(prevH, p, finalH, target, cb){
   const stage = document.getElementById('bo'), altar = document.getElementById('ba'), uH = S.bUnitH, uW = S.bUnitW, segH = prevH * uH;
   stage.style.visibility = 'hidden';
   const overlay = document.createElement('div');
-  overlay.style.cssText = `position:absolute;bottom:55px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
+  overlay.style.cssText = `position:absolute;bottom:100px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
   const base = makeBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; base.style.zIndex = '10'; overlay.appendChild(base);
   
@@ -1501,7 +1499,7 @@ function animateBuildOvershoot(prevH, p, finalH, target, cb){
   stage.style.visibility = 'hidden';
   
   const overlay = document.createElement('div');
-  overlay.style.cssText = `position:absolute;bottom:55px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
+  overlay.style.cssText = `position:absolute;bottom:100px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
   
   const base = makeBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; base.style.zIndex = '10'; overlay.appendChild(base);
@@ -1554,7 +1552,7 @@ function undoBuild(){
   const stage=document.getElementById('bo'), altar=document.getElementById('ba'), uH=S.bUnitH, uW=S.bUnitW, segH=prevProduct*uH;
   stage.style.visibility='hidden';
   const overlay=document.createElement('div');
-  overlay.style.cssText=`position:absolute;bottom:55px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
+  overlay.style.cssText=`position:absolute;bottom:100px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
   const base=makeBlock(prevProduct,uW,segH); base.style.position='absolute';base.style.bottom='0';base.style.left='0'; overlay.appendChild(base);
   const copies=p-1, phaseDur=350, pause=50;
