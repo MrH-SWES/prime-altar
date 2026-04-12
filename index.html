@@ -34,34 +34,42 @@
     /* BRAND HEADER */
     .fixed-logo {
       position: absolute; top: 16px; left: 24px; z-index: 100;
-      font-weight: 900; font-size: 16px; color: rgba(255,255,255,0.4); letter-spacing: -0.03em;
-      cursor: pointer; display: flex; align-items: baseline; transition: color 0.2s;
+      font-weight: 900; font-size: 1.5rem; color: rgba(255,255,255,0.4); letter-spacing: -0.05em;
+      cursor: pointer; display: inline-flex; align-items: baseline; transition: color 0.2s; user-select: none;
     }
     .fixed-logo:hover { color: #fff; }
 
-    .logo-bead, .footer-bead { 
-      display:inline-block; width:0.22em; height:0.22em; margin-left:0.04em; border-radius:50%; 
+    .logo-bead {
+      display:inline-block; width:0.22em; height:0.22em; margin-left:0.04em; margin-bottom:0.08em; border-radius:50%; flex-shrink:0;
       background: radial-gradient(circle at 33% 28%,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.3) 40%,transparent 65%),
                   radial-gradient(circle at 67% 72%,rgba(0,0,0,0.15) 0%,transparent 55%),
-                  linear-gradient(135deg,#efefef,#d0d0d0,#a8a8a8,#c0c0c0,#e0e0e0);
-      box-shadow: inset 1px 1px 2px rgba(255,255,255,0.8),inset -1px -1px 2px rgba(0,0,0,0.2),0 2px 4px rgba(0,0,0,0.3);
+                  linear-gradient(135deg,#efefef 0%,#d0d0d0 25%,#a8a8a8 50%,#c0c0c0 75%,#e0e0e0 100%);
+      box-shadow: inset 1px 1px 2px rgba(255,255,255,0.8),inset -1px -1px 2px rgba(0,0,0,0.2),0 2px 5px rgba(0,0,0,0.22);
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .logo-bead { margin-bottom:0.08em; flex-shrink: 0; }
-    .footer-bead { width: 0.35em; height: 0.35em; margin: 0 2px; vertical-align: baseline; }
+    .footer-bead {
+      display:inline-block; width:0.22em; height:0.22em; border-radius:50%;
+      margin-bottom:0.08em;
+      background: linear-gradient(135deg, #d8d8d8, #a0a0a0, #d0d0d0);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      vertical-align: baseline;
+    }
 
     /* GRID SCREEN */
     #grid-screen { background: var(--brand-bg); color: var(--brand-text-main); }
     #grid-screen .fixed-logo { display: none; } 
     .grid-screen-header { 
-      display:flex; flex-direction:column; justify-content:center; align-items:center; gap:12px; 
-      padding:16px 24px; flex-shrink:0; 
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 32px; height:60px; flex-shrink:0; 
       background: var(--brand-glass); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
       border-bottom: 1px solid var(--brand-border); z-index: 100; 
     }
-    .logo { display: inline-flex; align-items: baseline; font-weight:900; font-size:1.4rem; color: var(--brand-text-main); letter-spacing:-0.05em; cursor: default; }
+    .logo { display: inline-flex; align-items: baseline; font-weight:900; font-size:1.5rem; color: var(--brand-text-main); letter-spacing:-0.05em; user-select: none; }
     .grid-mode-toggle { display:flex; gap:2px; background:rgba(0,0,0,0.06); border-radius:12px; padding:3px; }
-    .gmt-btn { padding:6px 16px; border-radius:9px; border:none; background:transparent; color:var(--brand-text-gray); font-family:'Lexend'; font-weight:700; font-size:12px; cursor:pointer; transition:all 0.2s; text-transform:uppercase; letter-spacing:0.5px; }
-    .gmt-btn.active { background:var(--brand-surface); color:var(--brand-text-main); box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    .gmt-btn { padding:6px 12px; border-radius:9px; border:none; background:transparent; cursor:pointer; transition:all 0.2s ease; display:flex; align-items:center; justify-content:center; line-height:0; }
+    .gmt-btn.active { background:var(--brand-surface); box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    .gmt-btn svg { width:32px; height:28px; opacity:0.45; transition:opacity 0.2s; }
+    .gmt-btn.active svg { opacity:0.85; }
     
     .num-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(70px, 1fr)); gap:16px; padding:24px 20px; flex:1; align-content:start; overflow-y:auto; }
     .nc { 
@@ -84,10 +92,10 @@
 
     /* BRAND FOOTER */
     .app-footer {
-      text-align: center; padding: 12px; font-size: 0.65rem; font-weight: 700;
-      letter-spacing: 1.5px; text-transform: uppercase; color: var(--brand-text-gray);
-      background: var(--brand-bg); border-top: 1px solid var(--brand-border);
-      flex-shrink: 0; z-index: 10; display: flex; justify-content: center; align-items: center; gap: 4px;
+      text-align: center; padding: 24px; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--brand-text-light);
+      background: var(--brand-bg);
+      flex-shrink: 0; z-index: 10;
     }
     .altar-screen-footer { background: #050505; border-top: 1px solid #111; color: #444; }
 
@@ -99,59 +107,95 @@
       0%, 100% { color:rgba(1,176,105,0.25); text-shadow:0 0 4px rgba(1,176,105,0.1),0 0 8px rgba(1,176,105,0.05); }
       50% { color:#34c98a; text-shadow:0 0 8px rgba(52,185,120,0.85),0 0 22px rgba(1,176,105,0.55),0 0 50px rgba(1,176,105,0.25),0 0 90px rgba(1,176,105,0.1); }
     }
-    .altar-numeral.celebrate { animation:none; color:rgba(255,255,255,0.15); }
-    .altar-numeral.celebrate::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(0); width:180px; height:180px; border-radius:50%; background:radial-gradient(circle,rgba(52,185,120,0.55) 0%,rgba(1,176,105,0.25) 45%,transparent 75%); animation:celebBloom 1.1s cubic-bezier(0.2,0,0.4,1) forwards; pointer-events:none; z-index:-1; }
-    @keyframes celebBloom { 0% { transform:translate(-50%,-50%) scale(0); opacity:1; } 55% { transform:translate(-50%,-50%) scale(1.8); opacity:1; } 100% { transform:translate(-50%,-50%) scale(0.6); opacity:0; } }
+    .altar-numeral.celebrate { animation:celebFlash 1.4s ease-out forwards; }
+    @keyframes celebFlash {
+      0% { color:#fff; text-shadow:0 0 20px #fff,0 0 60px #01B069,0 0 120px #01B069; }
+      30% { color:#01B069; text-shadow:0 0 40px #01B069,0 0 80px rgba(1,176,105,0.8),0 0 160px rgba(1,176,105,0.5),0 0 300px rgba(1,176,105,0.2); }
+      100% { color:rgba(255,255,255,0.15); text-shadow:none; }
+    }
+    .altar-numeral.celebrate::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(0); width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(1,176,105,0.7) 0%,rgba(52,185,120,0.4) 30%,rgba(1,176,105,0.15) 60%,transparent 80%); animation:celebBloom 1.4s cubic-bezier(0.2,0,0.4,1) forwards; pointer-events:none; z-index:-1; }
+    @keyframes celebBloom { 0% { transform:translate(-50%,-50%) scale(0); opacity:1; } 40% { transform:translate(-50%,-50%) scale(2.5); opacity:1; } 100% { transform:translate(-50%,-50%) scale(0.5); opacity:0; } }
 
-    /* ═══ 1. SUBTERRANEAN ARCHITECTURE (3D Room) ═══ */
+    /* ═══ 1. SUBTERRANEAN ARCHITECTURE (3D Bunker) ═══ */
     .altar {
-      flex: 1; position: relative; overflow: hidden; background-color: #020202;
+      flex: 1; position: relative; overflow: hidden; background-color: #0a0a0a;
     }
     .vault-room {
-      position: absolute; inset: 0; perspective: 1200px; overflow: hidden; pointer-events: none; z-index: 1;
-    }
-    .vault-wall-back {
-      position: absolute; width: 140%; height: 120%; left: -20%; top: -10%;
-      transform: translateZ(-400px);
-      background-color: #0a0a0a;
-      background-image: 
-        radial-gradient(circle at 25% 10%, rgba(255,255,255,0.5) 0%, transparent 45%),
-        radial-gradient(circle at 50% 5%, rgba(255,255,255,0.7) 0%, transparent 55%),
-        radial-gradient(circle at 75% 10%, rgba(255,255,255,0.5) 0%, transparent 45%),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
-    }
-    .vault-floor {
-      position: absolute; width: 200%; height: 100%; left: -50%; bottom: -50%;
-      transform-origin: bottom center;
-      transform: rotateX(75deg) translateZ(0);
-      background-color: #050505;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
-      box-shadow: inset 0 100px 200px rgba(0,0,0,0.9);
+      position: absolute; inset: 0; perspective: 800px; perspective-origin: 50% 85%;
+      overflow: hidden; pointer-events: none; z-index: 1;
     }
 
-    /* ═══ 2. FURNITURE: SOAPSTONE ALTAR ═══ */
+    .vault-ceiling {
+      position: absolute; width: 120%; left: -10%; top: -5%; height: 45%;
+      transform-origin: top center; transform: rotateX(-25deg) translateZ(-80px);
+      background: linear-gradient(180deg, #0e0e10 0%, #141416 40%, #18181a 100%);
+      box-shadow: inset 0 -30px 60px rgba(0,0,0,0.6);
+    }
+    .vault-wall-back {
+      position: absolute; width: 70%; height: 55%; left: 15%; top: 5%;
+      transform: translateZ(-200px) scale(1.3);
+      background: linear-gradient(180deg, #141416 0%, #1a1a1c 30%, #161618 70%, #121214 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .vault-wall-left {
+      position: absolute; left: 0; top: 0; width: 25%; height: 100%;
+      background: linear-gradient(90deg, #0c0c0e 0%, #111113 60%, #161618 100%);
+      clip-path: polygon(0 0, 100% 15%, 100% 80%, 0 100%);
+    }
+    .vault-wall-right {
+      position: absolute; right: 0; top: 0; width: 25%; height: 100%;
+      background: linear-gradient(-90deg, #0c0c0e 0%, #111113 60%, #161618 100%);
+      clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 80%);
+    }
+    .vault-floor {
+      position: absolute; width: 120%; left: -10%; bottom: 0; height: 55%;
+      transform-origin: bottom center; transform: rotateX(35deg);
+      background: linear-gradient(180deg, #1a1a1c 0%, #141416 30%, #0e0e10 80%, #080808 100%);
+      box-shadow: inset 0 40px 80px rgba(0,0,0,0.5);
+    }
+
+    .vault-spot {
+      position: absolute; pointer-events: none; z-index: 2;
+      width: 80px; height: 200px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 30%, transparent 70%);
+    }
+    .vault-spot-1 { top: 2%; left: 20%; }
+    .vault-spot-2 { top: 0; left: 50%; transform: translateX(-50%); width: 100px; background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 35%, transparent 70%); }
+    .vault-spot-3 { top: 2%; right: 20%; }
+
+    /* ═══ 2. CONCRETE PODIUM TABLE ═══ */
     .soapstone-altar {
-      position: absolute; bottom: -20px; left: 5%; right: 5%; height: 120px; z-index: 15;
-      background: #080808;
-      border-top: 2px solid rgba(255,255,255,0.15);
-      border-radius: 4px;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.95), inset 0 20px 40px rgba(0,0,0,0.8);
-      transform: perspective(800px) rotateX(15deg);
+      position: absolute; bottom: 0; left: 0; right: 0; height: 85px; z-index: 15;
       pointer-events: none;
     }
+    .soapstone-altar::before {
+      content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 35%; height: 100%;
+      background: linear-gradient(180deg, #242426 0%, #1c1c1e 30%, #141416 100%);
+      border-left: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05);
+      box-shadow: -10px 0 25px rgba(0,0,0,0.6), 10px 0 25px rgba(0,0,0,0.6);
+    }
+    .soapstone-altar::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 32px;
+      background: linear-gradient(180deg, #2e2e32 0%, #26262a 30%, #202024 100%);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      border-radius: 2px 2px 0 0;
+      box-shadow: 0 -6px 25px rgba(0,0,0,0.5), 0 8px 35px rgba(0,0,0,0.95), inset 0 2px 0 rgba(255,255,255,0.06);
+    }
     
-    /* ZOOM WRAPPER & OBELISK STAGE */
-    .seg-zoom { position: absolute; bottom: 85px; left: 50%; transform: translateX(0); transform-origin: 0% 100%; z-index: 5; filter: drop-shadow(0 25px 25px rgba(0,0,0,0.8)); }
-    .seg-zoom.folded { transform: none; }
+    /* ZOOM WRAPPER & OBELISK STAGE — sits on the back stage, behind the podium */
+    .seg-zoom { position: absolute; bottom: 100px; left: 50%; transform: translateX(0) scale(0.85); transform-origin: 50% 100%; z-index: 4; filter: drop-shadow(0 20px 20px rgba(0,0,0,0.7)); }
+    .seg-zoom.folded { transform: scale(0.85); z-index: 4; }
     .seg-stage { display: flex; align-items: flex-end; gap: 3px; }
 
     /* GREEN NUDGES */
-    @keyframes hingeNudge { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.6) drop-shadow(0 0 6px rgba(1,176,105,0.8)); } }
+    @keyframes hingeNudge { 0%, 100% { filter: brightness(1); box-shadow: inset 1px 1px 2px rgba(255,255,255,0.8), inset -1px -1px 2px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.3); } 50% { filter: brightness(1.4); box-shadow: inset 1px 1px 2px rgba(255,255,255,0.8), inset -1px -1px 2px rgba(0,0,0,0.2), 0 0 8px rgba(1,176,105,0.8), 0 0 16px rgba(1,176,105,0.4); } }
     .hz.nudge::after { animation: hingeNudge 1.5s infinite ease-in-out; }
-    .blk.drag-hint::after {
-      content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px;
-      background: #01B069; box-shadow: 0 0 10px 2px #01B069;
-      animation: pulseHint 1.5s infinite alternate; z-index: 10; border-radius: 2px 2px 0 0;
+    .drag-hint-bar {
+      position: absolute; left: -2px; right: -2px; top: 0; height: 4px;
+      background: #01B069; box-shadow: 0 0 12px 3px #01B069, 0 0 24px 6px rgba(1,176,105,0.3);
+      animation: pulseHint 1.5s infinite alternate; z-index: 20; border-radius: 2px 2px 0 0;
+      pointer-events: none;
     }
     @keyframes pulseHint { 0% { opacity: 0.3; } 100% { opacity: 1; } }
 
@@ -169,10 +213,48 @@
 
     .blk-p, .blk-p-static, .fs.fp, .dex-trinket {
       border-radius: 4px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(240,242,248,0.08), rgba(255,255,255,0.1));
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: inset 0 0 35px rgba(255,200,120,0.4), inset 0 0 70px rgba(255,160,60,0.3), inset 0 0 100px rgba(255,140,40,0.15), 0 4px 10px rgba(0,0,0,0.4);
+      background: #0a0508;
+      border: 1px solid rgba(255,150,50,0.25);
+      box-shadow:
+        inset 0 0 12px rgba(255,200,100,0.15),
+        inset 0 0 30px rgba(255,120,20,0.2),
+        0 0 15px rgba(255,120,30,0.25),
+        0 0 35px rgba(255,80,10,0.1),
+        0 4px 12px rgba(0,0,0,0.5);
       overflow: hidden; position: relative;
+      animation: sconceGlow 3s ease-in-out infinite alternate;
+    }
+    @keyframes sconceGlow {
+      0% { box-shadow: inset 0 0 12px rgba(255,200,100,0.15), inset 0 0 30px rgba(255,120,20,0.2), 0 0 15px rgba(255,120,30,0.2), 0 0 30px rgba(255,80,10,0.08), 0 4px 12px rgba(0,0,0,0.5); }
+      100% { box-shadow: inset 0 0 18px rgba(255,220,120,0.25), inset 0 0 40px rgba(255,140,30,0.3), 0 0 22px rgba(255,140,40,0.35), 0 0 50px rgba(255,100,15,0.15), 0 4px 12px rgba(0,0,0,0.5); }
+    }
+    .blk-p::before {
+      content: ''; position: absolute; inset: 3px; border-radius: 2px; pointer-events: none; z-index: 1;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(255,255,240,0.35) 0%, rgba(255,220,140,0.2) 15%, rgba(255,160,40,0.15) 30%, transparent 55%),
+        radial-gradient(ellipse at 30% 35%, rgba(200,60,180,0.2) 0%, rgba(140,30,100,0.1) 25%, transparent 50%),
+        radial-gradient(ellipse at 70% 65%, rgba(220,40,40,0.18) 0%, rgba(180,20,30,0.08) 25%, transparent 50%),
+        radial-gradient(ellipse at 20% 70%, rgba(255,180,60,0.12) 0%, transparent 35%),
+        radial-gradient(ellipse at 80% 30%, rgba(255,200,80,0.1) 0%, transparent 35%);
+      animation: plasmaSwirl 4s ease-in-out infinite alternate;
+    }
+    .blk-p::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: 3px; z-index: 2;
+      background:
+        repeating-conic-gradient(from 0deg at 50% 50%, rgba(255,200,80,0.04) 0deg, transparent 15deg, rgba(255,140,30,0.03) 30deg, transparent 45deg),
+        linear-gradient(180deg, rgba(180,140,80,0.3) 0%, rgba(180,140,80,0.05) 3%, transparent 8%, transparent 92%, rgba(180,140,80,0.05) 97%, rgba(180,140,80,0.25) 100%);
+      border-top: 1px solid rgba(255,200,100,0.35); border-bottom: 1px solid rgba(60,30,15,0.5);
+      animation: plasmaRays 6s linear infinite;
+    }
+    @keyframes plasmaSwirl {
+      0% { background-position: 0% 0%; filter: brightness(0.9) saturate(1.1); }
+      50% { filter: brightness(1.15) saturate(1.3); }
+      100% { background-position: 100% 100%; filter: brightness(0.95) saturate(1.0); }
+    }
+    @keyframes plasmaRays {
+      0% { background-position: 0deg; opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { background-position: 360deg; opacity: 0.7; }
     }
     
     .blk-m {
@@ -189,26 +271,36 @@
     .n-mirror { color:rgba(255, 255, 255, 0.4); text-shadow:0 1px 1px rgba(255, 255, 255, 0.8), 0 -1px 1px rgba(0, 0, 0, 0.8); }
     
     .n-glow, .n-glow-static, .dt-num {
-      position: absolute; top: 50%; left: 50%; font-weight: 900; letter-spacing: -1px; z-index: 2; color: #ffffff; 
+      position: absolute; top: 50%; left: 50%; font-weight: 900; letter-spacing: -1px; z-index: 3; color: #fff; 
       transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
-      text-shadow: 0 0 5px #fff, 0 0 12px rgba(255,242,225,1), 0 0 24px rgba(255,215,155,0.98), 0 0 48px rgba(255,185,85,0.85), 0 0 80px rgba(255,155,45,0.65), 0 0 125px rgba(255,125,15,0.45), 0 0 180px rgba(255,95,0,0.28), 0 0 250px rgba(255,65,0,0.14);
+      text-shadow:
+        0 0 2px #fff,
+        0 0 6px #fff,
+        0 0 14px rgba(255,255,255,0.95),
+        0 0 28px rgba(255,240,200,0.9),
+        0 0 50px rgba(255,200,100,0.7),
+        0 0 80px rgba(255,150,40,0.5),
+        0 0 120px rgba(255,100,15,0.35),
+        0 0 180px rgba(200,50,10,0.2);
     }
 
-    /* ═══ 3. MACHINED HINGE (Pinned to Left Edge) ═══ */
-    .hz { position:absolute; left:-4px; width:8px; height:24px; transform:translate(0%, -50%); cursor:pointer; z-index:25; touch-action:none; }
+    /* ═══ 3. SIGNATURE BEAD HINGE (Door-hinge profile) ═══ */
+    .hz { position:absolute; left:-7px; width:14px; height:14px; transform:translate(0%, -50%); cursor:pointer; z-index:25; touch-action:none; }
     .hz::after {
-      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 4px 0 0 4px;
-      background: linear-gradient(135deg,#efefef,#d0d0d0,#a8a8a8,#c0c0c0,#e0e0e0);
-      box-shadow: inset 1px 1px 2px rgba(255,255,255,0.8), inset -1px -1px 2px rgba(0,0,0,0.4), -2px 2px 5px rgba(0,0,0,0.6);
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
+      background: radial-gradient(circle at 33% 28%,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.3) 40%,transparent 65%),
+                  radial-gradient(circle at 67% 72%,rgba(0,0,0,0.15) 0%,transparent 55%),
+                  linear-gradient(135deg,#efefef,#d0d0d0,#a8a8a8,#c0c0c0,#e0e0e0);
+      box-shadow: inset 1px 1px 2px rgba(255,255,255,0.8), inset -1px -1px 2px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.3);
       transition: transform 0.1s var(--spring), filter 0.2s;
     }
-    .hz:hover::after { filter: brightness(1.2); }
-    .hz:active::after { filter: brightness(0.8); }
+    .hz:hover::after { filter: brightness(1.3); transform: scale(1.15); }
+    .hz:active::after { filter: brightness(0.85); transform: scale(0.9); }
 
-    /* FACTOR TRAY (Sitting on Soapstone Altar) */
+    /* FACTOR TRAY (On Concrete Podium) */
     .f-tray {
-      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-      width: 85vw; max-width: 450px; padding: 10px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      position: absolute; bottom: 58px; left: 50%; transform: translateX(-50%);
+      width: 85vw; max-width: 450px; padding: 8px 10px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
       z-index: 20; pointer-events: all;
     }
     .fs {
@@ -277,7 +369,10 @@
     .fade-overlay.fading { opacity:1; }
     .affirm-flash { position:fixed; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:9999; transition:opacity 0.3s; }
     .affirm-flash.show { opacity:0.1; }
-    .shatter-piece { position:absolute; pointer-events:none; z-index:8500; border-radius:2px; background:linear-gradient(90deg,#444,#666); border:1px solid rgba(255,255,255,0.2); }
+    .shatter-piece { position:absolute; pointer-events:none; z-index:8500; border-radius:1px; }
+    .shatter-piece.shard { background:linear-gradient(135deg,rgba(200,200,210,0.9),rgba(140,140,150,0.7)); border:1px solid rgba(255,255,255,0.3); }
+    .shatter-piece.spark { border-radius:50%; background:radial-gradient(circle,#fff 0%,rgba(255,200,80,0.9) 40%,rgba(255,100,20,0.6) 70%,transparent 100%); box-shadow:0 0 4px rgba(255,160,40,0.8),0 0 8px rgba(255,80,20,0.4); }
+    .shatter-piece.ember { border-radius:50%; background:rgba(255,100,40,0.9); box-shadow:0 0 3px rgba(255,60,20,0.6); }
     @keyframes shatterFly { 0% { opacity:1; transform:translate(0,0) rotate(0deg); } 100% { opacity:0; transform:var(--tx) rotate(var(--rot)); } }
   </style>
 </head>
@@ -289,8 +384,26 @@
   <div class="grid-screen-header">
     <div class="logo">Math Things<span class="logo-bead"></span></div>
     <div class="grid-mode-toggle">
-      <button class="gmt-btn active" id="gmt-factor">Factor</button>
-      <button class="gmt-btn" id="gmt-build">Build</button>
+      <button class="gmt-btn active" id="gmt-factor"><svg viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="al" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#d8d8dc"/><stop offset="50%" stop-color="#a0a0a5"/><stop offset="100%" stop-color="#c0c0c5"/></linearGradient>
+        </defs>
+        <rect x="10" y="14" width="8" height="12" rx="1" fill="url(#al)" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+        <rect x="10" y="2" width="8" height="12" rx="1" fill="url(#al)" stroke="rgba(255,255,255,0.3)" stroke-width="0.5" transform="rotate(-20 10 14)"/>
+        <circle cx="10.5" cy="14" r="2" fill="#555" stroke="#888" stroke-width="0.5"/>
+        <path d="M5 5 Q2 8 4 11" stroke="#86868B" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M4 11 L2.5 9 M4 11 L5.8 9.5" stroke="#86868B" stroke-width="1.2" stroke-linecap="round"/>
+      </svg></button>
+      <button class="gmt-btn" id="gmt-build"><svg viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="pr" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#e8b060"/><stop offset="50%" stop-color="#c07030"/><stop offset="100%" stop-color="#e0a050"/></linearGradient>
+        </defs>
+        <rect x="12" y="14" width="8" height="12" rx="1" fill="url(#pr)" stroke="rgba(255,200,100,0.4)" stroke-width="0.5"/>
+        <rect x="12" y="2" width="8" height="12" rx="1" fill="url(#pr)" stroke="rgba(255,200,100,0.4)" stroke-width="0.5" transform="rotate(40 16 14)"/>
+        <circle cx="16" cy="14" r="2" fill="#555" stroke="#888" stroke-width="0.5"/>
+        <path d="M27 8 Q29 12 26 16" stroke="#86868B" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M26 16 L28 14.2 M26 16 L24.5 14" stroke="#86868B" stroke-width="1.2" stroke-linecap="round"/>
+      </svg></button>
     </div>
   </div>
   <div class="num-grid" id="num-grid"></div>
@@ -309,8 +422,14 @@
   </div>
   <div class="altar" id="fa">
     <div class="vault-room">
+      <div class="vault-ceiling"></div>
       <div class="vault-wall-back"></div>
+      <div class="vault-wall-left"></div>
+      <div class="vault-wall-right"></div>
       <div class="vault-floor"></div>
+      <div class="vault-spot vault-spot-1"></div>
+      <div class="vault-spot vault-spot-2"></div>
+      <div class="vault-spot vault-spot-3"></div>
     </div>
     <div class="seg-zoom" id="fz"><div class="seg-stage" id="fo"></div></div>
     <div class="soapstone-altar"></div>
@@ -331,8 +450,14 @@
   </div>
   <div class="altar" id="ba">
     <div class="vault-room">
+      <div class="vault-ceiling"></div>
       <div class="vault-wall-back"></div>
+      <div class="vault-wall-left"></div>
+      <div class="vault-wall-right"></div>
       <div class="vault-floor"></div>
+      <div class="vault-spot vault-spot-1"></div>
+      <div class="vault-spot vault-spot-2"></div>
+      <div class="vault-spot vault-spot-3"></div>
     </div>
     <div class="ceil-line" id="bceil"></div>
     <div class="seg-zoom" id="bz"><div class="seg-stage" id="bo"></div></div>
@@ -449,7 +574,7 @@ function enterAltar(n) {
   numEl.onclick = isSolved ? () => goToGrid() : null;
   
   const altar = document.getElementById('fa');
-  let safeAltarH = altar.clientHeight - 130;
+  let safeAltarH = altar.clientHeight - 145;
   if (safeAltarH <= 0) safeAltarH = 500; 
   S.refAltarH = safeAltarH; 
   
@@ -815,7 +940,7 @@ function renderSegs() {
         properFactors(seg.units).forEach(f => {
           const hingeY = f * uH;
           const zone = document.createElement('div'); zone.className = 'hz'; zone.style.top = hingeY + 'px';
-          if (!isSolved) zone.classList.add('nudge');
+          if (!isSolved) setTimeout(() => zone.classList.add('nudge'), 5000);
           zone.addEventListener('pointerdown', e => { e.stopPropagation(); zone.classList.remove('nudge'); });
           zone.addEventListener('pointerup', e => { e.stopPropagation(); doFold(f, -1, zone); });
           el.appendChild(zone);
@@ -823,9 +948,12 @@ function renderSegs() {
       }
     } else {
       if (i === S.handleIndex) {
-        el.classList.add('drag-hint');
+        const baseIndex = landsLeft ? numSegs - 1 : 0;
+        const distFromBase = Math.abs(baseIndex - i);
+        const hint = document.createElement('div'); hint.className = 'drag-hint-bar';
+        el.appendChild(hint);
         el.addEventListener('pointerdown', e => { 
-          el.classList.remove('drag-hint');
+          hint.remove();
           if(!S.folding) { e.preventDefault(); beginUnspool(); } 
         });
       }
@@ -856,7 +984,7 @@ function doFold(f, swipeSide, clickedZone) {
   const altar = document.getElementById('fa');
   const overlay = document.createElement('div');
   
-  overlay.style.cssText = `position:absolute;bottom:85px;left:50%;margin-left:${-uW/2}px;z-index:50;pointer-events:none;`;
+  overlay.style.cssText = `position:absolute;bottom:100px;left:50%;margin-left:${-uW/2}px;z-index:50;pointer-events:none;`;
 
   const foldZoom = calcFoldZoom(numPieces, f, S.foldDir);
   const zoomEl = document.getElementById('fz');
@@ -937,7 +1065,7 @@ function beginUnspool(){
   stage.style.visibility='hidden';
 
   const overlay=document.createElement('div');
-  overlay.style.cssText=`position:absolute;bottom:85px;left:50%;margin-left:${-uW/2}px;z-index:50;`;
+  overlay.style.cssText=`position:absolute;bottom:100px;left:50%;margin-left:${-uW/2}px;z-index:50;`;
   altar.appendChild(overlay);
 
   const{root,hinges}=buildNestTree(numSegs,segH,uW,S.foldDir,true);
@@ -1032,9 +1160,9 @@ function checkFSolved(){
     const numEl=document.getElementById('altar-numeral');
     numEl.onclick=()=>goToGrid();
     setTimeout(()=>{
-      showAffirm(); numEl.classList.add('celebrate');
-      setTimeout(()=>{ numEl.classList.remove('celebrate'); numEl.classList.add('solved'); },1100);
-    },1600);
+      showAffirm(); numEl.classList.add('celebrate'); haptic([20,25,20,25,40]);
+      setTimeout(()=>{ numEl.classList.remove('celebrate'); numEl.classList.add('solved'); },1400);
+    },300);
   }
 }
 
@@ -1137,7 +1265,7 @@ function enterBuild(n){
   numEl.onclick=isSolved?()=>goToGrid():null;
 
   const altar=document.getElementById('ba');
-  let safeAltarH = altar.clientHeight - 130;
+  let safeAltarH = altar.clientHeight - 145;
   if(safeAltarH <= 0) safeAltarH = window.innerHeight * 0.5; 
   const neededHeight = n * S.bUnitH;
   S.bZoom = neededHeight > safeAltarH ? (safeAltarH / neededHeight) : 1;
@@ -1147,7 +1275,7 @@ function enterBuild(n){
 
   const ceil=document.getElementById('bceil');
   const ceilPx=n*S.bUnitH;
-  ceil.style.bottom = `calc(85px + ${ceilPx * S.bZoom}px)`;
+  ceil.style.bottom = `calc(100px + ${ceilPx * S.bZoom}px)`;
   ceil.style.top = 'auto';
 
   buildDex('build-dex-vp');
@@ -1236,14 +1364,27 @@ function startBuildDrag(e,p,sourceEl){
   sourceEl.addEventListener('pointermove',onMove,{passive:true}); sourceEl.addEventListener('pointerup',onUp); sourceEl.addEventListener('pointercancel',onUp);
 }
 
-function triggerShatter(rectElement) {
-    haptic([60,30,60]);
+function triggerShatter(rectElement, contactY) {
+    haptic([60,30,60,20,80]);
     const rect = rectElement.getBoundingClientRect();
-    for(let i=0; i<10; i++){
-      const piece = document.createElement('div'); piece.className = 'shatter-piece';
-      piece.style.cssText = `width:${Math.random()*20+10}px;height:${Math.random()*20+10}px;left:${rect.left+Math.random()*rect.width}px;top:${rect.top+Math.random()*rect.height}px;--tx:translate(${(Math.random()-0.5)*200}px,${(Math.random()*150+50)}px);--rot:${(Math.random()-0.5)*360}deg;animation:shatterFly 0.6s ease-out forwards;`;
-      document.body.appendChild(piece); setTimeout(()=>piece.remove(), 650);
-    }
+    const cx = rect.left + rect.width / 2;
+    const cy = contactY != null ? contactY : rect.top;
+    const spawn = (cls, w, h, spread, dur) => {
+      const piece = document.createElement('div');
+      piece.className = 'shatter-piece ' + cls;
+      const dx = (Math.random()-0.5) * spread * 2;
+      const dy = -(Math.random() * spread * 0.6) + (Math.random()-0.5) * spread * 0.8;
+      piece.style.cssText = `width:${w}px;height:${h}px;left:${cx+((Math.random()-0.5)*rect.width*0.4)}px;top:${cy+((Math.random()-0.5)*12)}px;--tx:translate(${dx}px,${dy}px);--rot:${(Math.random()-0.5)*720}deg;animation:shatterFly ${dur}s ease-out forwards;`;
+      document.body.appendChild(piece); setTimeout(()=>piece.remove(), dur*1000+50);
+    };
+    for(let i=0;i<8;i++) spawn('shard', Math.random()*8+3, Math.random()*12+4, 250, 0.5+Math.random()*0.3);
+    for(let i=0;i<12;i++) spawn('spark', Math.random()*5+2, Math.random()*5+2, 300, 0.4+Math.random()*0.4);
+    for(let i=0;i<18;i++) spawn('ember', Math.random()*3+1, Math.random()*3+1, 350, 0.3+Math.random()*0.5);
+    const flash = document.createElement('div');
+    flash.style.cssText = `position:fixed;left:${cx-40}px;top:${cy-40}px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.9) 0%,rgba(255,200,80,0.6) 30%,rgba(255,100,20,0.3) 60%,transparent 80%);pointer-events:none;z-index:8600;opacity:1;transition:all 0.3s ease-out;`;
+    document.body.appendChild(flash);
+    requestAnimationFrame(()=>{ flash.style.transform='scale(3)'; flash.style.opacity='0'; });
+    setTimeout(()=>flash.remove(), 350);
 }
 
 function placeBuildPrime(p){
@@ -1251,34 +1392,27 @@ function placeBuildPrime(p){
   const n=S.bNum, prevProduct=S.bProduct, newProduct=prevProduct===0?p:prevProduct*p;
   S.bStack.push({p,prevProduct}); S.bProduct=newProduct;
   
-  if (newProduct > n) {
-    S.bAnimating = true;
-    if(prevProduct === 0) {
-      animateStackingOnes(p, n, S.bUnitH, S.bUnitW, null, () => {
-        S.bStack.pop(); S.bProduct=0; S.bAnimating=false; 
-        renderBuildStage(); renderBuildTray(); renderBuildLedger();
-      });
-    } else { 
-      animateBuildOvershoot(prevProduct, p, newProduct, n, () => { 
-        S.bStack.pop(); S.bProduct=prevProduct; S.bAnimating=false; 
-        renderBuildStage(); renderBuildTray(); renderBuildLedger(); 
-      }); 
-    }
-    return;
-  }
-  
-  S.bAnimating = true;
   if(prevProduct === 0) {
-    animateStackingOnes(p, n, S.bUnitH, S.bUnitW, () => {
-        S.bAnimating = false;
-        renderBuildStage(); renderBuildTray(); renderBuildLedger();
-        if (newProduct === n) checkBuildSolved();
-    }, null);
+    if(newProduct > n) {
+      S.bStack.pop(); S.bProduct=0;
+      renderBuildStage(); renderBuildTray(); renderBuildLedger();
+      return;
+    }
+    renderBuildStage(); renderBuildTray(); renderBuildLedger();
+    if(newProduct === n) checkBuildSolved();
     return;
   }
-  
-  renderBuildStage(); renderBuildTray(); renderBuildLedger();
-  animateBuildHinge(prevProduct, p, newProduct, n, () => { S.bAnimating=false; if(newProduct===n)checkBuildSolved(); });
+
+  S.bAnimating = true;
+  if(newProduct > n) {
+    animateBuildOvershoot(prevProduct, p, newProduct, n, () => { 
+      S.bStack.pop(); S.bProduct=prevProduct; S.bAnimating=false; 
+      renderBuildStage(); renderBuildTray(); renderBuildLedger(); 
+    });
+  } else {
+    renderBuildStage(); renderBuildTray(); renderBuildLedger();
+    animateBuildHinge(prevProduct, p, newProduct, n, () => { S.bAnimating=false; if(newProduct===n)checkBuildSolved(); });
+  }
 }
 
 function animateStackingOnes(p, target, uH, uW, onComplete, onShatter) {
@@ -1328,27 +1462,36 @@ function animateBuildHinge(prevH, p, finalH, target, cb){
   const stage = document.getElementById('bo'), altar = document.getElementById('ba'), uH = S.bUnitH, uW = S.bUnitW, segH = prevH * uH;
   stage.style.visibility = 'hidden';
   const overlay = document.createElement('div');
-  overlay.style.cssText = `position:absolute;bottom:85px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;height:${segH}px;overflow:visible;`;
+  overlay.style.cssText = `position:absolute;bottom:100px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
-  const base = makeBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; overlay.appendChild(base);
+  const base = makeBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; base.style.zIndex = '10'; overlay.appendChild(base);
   
-  const copies = p - 1, phaseDur = 400, pause = 60; let topEl = base; const arms = [];
+  const copies = p - 1, phaseDur = 500, pause = 80;
+  const arms = [];
   for(let i=0; i<copies; i++){
-    const dir = i % 2 === 0 ? -1 : 1; 
-    const origin = dir < 0 ? '0% 100%' : '100% 100%';
-    const rot = dir < 0 ? -180 : 180;
-    const hw = document.createElement('div'); 
-    hw.style.cssText = `position:absolute;bottom:${segH}px;left:0;width:${uW}px;height:0;transform-origin:${origin};transform:rotate(${rot}deg);`;
-    const blk = makeBlock(prevH, uW, segH, false, false); blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
-    if(i % 2 === 0) {
-        blk.style.transform = 'rotate(180deg)';
-        const num = blk.querySelector('.n-stamp, .n-glow, .n-mirror');
-        if (num) num.style.setProperty('--rot', '180deg');
-    }
-    hw.appendChild(blk); topEl.appendChild(hw); arms.push(hw); topEl = hw;
+    const pivotBottom = (i + 1) * segH;
+    const hw = document.createElement('div');
+    hw.style.cssText = `position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(180deg);z-index:${5-i};`;
+    const blk = makeBlock(prevH, uW, segH, false, true);
+    blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
+    hw.appendChild(blk); overlay.appendChild(hw); arms.push({hw, blk});
   }
-  arms.forEach((hw,i) => { setTimeout(() => { hw.style.transition = `transform ${phaseDur}ms var(--ease-heavy)`; hw.style.transform = 'rotate(0deg)'; haptic(20); }, i * (phaseDur+pause)); });
-  setTimeout(() => { overlay.remove(); stage.style.visibility = 'visible'; renderBuildStage(); cb&&cb(); }, copies*(phaseDur+pause)+200);
+  arms.forEach(({hw},i) => { setTimeout(() => { hw.style.transition = `transform ${phaseDur}ms var(--ease-heavy)`; hw.style.transform = 'rotate(0deg)'; haptic(20); }, i * (phaseDur+pause)); });
+  const allLandedTime = copies*(phaseDur+pause)+200;
+  setTimeout(() => {
+    arms.forEach(({blk},i) => {
+      const p2 = isPrime(prevH);
+      const num = document.createElement('div');
+      num.className = p2 ? 'n-glow' : 'n-stamp';
+      num.textContent = prevH;
+      num.style.fontSize = Math.min(uW*(p2?0.6:0.55), segH*(p2?0.45:0.4), p2?38:34)+'px'; num.style.opacity='0';
+      blk.appendChild(num);
+      gsap.to(num, {opacity:1, duration:0.25, delay:i*0.08});
+    });
+    setTimeout(() => {
+      overlay.remove(); stage.style.visibility = 'visible'; renderBuildStage(); cb&&cb();
+    }, 300);
+  }, allLandedTime);
 }
 
 function animateBuildOvershoot(prevH, p, finalH, target, cb){
@@ -1356,50 +1499,45 @@ function animateBuildOvershoot(prevH, p, finalH, target, cb){
   stage.style.visibility = 'hidden';
   
   const overlay = document.createElement('div');
-  overlay.style.cssText = `position:absolute;bottom:85px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;height:${segH}px;overflow:visible;`;
+  overlay.style.cssText = `position:absolute;bottom:100px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
   
-  const base = makeBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; overlay.appendChild(base);
+  const base = makeBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; base.style.zIndex = '10'; overlay.appendChild(base);
   
-  const copies = p - 1, phaseDur = 400, pause = 60; let topEl = base; const arms = [];
+  const copies = p - 1, phaseDur = 500, pause = 80;
+  const arms = [];
   for(let i=0; i<copies; i++){
-    const dir = i % 2 === 0 ? -1 : 1; 
-    const origin = dir < 0 ? '0% 100%' : '100% 100%';
-    const rot = dir < 0 ? -180 : 180;
-    const hw = document.createElement('div'); 
-    hw.style.cssText = `position:absolute;bottom:${segH}px;left:0;width:${uW}px;height:0;transform-origin:${origin};transform:rotate(${rot}deg);`;
-    const blk = makeBlock(prevH, uW, segH, false, false); blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
-    if(i % 2 === 0) {
-        blk.style.transform = 'rotate(180deg)';
-        const num = blk.querySelector('.n-stamp, .n-glow, .n-mirror');
-        if (num) num.style.setProperty('--rot', '180deg');
-    }
-    hw.appendChild(blk); topEl.appendChild(hw); arms.push({hw, rot, dir}); topEl = hw;
+    const pivotBottom = (i + 1) * segH;
+    const hw = document.createElement('div');
+    hw.style.cssText = `position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(180deg);z-index:${5-i};`;
+    const blk = makeBlock(prevH, uW, segH, false, true);
+    blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
+    hw.appendChild(blk); overlay.appendChild(hw); arms.push(hw);
   }
   
   let collisionArm = -1, collisionAngle = 0;
   for(let i=0; i<copies; i++){
-    const pivotHeight = (i + 1) * segH;
-    const headroom = ceilPx - pivotHeight;
+    const pivotY = (i + 1) * segH;
+    const headroom = ceilPx - pivotY;
     if(headroom >= segH) continue;
-    
-    const cosCollision = Math.max(-1, Math.min(1, headroom / segH));
-    const absAngle = Math.acos(cosCollision) * (180 / Math.PI); 
-    collisionAngle = arms[i].dir < 0 ? -absAngle : absAngle; 
+    const cosA = Math.max(-1, Math.min(1, headroom / segH));
+    collisionAngle = Math.acos(cosA) * (180 / Math.PI);
     collisionArm = i; break;
   }
   const safeCount = collisionArm >= 0 ? collisionArm : copies;
   
-  arms.forEach((item,i) => { if(i < safeCount) setTimeout(() => { item.hw.style.transition = `transform ${phaseDur}ms var(--ease-heavy)`; item.hw.style.transform = 'rotate(0deg)'; haptic(20); }, i * (phaseDur+pause)); });
+  arms.forEach((hw,i) => { if(i < safeCount) setTimeout(() => { hw.style.transition = `transform ${phaseDur}ms var(--ease-heavy)`; hw.style.transform = 'rotate(0deg)'; haptic(20); }, i * (phaseDur+pause)); });
   
   if(collisionArm >= 0){
-    const fraction = (180 - Math.abs(collisionAngle)) / 180; 
+    const fraction = (180 - collisionAngle) / 180;
     const collisionDur = Math.max(120, Math.round(phaseDur * fraction));
     setTimeout(() => {
-      const hw = arms[collisionArm].hw; hw.style.transition = `transform ${collisionDur}ms var(--ease-heavy)`; hw.style.transform = `rotate(${collisionAngle}deg)`; haptic(20);
+      const hw = arms[collisionArm]; hw.style.transition = `transform ${collisionDur}ms var(--ease-heavy)`; hw.style.transform = `rotate(${collisionAngle}deg)`; haptic(20);
       setTimeout(() => {
-        hw.style.display = 'none'; 
-        triggerShatter(overlay);
+        arms.forEach(a => { a.style.display = 'none'; });
+        const ceilEl = document.getElementById('bceil');
+        const contactY = ceilEl ? ceilEl.getBoundingClientRect().top : undefined;
+        triggerShatter(overlay, contactY);
         setTimeout(() => { overlay.remove(); stage.style.visibility = 'visible'; cb&&cb(); }, 400);
       }, collisionDur + 30);
     }, collisionArm * (phaseDur + pause));
@@ -1414,25 +1552,20 @@ function undoBuild(){
   const stage=document.getElementById('bo'), altar=document.getElementById('ba'), uH=S.bUnitH, uW=S.bUnitW, segH=prevProduct*uH;
   stage.style.visibility='hidden';
   const overlay=document.createElement('div');
-  overlay.style.cssText=`position:absolute;bottom:85px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;height:${segH}px;overflow:visible;`;
+  overlay.style.cssText=`position:absolute;bottom:100px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
   const base=makeBlock(prevProduct,uW,segH); base.style.position='absolute';base.style.bottom='0';base.style.left='0'; overlay.appendChild(base);
-  const copies=p-1, phaseDur=350, pause=50; let topEl=base; const arms=[];
+  const copies=p-1, phaseDur=350, pause=50;
+  const arms=[];
   for(let i=0;i<copies;i++){
-    const dir = i % 2 === 0 ? -1 : 1; 
-    const origin = dir < 0 ? '0% 100%' : '100% 100%';
-    const rot = dir < 0 ? -180 : 180;
-    const hw=document.createElement('div'); hw.style.cssText=`position:absolute;bottom:${segH}px;left:0;width:${uW}px;height:0;transform-origin:${origin};transform:rotate(0deg);`;
+    const pivotBottom = (i + 1) * segH;
+    const hw=document.createElement('div');
+    hw.style.cssText=`position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(0deg);`;
     const blk=makeBlock(prevProduct,uW,segH,false,false); blk.style.position='absolute';blk.style.bottom='0';blk.style.left='0';
-    if(i % 2 === 0) {
-        blk.style.transform = 'rotate(180deg)';
-        const num = blk.querySelector('.n-stamp, .n-glow, .n-mirror');
-        if (num) num.style.setProperty('--rot', '180deg');
-    }
-    hw.appendChild(blk); topEl.appendChild(hw); arms.push({hw, rot}); topEl=hw;
+    hw.appendChild(blk); overlay.appendChild(hw); arms.push(hw);
   }
   const reversedArms=[...arms].reverse();
-  reversedArms.forEach((item,i)=>{ setTimeout(()=>{ item.hw.style.transition=`transform ${phaseDur}ms var(--ease-heavy)`; item.hw.style.transform=`rotate(${item.rot}deg)`; haptic(15); },i*(phaseDur+pause)); });
+  reversedArms.forEach((hw,i)=>{ setTimeout(()=>{ hw.style.transition=`transform ${phaseDur}ms var(--ease-heavy)`; hw.style.transform='rotate(180deg)'; haptic(15); },i*(phaseDur+pause)); });
   setTimeout(()=>{ overlay.remove(); S.bStack.pop(); S.bProduct=prevProduct; stage.style.visibility='visible'; S.bAnimating=false; renderBuildStage();renderBuildTray();renderBuildLedger(); }, reversedArms.length*(phaseDur+pause)+150);
 }
 
