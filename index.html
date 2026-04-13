@@ -138,29 +138,14 @@
 
     /* ZOOM WRAPPER & OBELISK STAGE — sits on the back stage, behind the podium */
     /* No filter here — filter on an ancestor flattens fine mirror-cube gradients inside the stage */
-    .seg-zoom { position: absolute; bottom: 128px; left: 50%; transform: translateX(0) scale(0.56); transform-origin: 50% 100%; z-index: 4; }
-    .seg-zoom.folded { transform: scale(0.56); z-index: 4; }
+    .seg-zoom { position: absolute; bottom: 212px; left: 50%; transform: translateX(0) scale(0.56); transform-origin: 50% 100%; z-index: 110; }
+    .seg-zoom.folded { transform: scale(0.56); z-index: 110; }
     .seg-stage {
       display: flex; align-items: flex-end; gap: 3px;
       box-shadow: 0 22px 34px rgba(0,0,0,0.38);
       position: relative;
     }
-    .seg-stage.obelisk-pillar::before {
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: 10px;
-      transform: translateX(-50%);
-      width: 180px;
-      height: 520px;
-      pointer-events: none;
-      z-index: 0;
-      background:
-        radial-gradient(ellipse 44px 26px at 50% 92%, rgba(255,255,255,0.55) 0%, rgba(255,244,210,0.26) 40%, rgba(255,220,150,0.08) 66%, transparent 76%),
-        linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,250,232,0.18) 12%, rgba(190,210,255,0.08) 28%, rgba(255,255,255,0.03) 52%, transparent 82%);
-      filter: blur(12px);
-      opacity: 0.95;
-    }
+    .seg-stage.obelisk-pillar::before { content: none; }
     /* Monolith obelisk: contact AO + pedestal spread so the pillar reads grounded */
     .seg-stage.obelisk-pillar::after {
       content: ''; position: absolute; left: 50%; bottom: 0;
@@ -199,25 +184,24 @@
 
     /* MATERIALS */
     .blk { position: relative; flex-shrink: 0; touch-action: none; cursor: grab; }
-    .seg-stage .blk,
-    .three-proxy-layer .blk {
-      opacity: 0.34;
+    .seg-stage .blk {
+      opacity: 0.96;
       background: transparent !important;
       box-shadow: none !important;
-      border-color: transparent !important;
+      border-color: rgba(255,255,255,0.18) !important;
     }
-    .seg-stage .blk-c,
-    .three-proxy-layer .blk-c {
+    .seg-stage .blk-c {
       background:
         repeating-linear-gradient(180deg, rgba(255,255,255,0.05) 0px, transparent 1px, transparent 2px),
         linear-gradient(135deg, rgba(228,231,236,0.95), rgba(176,182,191,0.9) 45%, rgba(132,138,148,0.92) 100%) !important;
       box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.2),
         inset 0 1px 0 rgba(255,255,255,0.4),
         0 0 18px rgba(210,220,245,0.14),
-        0 10px 18px rgba(0,0,0,0.2) !important;
+        0 10px 18px rgba(0,0,0,0.2),
+        0 0 36px rgba(220,228,240,0.12) !important;
     }
-    .seg-stage .blk-p,
-    .three-proxy-layer .blk-p {
+    .seg-stage .blk-p {
       background:
         radial-gradient(circle at 50% 35%, rgba(255,245,190,0.95) 0%, rgba(255,190,70,0.72) 26%, rgba(255,96,10,0.34) 48%, rgba(10,4,8,0.96) 82%) !important;
       box-shadow:
@@ -230,14 +214,36 @@
     .seg-stage .blk .n-stamp,
     .seg-stage .blk .n-glow,
     .seg-stage .blk .n-mirror {
-      opacity: 0 !important;
+      opacity: 1 !important;
     }
+    .anim-overlay .blk,
+    .three-proxy-layer .blk {
+      opacity: 0.88;
+      background: linear-gradient(180deg, rgba(230,234,240,0.92), rgba(164,170,182,0.9)) !important;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18), 0 8px 16px rgba(0,0,0,0.18) !important;
+      border-color: rgba(255,255,255,0.08) !important;
+      filter: none !important;
+      backface-visibility: hidden;
+    }
+    .anim-overlay .blk-p,
+    .anim-overlay .blk-c,
+    .three-proxy-layer .blk-p,
+    .three-proxy-layer .blk-c {
+      background: linear-gradient(180deg, rgba(228,232,238,0.94), rgba(156,162,174,0.9)) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 8px 16px rgba(0,0,0,0.18) !important;
+    }
+    .anim-overlay .blk::before,
+    .anim-overlay .blk::after,
+    .anim-overlay .blk .n-stamp,
+    .anim-overlay .blk .n-glow,
+    .anim-overlay .blk .n-mirror,
     .three-proxy-layer .blk::before,
     .three-proxy-layer .blk::after,
     .three-proxy-layer .blk .n-stamp,
     .three-proxy-layer .blk .n-glow,
     .three-proxy-layer .blk .n-mirror {
       opacity: 0 !important;
+      animation: none !important;
     }
     /* Composite material — obelisk, factor tray, grid composite chips */
     .blk-c,
@@ -1581,6 +1587,15 @@ function makeBlock(units, w, h, forceComposite=false, omitNumeral=false){
   return el;
 }
 
+function makeAnimBlock(units, w, h){
+  const el = document.createElement('div');
+  el.className = 'blk blk-c anim-block';
+  el.style.width = `var(--u)`;
+  el.style.height = `calc(var(--u) * ${units})`;
+  el.dataset.units = units;
+  return el;
+}
+
 /** Vertical stack of mirror "1" cells: shift shared tall-room reflection (see .mirror-cube background-size). */
 function applyMirrorReflectY(el, indexInStack, stackTotal){
   if (!el || !el.classList.contains('mirror-cube')) return;
@@ -1768,7 +1783,7 @@ function buildNestTree(numPieces, segH, uW, foldDir, startFolded) {
     const container = document.createElement('div');
     container.style.cssText = `position:absolute;bottom:0;left:0;width:${uW}px;height:0;`;
 
-    const blk = makeBlock(S.segSize || S.fNum, uW, segH, true, true);
+    const blk = makeAnimBlock(S.segSize || S.fNum, uW, segH);
     blk.style.position = 'absolute';
     blk.style.bottom = '0';
     blk.style.left = '0';
@@ -1920,8 +1935,10 @@ function doFold(f, swipeSide, clickedZone) {
 
   const altar = document.getElementById('fa');
   const overlay = document.createElement('div');
+  overlay.className = 'anim-overlay';
+  clearThreeOverlay('fa');
   
-  overlay.style.cssText = `position:absolute;bottom:128px;left:50%;margin-left:${-uW/2}px;z-index:50;pointer-events:none;`;
+  overlay.style.cssText = `position:absolute;bottom:212px;left:50%;margin-left:${-uW/2}px;z-index:110;pointer-events:none;`;
 
   const foldZoom = calcFoldZoom(numPieces, f, S.foldDir);
   const zoomEl = document.getElementById('fz');
@@ -1936,7 +1953,6 @@ function doFold(f, swipeSide, clickedZone) {
 
   const { root, hinges } = buildNestTree(numPieces, segH, uW, S.foldDir, false);
   overlay.appendChild(root);
-  
   const sorted = [...hinges].sort((a, b) => a.depth - b.depth);
   const hingeElements = sorted.map(item => item.hw);
 
@@ -1961,6 +1977,7 @@ function doFold(f, swipeSide, clickedZone) {
       S.handleInverted = oddFalls;
 
       S.folding = false;
+      clearThreeOverlay('fa');
       overlay.remove(); 
       stage.style.visibility = 'visible'; 
       
@@ -1989,7 +2006,6 @@ function doFold(f, swipeSide, clickedZone) {
     rotation: (index, target) => target._rot,
     duration: 1.2, stagger: 0.15, ease: "bounce.out",
     onStart: () => haptic(40),
-    onUpdate: () => syncThreeBlocks(document.body)
   });
 }
 
@@ -2002,9 +2018,11 @@ function beginUnspool(){
   const stage=document.getElementById('fo');const altar=document.getElementById('fa');
   const uH=S.unitH,uW=S.unitW,numSegs=S.segs.length,segH=S.segs[0].units*uH;
   stage.style.visibility='hidden';
+  clearThreeOverlay('fa');
 
   const overlay=document.createElement('div');
-  overlay.style.cssText=`position:absolute;bottom:128px;left:50%;margin-left:${-uW/2}px;z-index:50;`;
+  overlay.className = 'anim-overlay';
+  overlay.style.cssText=`position:absolute;bottom:212px;left:50%;margin-left:${-uW/2}px;z-index:110;`;
   altar.appendChild(overlay);
 
   const{root,hinges}=buildNestTree(numSegs,segH,uW,S.foldDir,true);
@@ -2042,7 +2060,6 @@ function beginUnspool(){
       const hProg=Math.max(0,Math.min(1,(progress-US.starts[i])/US.windowSize));
       hw.style.transform=`rotate(${rot*(1-hProg)}deg)`;
     });
-    syncThreeBlocks(document.body);
     if(US.startZoom<S.fZoom){
       const dragZoom=US.startZoom+(S.fZoom-US.startZoom)*progress;
       zoomEl.style.transition='none';
@@ -2074,6 +2091,7 @@ function cancelUS(onMove,onUp){
     zoomEl.style.transform=`translateX(0) scale(${US.startZoom})`;
   }
   setTimeout(()=>{
+    clearThreeOverlay('fa');
     US?.overlay?.remove();
     document.getElementById('fo').style.visibility='visible';
     S.folding=false;US=null;
@@ -2090,6 +2108,7 @@ function completeUS(onMove,onUp){
   zoomEl.style.transform=`translateX(0) scale(${S.fZoom})`;
   S.currentFoldZoom=S.fZoom;
   setTimeout(()=>{
+    clearThreeOverlay('fa');
     US?.overlay?.remove();
     document.getElementById('fo').style.visibility='visible';
     S.segs=[{units:S.fNum}];S.folding=false;US=null;
@@ -2360,6 +2379,11 @@ function triggerShatter(rectElement, contactY) {
     setTimeout(()=>flash.remove(), 350);
 }
 
+function hideProxyMesh(el) {
+  if (!el?._mesh) return;
+  el._mesh.visible = false;
+}
+
 function placeBuildPrime(p){
   if(S.bAnimating)return;
   const n=S.bNum, prevProduct=S.bProduct, newProduct=prevProduct===0?p:prevProduct*p;
@@ -2460,12 +2484,11 @@ function animateBuildHinge(prevH, p, finalH, target, cb){
   const stage = document.getElementById('bo'), altar = document.getElementById('ba'), uH = S.bUnitH, uW = S.bUnitW, segH = prevH * uH;
   stage.style.visibility = 'hidden';
   const overlay = document.createElement('div');
-  overlay.className = 'three-proxy-layer';
-  overlay.style.cssText = `position:absolute;bottom:128px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
+  overlay.className = 'three-proxy-layer anim-overlay';
+  overlay.style.cssText = `position:absolute;bottom:212px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:110;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
   clearThreeOverlay('ba');
-  const base = makeBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; base.style.zIndex = '10'; overlay.appendChild(base);
-  syncThreeBlock(base);
+  const base = makeAnimBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; base.style.zIndex = '10'; overlay.appendChild(base);
   
   const copies = p - 1, phaseDur = 500, pause = 80;
   const arms = [];
@@ -2473,29 +2496,20 @@ function animateBuildHinge(prevH, p, finalH, target, cb){
     const pivotBottom = (i + 1) * segH;
     const hw = document.createElement('div');
     hw.style.cssText = `position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(180deg);z-index:${5-i};`;
-    const blk = makeBlock(prevH, uW, segH, false, true);
+    const blk = makeAnimBlock(prevH, uW, segH);
     blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
     hw.appendChild(blk); overlay.appendChild(hw); arms.push({hw, blk});
-    syncThreeBlock(blk);
   }
   arms.forEach(({hw, blk},i) => {
-    const mesh = blk._mesh;
-    const pos = getDirectBlockPosition(blk);
-    blk.dataset.animating = '1';
-    mesh.position.set(pos.x, pos.y + segH * 0.35, 150);
-    mesh.rotation.z = Math.PI;
     setTimeout(() => {
       hw.style.transition = `transform ${phaseDur}ms var(--ease-heavy)`;
       hw.style.transform = 'rotate(0deg)';
-      gsap.to(mesh.position, { y: pos.y, duration: phaseDur / 1000, ease: "power2.out", onUpdate: () => syncThreeBlocks(document.body) });
-      gsap.to(mesh.rotation, { z: 0, duration: phaseDur / 1000, ease: "power2.inOut", onUpdate: () => syncThreeBlocks(document.body) });
       haptic(20);
     }, i * (phaseDur+pause));
   });
   const allLandedTime = copies*(phaseDur+pause)+200;
   setTimeout(() => {
     arms.forEach(({blk},i) => {
-      delete blk.dataset.animating;
       const p2 = isPrime(prevH);
       const num = document.createElement('div');
       num.className = p2 ? 'n-glow' : 'n-stamp';
@@ -2517,10 +2531,11 @@ function animateBuildOvershoot(prevH, p, finalH, target, cb){
   clearThreeOverlay('ba');
   
   const overlay = document.createElement('div');
-  overlay.style.cssText = `position:absolute;bottom:128px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
+  overlay.className = 'anim-overlay';
+  overlay.style.cssText = `position:absolute;bottom:212px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:110;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
   
-  const base = makeBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; base.style.zIndex = '10'; overlay.appendChild(base);
+  const base = makeAnimBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; base.style.zIndex = '10'; overlay.appendChild(base);
   
   const copies = p - 1, phaseDur = 500, pause = 80;
   const arms = [];
@@ -2528,10 +2543,9 @@ function animateBuildOvershoot(prevH, p, finalH, target, cb){
     const pivotBottom = (i + 1) * segH;
     const hw = document.createElement('div');
     hw.style.cssText = `position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(180deg);z-index:${5-i};`;
-    const blk = makeBlock(prevH, uW, segH, false, true);
+    const blk = makeAnimBlock(prevH, uW, segH);
     blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
     hw.appendChild(blk); overlay.appendChild(hw); arms.push(hw);
-    syncThreeBlock(blk);
   }
   
   let collisionArm = -1, collisionAngle = 0;
@@ -2553,7 +2567,6 @@ function animateBuildOvershoot(prevH, p, finalH, target, cb){
         ease: "power2.inOut",
         overwrite: 'auto',
         onStart: () => haptic(20),
-        onUpdate: () => syncThreeBlocks(document.body)
       });
     }, i * (phaseDur+pause));
   });
@@ -2569,7 +2582,6 @@ function animateBuildOvershoot(prevH, p, finalH, target, cb){
         ease: "power2.inOut",
         overwrite: 'auto',
         onStart: () => haptic(20),
-        onUpdate: () => syncThreeBlocks(document.body)
       });
       setTimeout(() => {
         arms.forEach(a => { a.style.display = 'none'; });
@@ -2591,18 +2603,18 @@ function undoBuild(){
   stage.style.visibility='hidden';
   clearThreeOverlay('ba');
   const overlay=document.createElement('div');
-  overlay.style.cssText=`position:absolute;bottom:128px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
+  overlay.className = 'anim-overlay';
+  overlay.style.cssText=`position:absolute;bottom:212px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:110;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
-  const base=makeBlock(prevProduct,uW,segH); base.style.position='absolute';base.style.bottom='0';base.style.left='0'; overlay.appendChild(base);
+  const base=makeAnimBlock(prevProduct,uW,segH); base.style.position='absolute';base.style.bottom='0';base.style.left='0'; overlay.appendChild(base);
   const copies=p-1, phaseDur=350, pause=50;
   const arms=[];
   for(let i=0;i<copies;i++){
     const pivotBottom = (i + 1) * segH;
     const hw=document.createElement('div');
     hw.style.cssText=`position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(0deg);`;
-    const blk=makeBlock(prevProduct,uW,segH,false,false); blk.style.position='absolute';blk.style.bottom='0';blk.style.left='0';
+    const blk=makeAnimBlock(prevProduct,uW,segH); blk.style.position='absolute';blk.style.bottom='0';blk.style.left='0';
     hw.appendChild(blk); overlay.appendChild(hw); arms.push(hw);
-    syncThreeBlock(blk);
   }
   const reversedArms=[...arms].reverse();
   reversedArms.forEach((hw,i)=>{
@@ -2613,7 +2625,6 @@ function undoBuild(){
         ease: "power2.inOut",
         overwrite: 'auto',
         onStart: () => haptic(15),
-        onUpdate: () => syncThreeBlocks(document.body)
       });
     },i*(phaseDur+pause));
   });
