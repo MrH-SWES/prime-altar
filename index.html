@@ -131,108 +131,11 @@
         radial-gradient(ellipse 100% 75% at 50% 100%, rgba(0,0,0,0.45) 0%, transparent 50%),
         linear-gradient(180deg, #16171c 0%, #101115 100%);
     }
-    .vault-room {
-      position: absolute; inset: 0; perspective: none;
-      overflow: hidden; pointer-events: none; z-index: 1;
-    }
-    .vault-room::after {
-      content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none;
-      background: radial-gradient(ellipse 105% 85% at 50% 42%, transparent 0%, transparent 38%, rgba(6,7,10,0.22) 72%, rgba(4,4,6,0.55) 100%);
-      mix-blend-mode: multiply;
+    .three-canvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      display: block; pointer-events: none; z-index: 100;
     }
 
-    .vault-ceiling,
-    .vault-wall-left,
-    .vault-wall-right,
-    .vault-floor { display: none; }
-
-    .vault-wall-back {
-      position: absolute; inset: 0;
-      transform: none;
-      border-radius: 0;
-      border: none;
-      border-bottom: 1px solid rgba(0,0,0,0.25);
-      box-shadow:
-        inset 0 0 100px rgba(0,0,0,0.28),
-        inset 0 -24px 60px rgba(0,0,0,0.2),
-        0 0 0 1px rgba(255,255,255,0.03);
-      background:
-        radial-gradient(ellipse 88% 58% at 50% 14%, rgba(255,255,255,0.2) 0%, rgba(245,246,250,0.06) 28%, transparent 52%),
-        radial-gradient(ellipse 45% 35% at 18% 22%, rgba(255,255,255,0.08) 0%, transparent 42%),
-        radial-gradient(ellipse 40% 32% at 82% 20%, rgba(200,208,218,0.07) 0%, transparent 40%),
-        radial-gradient(ellipse 90% 55% at 50% 100%, rgba(0,0,0,0.28) 0%, transparent 50%),
-        linear-gradient(90deg, rgba(0,0,0,0.14) 0%, transparent 12%, transparent 50%, transparent 88%, rgba(0,0,0,0.12) 100%),
-        linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 14%, transparent 58%, rgba(0,0,0,0.12) 100%),
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.022) 0px, transparent 1px, transparent 4px),
-        repeating-linear-gradient(0deg, rgba(0,0,0,0.045) 0px, transparent 1px, transparent 2px),
-        linear-gradient(168deg, #3d4048 0%, #35383f 22%, #2e3138 48%, #32353c 72%, #3a3d45 100%);
-    }
-    .vault-wall-back::before {
-      content: ''; position: absolute; inset: 0; pointer-events: none;
-      background:
-        repeating-linear-gradient(105deg, transparent 0px, rgba(255,255,255,0.018) 1px, transparent 2px, transparent 14px),
-        repeating-linear-gradient(-18deg, transparent 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 9px),
-        radial-gradient(circle at 50% 8%, rgba(255,255,255,0.12) 0%, transparent 38%);
-      opacity: 0.9;
-    }
-    .vault-wall-back::after {
-      content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 48%; pointer-events: none;
-      background: linear-gradient(to top, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
-    }
-
-    .vault-spot {
-      position: absolute; pointer-events: none; z-index: 8;
-      width: 100px; height: 260px;
-      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.09) 32%, transparent 68%);
-      filter: blur(0.2px);
-    }
-    .vault-spot-1 { top: 1%; left: 18%; opacity: 0.92; }
-    .vault-spot-2 {
-      top: 0; left: 50%; transform: translateX(-50%);
-      width: min(58vw, 300px);
-      height: 280px;
-      background: radial-gradient(ellipse 72% 48% at 50% 0%, rgba(255,255,255,0.34) 0%, rgba(240,242,248,0.12) 28%, rgba(255,255,255,0.04) 48%, transparent 72%);
-      opacity: 1;
-    }
-    .vault-spot-3 { top: 1%; right: 18%; opacity: 0.92; }
-
-    /* ═══ 2. STONE ALTAR: heavy base + wide shelf slab ═══ */
-    .soapstone-altar {
-      position: absolute; bottom: -8px; left: 0; right: 0; height: 96px; z-index: 15;
-      pointer-events: none;
-    }
-    .soapstone-altar::before {
-      content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 44%; max-width: 260px; height: 54px;
-      border-radius: 0 0 8px 8px;
-      background:
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, transparent 1px, transparent 4px),
-        repeating-linear-gradient(0deg, rgba(0,0,0,0.07) 0px, transparent 1px, transparent 3px),
-        linear-gradient(180deg, #8c9098 0%, #6f737c 22%, #585c64 52%, #4a4e56 100%);
-      border: 1px solid rgba(255,255,255,0.14);
-      border-top: 1px solid rgba(0,0,0,0.2);
-      box-shadow:
-        inset 0 2px 0 rgba(255,255,255,0.18),
-        inset 0 -14px 28px rgba(0,0,0,0.32),
-        0 10px 32px rgba(0,0,0,0.55), 0 3px 0 rgba(255,255,255,0.05);
-    }
-    .soapstone-altar::after {
-      content: ''; position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);
-      width: 86%; max-width: 520px; height: 42px;
-      border-radius: 4px 4px 6px 6px;
-      background:
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, transparent 1px, transparent 5px),
-        repeating-linear-gradient(0deg, rgba(0,0,0,0.045) 0px, transparent 1px, transparent 2px),
-        linear-gradient(180deg, #c2c6ce 0%, #a4a8b2 25%, #8e929c 48%, #a8acb6 72%, #b8bcc4 100%);
-      border: 1px solid rgba(255,255,255,0.28);
-      border-bottom: 2px solid rgba(45,48,55,0.75);
-      box-shadow:
-        inset 0 3px 0 rgba(255,255,255,0.5),
-        inset 0 -10px 22px rgba(0,0,0,0.2),
-        0 5px 0 rgba(70,74,82,0.95),
-        0 16px 36px rgba(0,0,0,0.42);
-    }
-    
     /* ZOOM WRAPPER & OBELISK STAGE — sits on the back stage, behind the podium */
     /* No filter here — filter on an ancestor flattens fine mirror-cube gradients inside the stage */
     .seg-zoom { position: absolute; bottom: 128px; left: 50%; transform: translateX(0) scale(0.56); transform-origin: 50% 100%; z-index: 4; }
@@ -241,6 +144,22 @@
       display: flex; align-items: flex-end; gap: 3px;
       box-shadow: 0 22px 34px rgba(0,0,0,0.38);
       position: relative;
+    }
+    .seg-stage.obelisk-pillar::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      width: 180px;
+      height: 520px;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 44px 26px at 50% 92%, rgba(255,255,255,0.55) 0%, rgba(255,244,210,0.26) 40%, rgba(255,220,150,0.08) 66%, transparent 76%),
+        linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,250,232,0.18) 12%, rgba(190,210,255,0.08) 28%, rgba(255,255,255,0.03) 52%, transparent 82%);
+      filter: blur(12px);
+      opacity: 0.95;
     }
     /* Monolith obelisk: contact AO + pedestal spread so the pillar reads grounded */
     .seg-stage.obelisk-pillar::after {
@@ -280,6 +199,46 @@
 
     /* MATERIALS */
     .blk { position: relative; flex-shrink: 0; touch-action: none; cursor: grab; }
+    .seg-stage .blk,
+    .three-proxy-layer .blk {
+      opacity: 0.34;
+      background: transparent !important;
+      box-shadow: none !important;
+      border-color: transparent !important;
+    }
+    .seg-stage .blk-c,
+    .three-proxy-layer .blk-c {
+      background:
+        repeating-linear-gradient(180deg, rgba(255,255,255,0.05) 0px, transparent 1px, transparent 2px),
+        linear-gradient(135deg, rgba(228,231,236,0.95), rgba(176,182,191,0.9) 45%, rgba(132,138,148,0.92) 100%) !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.4),
+        0 0 18px rgba(210,220,245,0.14),
+        0 10px 18px rgba(0,0,0,0.2) !important;
+    }
+    .seg-stage .blk-p,
+    .three-proxy-layer .blk-p {
+      background:
+        radial-gradient(circle at 50% 35%, rgba(255,245,190,0.95) 0%, rgba(255,190,70,0.72) 26%, rgba(255,96,10,0.34) 48%, rgba(10,4,8,0.96) 82%) !important;
+      box-shadow:
+        0 0 24px rgba(255,150,36,0.35),
+        0 0 60px rgba(255,110,20,0.16),
+        inset 0 0 24px rgba(255,210,130,0.2) !important;
+    }
+    .seg-stage .blk::before,
+    .seg-stage .blk::after,
+    .seg-stage .blk .n-stamp,
+    .seg-stage .blk .n-glow,
+    .seg-stage .blk .n-mirror {
+      opacity: 0 !important;
+    }
+    .three-proxy-layer .blk::before,
+    .three-proxy-layer .blk::after,
+    .three-proxy-layer .blk .n-stamp,
+    .three-proxy-layer .blk .n-glow,
+    .three-proxy-layer .blk .n-mirror {
+      opacity: 0 !important;
+    }
     /* Composite material — obelisk, factor tray, grid composite chips */
     .blk-c,
     .fs.fc,
@@ -446,9 +405,9 @@
 
     /* FACTOR TRAY (On Concrete Podium) */
     .f-tray {
-      position: absolute; bottom: 46px; left: 50%; transform: translateX(-50%);
+      position: absolute; bottom: 96px; left: 50%; transform: translateX(-50%);
       width: 85vw; max-width: 450px; padding: 8px 10px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
-      z-index: 20; pointer-events: all;
+      z-index: 120; pointer-events: all;
     }
     .fs {
       width: calc(var(--u) * 0.9); height: calc(var(--u) * 0.9); border-radius: 2px; background: transparent;
@@ -604,16 +563,7 @@
     <div class="altar-numeral" id="altar-numeral">12</div>
   </div>
   <div class="altar" id="fa">
-    <div class="vault-room">
-      <div class="vault-ceiling"></div>
-      <div class="vault-wall-back"></div>
-      <div class="vault-wall-left"></div>
-      <div class="vault-wall-right"></div>
-      <div class="vault-floor"></div>
-      <div class="vault-spot vault-spot-1"></div>
-      <div class="vault-spot vault-spot-2"></div>
-      <div class="vault-spot vault-spot-3"></div>
-    </div>
+    <canvas class="three-canvas" id="three-canvas-fa"></canvas>
     <div class="seg-zoom" id="fz"><div class="seg-stage" id="fo"></div></div>
     <div class="soapstone-altar"></div>
     <div class="f-tray" id="ft"></div>
@@ -632,16 +582,7 @@
     <div class="altar-numeral" id="build-numeral">2</div>
   </div>
   <div class="altar" id="ba">
-    <div class="vault-room">
-      <div class="vault-ceiling"></div>
-      <div class="vault-wall-back"></div>
-      <div class="vault-wall-left"></div>
-      <div class="vault-wall-right"></div>
-      <div class="vault-floor"></div>
-      <div class="vault-spot vault-spot-1"></div>
-      <div class="vault-spot vault-spot-2"></div>
-      <div class="vault-spot vault-spot-3"></div>
-    </div>
+    <canvas class="three-canvas" id="three-canvas-ba"></canvas>
     <div class="ceil-line" id="bceil"></div>
     <div class="seg-zoom" id="bz"><div class="seg-stage" id="bo"></div></div>
     <div class="soapstone-altar"></div>
@@ -656,7 +597,9 @@
   </footer>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.158.0/three.min.js"></script>
 <script>
+console.log('Three.js Loaded:', !!window.THREE);
 const isPrime = n => { if(n<2)return false; for(let i=2;i*i<=n;i++) if(n%i===0)return false; return true; };
 const allFactors = n => { const f=[1]; for(let i=2;i<=n;i++) if(n%i===0)f.push(i); return f; };
 const properFactors = n => { const f=[]; for(let i=2;i<n;i++) if(n%i===0)f.push(i); return f; };
@@ -674,6 +617,665 @@ const S = {
   trayIdentityReady: true,
   _deferredRoomCelebration: null,
 };
+
+const THREE_WORLD = {
+  rooms: {},
+  brushedMetalMat: null,
+  concreteMat: null,
+  primeMat: null,
+  unityMat: null,
+  clock: null,
+  resizeBound: false,
+  loopStarted: false,
+};
+
+const WORLD_UNIT = 80;
+const FOREGROUND_Z = 550;
+const TRAY_BLOCK_Z = 690;
+const PEDESTAL_Z = -600;
+const OBELISK_Z = -360;
+
+function ensureThreeMaterials() {
+  if (THREE_WORLD.brushedMetalMat && THREE_WORLD.obeliskMetalMat && THREE_WORLD.concreteMat && THREE_WORLD.primeMat && THREE_WORLD.unityMat) return;
+  THREE_WORLD.clock = new THREE.Clock();
+  THREE_WORLD.brushedMetalMat = new THREE.MeshStandardMaterial({
+    color: 0x99a0aa, // Brighter aluminum base
+    metalness: 0.45, // Let diffuse light illuminate it
+    roughness: 0.35, // Catch broader specular highlights
+    emissive: 0x1c2129,
+    emissiveIntensity: 0.38,
+  });
+  THREE_WORLD.obeliskMetalMat = new THREE.MeshStandardMaterial({
+    color: 0xc4cad3,
+    metalness: 0.22,
+    roughness: 0.42,
+    emissive: 0x343c48,
+    emissiveIntensity: 0.85,
+  });
+  THREE_WORLD.concreteMat = new THREE.MeshStandardMaterial({
+    color: 0x15161a,
+    metalness: 0.1,
+    roughness: 0.95,
+  });
+  THREE_WORLD.primeMat = new THREE.ShaderMaterial({
+    uniforms: {
+      uTime: { value: 0 },
+      uGlow: { value: 2.8 },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      varying vec3 vNormalW;
+      void main() {
+        vUv = uv;
+        vNormalW = normalize(mat3(modelMatrix) * normal);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float uTime;
+      uniform float uGlow;
+      varying vec2 vUv;
+      varying vec3 vNormalW;
+
+      vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+      vec4 permute(vec4 x) { return mod289(((x * 34.0) + 1.0) * x); }
+      vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+      float snoise(vec3 v) {
+        const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);
+        const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+        vec3 i = floor(v + dot(v, C.yyy));
+        vec3 x0 = v - i + dot(i, C.xxx);
+        vec3 g = step(x0.yzx, x0.xyz);
+        vec3 l = 1.0 - g;
+        vec3 i1 = min(g.xyz, l.zxy);
+        vec3 i2 = max(g.xyz, l.zxy);
+        vec3 x1 = x0 - i1 + C.xxx;
+        vec3 x2 = x0 - i2 + C.yyy;
+        vec3 x3 = x0 - D.yyy;
+        i = mod289(i);
+        vec4 p = permute(permute(permute(
+          i.z + vec4(0.0, i1.z, i2.z, 1.0))
+          + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+          + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+        float n_ = 0.142857142857;
+        vec3 ns = n_ * D.wyz - D.xzx;
+        vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+        vec4 x_ = floor(j * ns.z);
+        vec4 y_ = floor(j - 7.0 * x_);
+        vec4 x = x_ * ns.x + ns.yyyy;
+        vec4 y = y_ * ns.x + ns.yyyy;
+        vec4 h = 1.0 - abs(x) - abs(y);
+        vec4 b0 = vec4(x.xy, y.xy);
+        vec4 b1 = vec4(x.zw, y.zw);
+        vec4 s0 = floor(b0) * 2.0 + 1.0;
+        vec4 s1 = floor(b1) * 2.0 + 1.0;
+        vec4 sh = -step(h, vec4(0.0));
+        vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;
+        vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;
+        vec3 p0 = vec3(a0.xy, h.x);
+        vec3 p1 = vec3(a0.zw, h.y);
+        vec3 p2 = vec3(a1.xy, h.z);
+        vec3 p3 = vec3(a1.zw, h.w);
+        vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));
+        p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+        vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);
+        m = m * m;
+        return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));
+      }
+      float fbm(vec3 p) {
+        float total = 0.0;
+        float amp = 0.5;
+        for (int i = 0; i < 5; i++) {
+          total += amp * snoise(p);
+          p *= 2.15;
+          amp *= 0.55;
+        }
+        return total;
+      }
+      void main() {
+        vec3 p = vec3(vUv.x * 3.1, vUv.y * 5.2 - uTime * 3.2, uTime * 1.8);
+        float n1 = fbm(p);
+        float n2 = fbm(p * 2.6 + vec3(0.0, uTime * 1.25, uTime * 0.85));
+        float plasma = smoothstep(-0.25, 0.98, n1 * 0.82 + n2 * 0.74);
+        vec3 ember = vec3(1.0, 0.24, 0.02);
+        vec3 orange = vec3(1.0, 0.55, 0.08);
+        vec3 yellow = vec3(1.0, 0.92, 0.26);
+        vec3 core = vec3(1.0, 0.99, 0.8);
+        vec3 color = mix(ember, orange, smoothstep(0.0, 0.45, plasma));
+        color = mix(color, yellow, smoothstep(0.35, 0.82, plasma));
+        color = mix(color, core, smoothstep(0.72, 1.0, plasma));
+        float fresnel = pow(1.0 - abs(dot(normalize(vNormalW), vec3(0.0, 0.0, 1.0))), 2.5);
+        vec3 glow = color * (2.1 + plasma * 2.8) * uGlow + vec3(1.0, 0.68, 0.14) * fresnel;
+        gl_FragColor = vec4(color + glow * 0.52, 1.0);
+      }
+    `,
+  });
+  THREE_WORLD.unityMat = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff,
+    metalness: 1.0,
+    roughness: 0.0,
+    envMapIntensity: 2.0
+  });
+}
+
+function initThreeRoom(roomId, canvasId) {
+  if (!window.THREE) return null;
+  ensureThreeMaterials();
+  const altarEl = document.getElementById(roomId);
+  const canvas = document.getElementById(canvasId);
+  if (!altarEl || !canvas || THREE_WORLD.rooms[roomId]) return THREE_WORLD.rooms[roomId];
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  const scene = new THREE.Scene();
+  scene.background = null;
+  scene.fog = new THREE.Fog(0x08090c, 900, 2200);
+
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 8000);
+  camera.position.set(0, 600, 1600);
+  camera.lookAt(0, 150, -300);
+
+  const root = new THREE.Group();
+  const stageGroup = new THREE.Group();
+  const overlayGroup = new THREE.Group();
+  scene.add(root);
+  scene.add(stageGroup);
+  scene.add(overlayGroup);
+
+  const ambient = new THREE.AmbientLight(0xf4f7ff, 2.75);
+  scene.add(ambient);
+
+  const leftSpot = new THREE.SpotLight(0xeaf1ff, 9800, 3800, Math.PI / 4.1, 0.36, 1.0);
+  leftSpot.position.set(-560, 820, 980);
+  leftSpot.castShadow = true;
+  leftSpot.shadow.mapSize.set(2048, 2048);
+  leftSpot.shadow.radius = 12;
+  scene.add(leftSpot, leftSpot.target);
+
+  const rightSpot = new THREE.SpotLight(0xdbe8ff, 9800, 3800, Math.PI / 4.1, 0.4, 1.0);
+  rightSpot.position.set(560, 800, 980);
+  rightSpot.castShadow = true;
+  rightSpot.shadow.mapSize.set(2048, 2048);
+  rightSpot.shadow.radius = 12;
+  scene.add(rightSpot, rightSpot.target);
+
+  const fill = new THREE.PointLight(0xf6f8ff, 360, 2400, 1.45);
+  fill.position.set(0, 360, 420);
+  scene.add(fill);
+
+  const obeliskSpot = new THREE.SpotLight(0xf7fbff, 9800, 3800, Math.PI / 4.1, 0.28, 1.0);
+  obeliskSpot.position.set(0, 980, 560);
+  obeliskSpot.castShadow = true;
+  obeliskSpot.shadow.mapSize.set(2048, 2048);
+  obeliskSpot.shadow.radius = 10;
+  obeliskSpot.target.position.set(0, 180, OBELISK_Z);
+  scene.add(obeliskSpot, obeliskSpot.target);
+
+  const obeliskFill = new THREE.PointLight(0xf2f6ff, 360, 2600, 1.0);
+  obeliskFill.position.set(0, 340, 120);
+  scene.add(obeliskFill);
+
+  const obeliskRim = new THREE.PointLight(0xbfd3ff, 180, 2200, 1.4);
+  obeliskRim.position.set(0, 240, -620);
+  scene.add(obeliskRim);
+
+  const obeliskDownSpot = new THREE.SpotLight(0xffffff, 14000, 3200, Math.PI / 7.5, 0.18, 1.0);
+  obeliskDownSpot.position.set(0, 1500, OBELISK_Z + 40);
+  obeliskDownSpot.castShadow = true;
+  obeliskDownSpot.shadow.mapSize.set(2048, 2048);
+  obeliskDownSpot.shadow.radius = 8;
+  obeliskDownSpot.target.position.set(0, 140, OBELISK_Z);
+  scene.add(obeliskDownSpot, obeliskDownSpot.target);
+
+  const altarSpot = new THREE.SpotLight(0xf8fbff, 5600, 3400, Math.PI / 4.8, 0.34, 1.0);
+  altarSpot.position.set(0, 860, 760);
+  altarSpot.castShadow = true;
+  altarSpot.shadow.mapSize.set(2048, 2048);
+  altarSpot.shadow.radius = 10;
+  altarSpot.target.position.set(0, 40, TRAY_BLOCK_Z);
+  scene.add(altarSpot, altarSpot.target);
+
+  const altarPoint = new THREE.PointLight(0xfff2dc, 120, 1600, 1.35);
+  altarPoint.position.set(0, 340, 760);
+  scene.add(altarPoint);
+
+  const envTarget = new THREE.WebGLCubeRenderTarget(256, {
+    type: THREE.HalfFloatType,
+    generateMipmaps: true,
+    minFilter: THREE.LinearMipmapLinearFilter,
+  });
+  const cubeCamera = new THREE.CubeCamera(1, 5000, envTarget);
+  scene.add(cubeCamera);
+  scene.environment = envTarget.texture;
+
+  const room = {
+    altarEl, canvas, renderer, scene, camera, root, stageGroup, overlayGroup,
+    blockMap: new Map(), leftSpot, rightSpot, fill, obeliskSpot, obeliskFill, obeliskRim, obeliskDownSpot, altarSpot, altarPoint, cubeCamera, envTarget,
+    focusTarget: new THREE.Vector3(0, 100, 0),
+  };
+  THREE_WORLD.rooms[roomId] = room;
+  rebuildThreeEnvironment(roomId);
+  resizeThreeRoom(roomId);
+
+  if (!THREE_WORLD.resizeBound) {
+    THREE_WORLD.resizeBound = true;
+    window.addEventListener('resize', () => {
+      Object.keys(THREE_WORLD.rooms).forEach(resizeThreeRoom);
+      requestThreeRender();
+    });
+  }
+  requestThreeRender();
+  return room;
+}
+
+function clearThreeGroup(group) {
+  while (group.children.length) {
+    group.remove(group.children[0]);
+  }
+}
+
+function rebuildThreeEnvironment(roomId) {
+  const room = THREE_WORLD.rooms[roomId];
+  if (!room) return;
+  clearThreeGroup(room.root);
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(8000, 20, 8000), THREE_WORLD.concreteMat);
+  floor.position.set(0, -100, 0);
+  floor.receiveShadow = true;
+  room.root.add(floor);
+
+  const backWall = new THREE.Mesh(new THREE.PlaneGeometry(8000, 4000), THREE_WORLD.concreteMat);
+  backWall.position.set(0, 1400, -1500);
+  backWall.receiveShadow = true;
+  room.root.add(backWall);
+
+  const trayShelf = new THREE.Mesh(new THREE.BoxGeometry(900, 40, 220), THREE_WORLD.concreteMat);
+  trayShelf.position.set(0, -20, FOREGROUND_Z);
+  trayShelf.castShadow = true;
+  trayShelf.receiveShadow = true;
+  room.root.add(trayShelf);
+
+  const trayLip = new THREE.Mesh(new THREE.BoxGeometry(420, 80, 120), THREE_WORLD.concreteMat);
+  trayLip.position.set(0, -90, FOREGROUND_Z);
+  trayLip.castShadow = true;
+  trayLip.receiveShadow = true;
+  room.root.add(trayLip);
+
+  const pedestal = new THREE.Mesh(new THREE.BoxGeometry(320, 180, 320), THREE_WORLD.concreteMat);
+  pedestal.position.set(0, -100, PEDESTAL_Z);
+  pedestal.castShadow = true;
+  pedestal.receiveShadow = true;
+  room.root.add(pedestal);
+}
+
+function resizeThreeRoom(roomId) {
+  const room = THREE_WORLD.rooms[roomId];
+  if (!room) return;
+  const w = Math.max(1, room.altarEl.clientWidth);
+  const h = Math.max(1, room.altarEl.clientHeight);
+  room.renderer.setSize(w, h, false);
+  room.camera.aspect = w / h;
+  room.camera.updateProjectionMatrix();
+  rebuildThreeEnvironment(roomId);
+  updateThreeRoomFocus(roomId);
+}
+
+function requestThreeRender() {
+  if (THREE_WORLD.loopStarted) return;
+  THREE_WORLD.loopStarted = true;
+  const tick = () => {
+    const elapsed = THREE_WORLD.clock ? THREE_WORLD.clock.getElapsedTime() : 0;
+    if (THREE_WORLD.primeMat?.uniforms?.uTime) THREE_WORLD.primeMat.uniforms.uTime.value = elapsed;
+    if (THREE_WORLD.primeMat?.uniforms?.uGlow) {
+      THREE_WORLD.primeMat.uniforms.uGlow.value = 3.5 + Math.sin(Date.now() * 0.005) * 1.5;
+    }
+    Object.values(THREE_WORLD.rooms).forEach(room => {
+      room.camera.position.set(0, 600, 1600);
+      room.camera.lookAt(0, 150, -300);
+      room.cubeCamera.position.copy(room.focusTarget).add(new THREE.Vector3(0, 40, 120));
+      room.obeliskSpot.target.position.copy(room.focusTarget).setY(170);
+      room.obeliskSpot.target.updateMatrixWorld();
+      room.obeliskFill.position.set(0, 360, 180);
+      room.obeliskRim.position.set(0, 240, room.focusTarget.z - 260);
+      room.obeliskDownSpot.position.set(0, 1500, room.focusTarget.z + 40);
+      room.obeliskDownSpot.target.position.copy(room.focusTarget).setY(140);
+      room.obeliskDownSpot.target.updateMatrixWorld();
+      room.altarSpot.target.position.set(0, 40, TRAY_BLOCK_Z);
+      room.altarSpot.target.updateMatrixWorld();
+      room.altarPoint.position.set(0, 360, 760);
+      const unityMeshes = [];
+      room.stageGroup.traverse(obj => { if (obj.isMesh && obj.material === THREE_WORLD.unityMat) unityMeshes.push(obj); });
+      room.overlayGroup.traverse(obj => { if (obj.isMesh && obj.material === THREE_WORLD.unityMat) unityMeshes.push(obj); });
+      unityMeshes.forEach(m => { m.visible = false; });
+      room.scene.background = new THREE.Color(0x404550);
+      room.scene.environment = null;
+      room.cubeCamera.update(room.renderer, room.scene);
+      room.scene.environment = room.envTarget.texture;
+      room.scene.background = null; // Restore transparent background for CSS
+      unityMeshes.forEach(m => { m.visible = true; });
+      room.stageGroup.traverse(obj => {
+        if (!obj?.isMesh) return;
+        const primeLight = obj.userData?.primeLight;
+        if (primeLight) primeLight.intensity = 190 + Math.sin(elapsed * 3.6 + obj.position.y * 0.01) * 80;
+        const aura = obj.userData?.auraSprite;
+        if (aura) {
+          const pulse = 1.22 + Math.sin(elapsed * 4.8 + obj.position.y * 0.015) * 0.26;
+          aura.scale.set(
+            Math.max(120, obj.userData.blockWidth * 2.35) * pulse,
+            Math.max(120, Math.min(obj.userData.blockHeight * 1.35, 280)) * pulse,
+            1
+          );
+          aura.material.opacity = 0.94 + Math.sin(elapsed * 4.8 + obj.position.y * 0.015) * 0.18;
+        }
+      });
+      room.overlayGroup.traverse(obj => {
+        if (!obj?.isMesh) return;
+        const primeLight = obj.userData?.primeLight;
+        if (primeLight) primeLight.intensity = 190 + Math.sin(elapsed * 3.6 + obj.position.y * 0.01) * 80;
+        const aura = obj.userData?.auraSprite;
+        if (aura) {
+          const pulse = 1.22 + Math.sin(elapsed * 4.8 + obj.position.y * 0.015) * 0.26;
+          aura.scale.set(
+            Math.max(120, obj.userData.blockWidth * 2.35) * pulse,
+            Math.max(120, Math.min(obj.userData.blockHeight * 1.35, 280)) * pulse,
+            1
+          );
+          aura.material.opacity = 0.94 + Math.sin(elapsed * 4.8 + obj.position.y * 0.015) * 0.18;
+        }
+      });
+      room.renderer.render(room.scene, room.camera);
+    });
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+function getThreeMaterial(units, forceComposite, useObeliskMetal = false) {
+  if (units === 1 && !forceComposite) return THREE_WORLD.unityMat;
+  if (!forceComposite && isPrime(units)) return THREE_WORLD.primeMat;
+  return useObeliskMetal ? THREE_WORLD.obeliskMetalMat : THREE_WORLD.brushedMetalMat;
+}
+
+function createBlockLabelSprite(text, units, w, h, isPrimeBlock, isUnityBlock) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const fontSize = Math.round(Math.min(260, Math.max(128, 360 / Math.max(1, String(text).length))));
+  ctx.font = `900 ${fontSize}px Lexend, sans-serif`;
+  if (isPrimeBlock) {
+    ctx.fillStyle = '#fffef5';
+    ctx.shadowColor = 'rgba(255,190,80,0.95)';
+    ctx.shadowBlur = 36;
+  } else if (isUnityBlock) {
+    ctx.fillStyle = '#f5f7fa';
+    ctx.shadowColor = 'rgba(0,0,0,0.85)';
+    ctx.shadowBlur = 6;
+  } else {
+    ctx.fillStyle = '#f0f0f0';
+    ctx.shadowColor = 'rgba(0,0,0,0.8)';
+    ctx.shadowBlur = 4;
+  }
+  ctx.fillText(String(text), canvas.width / 2, canvas.height / 2);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.anisotropy = 8;
+  texture.needsUpdate = true;
+  const material = new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+    depthTest: true,
+    depthWrite: false,
+    sizeAttenuation: true,
+  });
+  const sprite = new THREE.Sprite(material);
+  const widthScale = Math.max(26, w * 0.78);
+  const heightScale = Math.min(Math.max(28, h * 0.38), 110);
+  sprite.scale.set(widthScale, heightScale, 1);
+  sprite.position.set(0, 0, Math.max(18, w * 0.28));
+  return sprite;
+}
+
+function createPrimeAuraSprite(w, h) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null;
+  const grad = ctx.createRadialGradient(128, 128, 10, 128, 128, 128);
+  grad.addColorStop(0, 'rgba(255,255,255,1)');
+  grad.addColorStop(0.12, 'rgba(255,250,210,0.98)');
+  grad.addColorStop(0.28, 'rgba(255,232,120,0.94)');
+  grad.addColorStop(0.5, 'rgba(255,156,34,0.84)');
+  grad.addColorStop(0.76, 'rgba(255,66,0,0.36)');
+  grad.addColorStop(1, 'rgba(255,40,0,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 256, 256);
+  const texture = new THREE.CanvasTexture(canvas);
+  const material = new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+  const sprite = new THREE.Sprite(material);
+  sprite.scale.set(Math.max(120, w * 2.35), Math.max(120, Math.min(h * 1.35, 280)), 1);
+  sprite.position.set(0, 0, Math.max(22, w * 0.24));
+  return sprite;
+}
+
+function createHingeMesh() {
+  const mesh = new THREE.Mesh(
+    new THREE.SphereGeometry(12, 32, 32),
+    THREE_WORLD.brushedMetalMat
+  );
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  return mesh;
+}
+
+function attachBlockLabel(mesh, units, w, h, omitNumeral, forceComposite) {
+  if (!mesh || omitNumeral) return;
+  if (mesh.userData.primeLight) {
+    mesh.remove(mesh.userData.primeLight);
+    mesh.userData.primeLight.dispose?.();
+    mesh.userData.primeLight = null;
+  }
+  if (mesh.userData.auraSprite) {
+    mesh.remove(mesh.userData.auraSprite);
+    mesh.userData.auraSprite.material.map?.dispose?.();
+    mesh.userData.auraSprite.material.dispose?.();
+    mesh.userData.auraSprite = null;
+  }
+  if (mesh.userData.labelSprite) {
+    mesh.remove(mesh.userData.labelSprite);
+    mesh.userData.labelSprite.material.map?.dispose?.();
+    mesh.userData.labelSprite.material.dispose?.();
+  }
+  const isUnityBlock = units === 1 && !forceComposite;
+  const isPrimeBlock = !forceComposite && !isUnityBlock && isPrime(units);
+  const sprite = createBlockLabelSprite(units, units, w, h, isPrimeBlock, isUnityBlock);
+  if (!sprite) return;
+  mesh.userData.labelSprite = sprite;
+  mesh.add(sprite);
+  if (isPrimeBlock) {
+    const aura = createPrimeAuraSprite(w, h);
+    if (aura) {
+      mesh.userData.auraSprite = aura;
+      mesh.add(aura);
+    }
+    const primeLight = new THREE.PointLight(0xff9c38, 190, Math.max(480, h * 6), 1.2);
+    primeLight.position.set(0, 0, Math.max(34, w * 0.55));
+    mesh.userData.primeLight = primeLight;
+    mesh.add(primeLight);
+  }
+}
+
+function createThreeBlockMesh(units, w, h, forceComposite) {
+  const blockWidth = WORLD_UNIT;
+  const blockHeight = Math.max(WORLD_UNIT, units * WORLD_UNIT);
+  const depth = 60;
+  const mesh = new THREE.Mesh(
+    new THREE.BoxGeometry(blockWidth, blockHeight, depth),
+    getThreeMaterial(units, forceComposite)
+  );
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  mesh.userData.units = units;
+  mesh.userData.depth = depth;
+  mesh.userData.blockWidth = blockWidth;
+  mesh.userData.blockHeight = blockHeight;
+  mesh.userData.forceComposite = !!forceComposite;
+  return mesh;
+}
+
+function getThreeBounds(room) {
+  const box = new THREE.Box3();
+  const hasStage = room.stageGroup.children.length > 0;
+  const hasOverlay = room.overlayGroup.children.length > 0;
+  if (hasStage) box.expandByObject(room.stageGroup);
+  if (hasOverlay) box.expandByObject(room.overlayGroup);
+  if (!hasStage && !hasOverlay) {
+    box.min.set(-120, -180, -60);
+    box.max.set(120, 220, 120);
+  }
+  return box;
+}
+
+function updateThreeRoomFocus(roomId) {
+  const room = THREE_WORLD.rooms[roomId];
+  if (!room) return;
+  room.focusTarget.set(0, 150, OBELISK_Z);
+  room.leftSpot.target.position.set(0, 150, OBELISK_Z);
+  room.rightSpot.target.position.set(0, 150, OBELISK_Z);
+  room.obeliskSpot.target.position.set(0, 170, OBELISK_Z);
+  room.obeliskDownSpot.target.position.set(0, 140, OBELISK_Z);
+  room.leftSpot.target.updateMatrixWorld();
+  room.rightSpot.target.updateMatrixWorld();
+  room.obeliskSpot.target.updateMatrixWorld();
+  room.obeliskDownSpot.target.updateMatrixWorld();
+  room.altarSpot.target.position.set(0, 40, TRAY_BLOCK_Z);
+  room.altarSpot.target.updateMatrixWorld();
+}
+
+function getRoomIdForElement(el) {
+  const tray = el?.closest('#ft');
+  if (tray) return 'fa';
+  const buildTray = el?.closest('#bt');
+  if (buildTray) return 'ba';
+  const altar = el?.closest('.altar');
+  return altar?.id || null;
+}
+
+function worldFromRect(room, rect) {
+  const altarRect = room.altarEl.getBoundingClientRect();
+  return {
+    x: rect.left - altarRect.left + rect.width / 2 - altarRect.width / 2,
+    y: altarRect.height / 2 - (rect.top - altarRect.top + rect.height / 2),
+  };
+}
+
+function getDirectBlockPosition(el) {
+  const roomId = getRoomIdForElement(el);
+  const trayEl = el?.closest('#ft');
+  const units = parseInt(el?.dataset?.units || '1', 10) || 1;
+  if (trayEl) {
+    const trayBlocks = Array.from(trayEl.children).filter(child => child._mesh);
+    const index = Math.max(0, trayBlocks.indexOf(el));
+    const spread = 105;
+    const centeredX = (index - (trayBlocks.length - 1) / 2) * spread;
+    return { x: centeredX, y: 20 + WORLD_UNIT / 2, z: TRAY_BLOCK_Z };
+  }
+  if (roomId === 'fa') {
+    const stageEl = document.getElementById('fo');
+    const stageBlocks = stageEl ? Array.from(stageEl.children).filter(child => child.classList?.contains('blk')) : [];
+    const index = Math.max(0, stageBlocks.indexOf(el));
+    let cumulativeUnits = 0;
+    for (let i = 0; i < index; i++) cumulativeUnits += parseInt(stageBlocks[i]?.dataset?.units || '0', 10) || 0;
+    return { x: 0, y: 90 + cumulativeUnits * WORLD_UNIT + units * (WORLD_UNIT / 2), z: OBELISK_Z };
+  }
+  return { x: 0, y: 20 + units * (WORLD_UNIT / 2), z: TRAY_BLOCK_Z };
+}
+
+function syncThreeBlock(el) {
+  const roomId = getRoomIdForElement(el);
+  if (!roomId) return;
+  const room = initThreeRoom(roomId, `three-canvas-${roomId}`);
+  const mesh = el?._mesh;
+  if (!room || !mesh) return;
+  const rect = el.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  mesh.visible = true;
+  mesh.scale.set(1, 1, 1);
+  const isTray = !!el.closest('#ft, .f-tray');
+  const isObelisk = !!el.closest('#fo, #bo, .seg-stage, .three-proxy-layer');
+  const units = parseInt(el.dataset.units || '1', 10) || 1;
+  mesh.material = getThreeMaterial(units, !!mesh.userData.forceComposite, isObelisk);
+  if (!el.dataset.animating) {
+    const pos2d = worldFromRect(room, rect);
+    mesh.position.x = pos2d.x;
+    mesh.position.y = pos2d.y;
+    mesh.position.z = isTray ? TRAY_BLOCK_Z : isObelisk ? OBELISK_Z : mesh.position.z;
+    mesh.rotation.z = parseFloat(el.dataset.rotationZ || '0');
+  }
+  const hzEls = Array.from(el.querySelectorAll('.hz'));
+  mesh.userData.hingeMeshes = mesh.userData.hingeMeshes || [];
+  while (mesh.userData.hingeMeshes.length > hzEls.length) {
+    const hinge = mesh.userData.hingeMeshes.pop();
+    mesh.remove(hinge);
+  }
+  hzEls.forEach((hzEl, index) => {
+    let hinge = mesh.userData.hingeMeshes[index];
+    if (!hinge) {
+      hinge = createHingeMesh();
+      mesh.userData.hingeMeshes[index] = hinge;
+      mesh.add(hinge);
+    }
+    const hingePx = parseFloat(hzEl.style.top || '0');
+    const hingeRatio = units > 0 ? hingePx / (units * S.unitH) : 0;
+    const localY = -mesh.userData.blockHeight / 2 + hingeRatio * mesh.userData.blockHeight;
+    hinge.position.set(
+      -mesh.userData.blockWidth / 2 - 12,
+      localY,
+      mesh.userData.depth / 2 + 8
+    );
+    hinge.visible = !el.closest('#ft, .f-tray');
+  });
+  const targetGroup = el.closest('#ft, .f-tray, .three-proxy-layer') ? room.overlayGroup : room.stageGroup;
+  if (mesh.parent !== targetGroup) targetGroup.add(mesh);
+  updateThreeRoomFocus(roomId);
+  requestThreeRender();
+}
+
+function syncThreeBlocks(rootEl) {
+  if (!rootEl) return;
+  rootEl.querySelectorAll('.blk, #ft .fs').forEach(el => {
+    if (el._mesh) syncThreeBlock(el);
+  });
+}
+
+function clearThreeStage(roomId) {
+  const room = THREE_WORLD.rooms[roomId];
+  if (!room) return;
+  clearThreeGroup(room.stageGroup);
+  room.blockMap.clear();
+  updateThreeRoomFocus(roomId);
+  requestThreeRender();
+}
+
+function clearThreeOverlay(roomId) {
+  const room = THREE_WORLD.rooms[roomId];
+  if (!room) return;
+  clearThreeGroup(room.overlayGroup);
+  updateThreeRoomFocus(roomId);
+  requestThreeRender();
+}
 
 const OBELISK_IDLE_HINT_MS = 3000;
 
@@ -813,6 +1415,10 @@ document.getElementById('gmt-build').addEventListener('click',()=>{
 // ════════════════════════════════════════
 function enterAltar(n) {
   syncCSSUnit();
+  if (window.THREE) {
+    initThreeRoom('fa', 'three-canvas-fa');
+    clearThreeOverlay('fa');
+  }
   S.fNum = n; S.segSize = 0; S.handleIndex = 0; S.handleInverted = false;
   S.fDisc = S.fDiscMap[n] ? new Set(S.fDiscMap[n]) : new Set([1,n]);
   S.trayIdentityReady = n === 1 || isPrime(n);
@@ -859,6 +1465,7 @@ function enterAltar(n) {
 function growFromUnits(n, onComplete) {
   const stage = document.getElementById('fo');
   stage.innerHTML = '';
+  clearThreeStage('fa');
   stage.style.visibility = 'visible';
   const zoomEl = document.getElementById('fz');
   zoomEl.style.transition = 'none';
@@ -877,12 +1484,14 @@ function growFromUnits(n, onComplete) {
     blk.style.transform = 'scale(0)';
     stage.appendChild(blk);
     blocks.push(blk);
+    syncThreeBlock(blk);
   }
   
-  gsap.to(blocks, {
-    scale: 1, duration: 0.6, stagger: 0.2, ease: "back.out(1.5)",
+  const room = THREE_WORLD.rooms.fa;
+  const tl = gsap.timeline({
     onStart: () => haptic(15),
     onComplete: () => {
+      blocks.forEach(blk => delete blk.dataset.animating);
       const isP = isPrime(n);
       const flash = document.createElement('div');
       flash.style.cssText = `position:absolute; bottom:0; left:${-uW/2}px; width:${uW}px; height:${n*uH}px; z-index:100; opacity:0; border-radius:4px; pointer-events:none;`;
@@ -902,6 +1511,33 @@ function growFromUnits(n, onComplete) {
       });
     }
   });
+  blocks.forEach((blk, i) => {
+    const mesh = blk._mesh;
+    const pos = getDirectBlockPosition(blk);
+    blk.dataset.animating = '1';
+    mesh.visible = true;
+    mesh.position.set(pos.x, pos.y - 140, OBELISK_Z);
+    mesh.scale.set(0.001, 0.001, 1);
+    tl.to(mesh.scale, { x: 1, y: 1, duration: 0.6, ease: "back.out(1.5)", onUpdate: () => syncThreeBlocks(document.body) }, i * 0.2);
+    tl.to(mesh.position, { y: pos.y, duration: 0.6, ease: "back.out(1.5)", onUpdate: () => syncThreeBlocks(document.body) }, i * 0.2);
+    
+    // ADD THIS LINE TO FIX DOM DESYNC:
+    tl.to(blk, { scale: 1, duration: 0.6, ease: "back.out(1.5)" }, i * 0.2);
+  });
+  if (n > 1) {
+    const finalY = 90 + (n * WORLD_UNIT) / 2;
+    blocks.forEach((blk, i) => {
+      const mesh = blk._mesh;
+      tl.to(mesh.position, {
+        x: 0,
+        y: finalY,
+        z: OBELISK_Z,
+        duration: 0.55,
+        ease: "power2.inOut",
+        onUpdate: () => syncThreeBlocks(document.body)
+      }, 0.45 + i * 0.04);
+    });
+  }
 }
 
 function showAffirm(){const e=document.getElementById('affirm');e.classList.add('show');haptic([20,25,20,25,40]);setTimeout(()=>e.classList.remove('show'),350);}
@@ -925,6 +1561,11 @@ function makeBlock(units, w, h, forceComposite=false, omitNumeral=false){
   el.style.width = `var(--u)`;
   el.style.height = `calc(var(--u) * ${units})`;
   el.dataset.units = units;
+  el._mesh = createThreeBlockMesh(units, w, h, forceComposite);
+  el._meshBase = { w: Math.max(18, w), h: Math.max(18, h) };
+  attachBlockLabel(el._mesh, units, w, h, omitNumeral, forceComposite);
+  el._syncMesh = () => syncThreeBlock(el);
+  requestAnimationFrame(el._syncMesh);
   if(omitNumeral) return el;
   
   if(isMirror) {
@@ -1161,6 +1802,7 @@ function renderSegs() {
   clearObeliskIdleHints();
   const stage = document.getElementById('fo'); 
   stage.innerHTML = '';
+  clearThreeStage('fa');
   if (S.segs.length === 0) return;
   
   const uH = S.unitH, uW = S.unitW, numSegs = S.segs.length, gap = 3;
@@ -1209,9 +1851,14 @@ function renderSegs() {
       
       if (isInverted) {
         el.style.transform = 'rotate(180deg)';
+        el.dataset.rotationZ = String(Math.PI);
         const num = el.querySelector('.n-stamp, .n-glow, .n-mirror');
         if (num) num.style.setProperty('--rot', '180deg'); 
+      } else {
+        el.dataset.rotationZ = '0';
       }
+    } else {
+      el.dataset.rotationZ = '0';
     }
 
     if (numSegs === 1) {
@@ -1246,8 +1893,10 @@ function renderSegs() {
       }
     }
     stage.appendChild(el);
+    syncThreeBlock(el);
   });
   scheduleObeliskIdleHints();
+  syncThreeBlocks(stage);
 }
 
 function doFold(f, swipeSide, clickedZone) {
@@ -1339,7 +1988,8 @@ function doFold(f, swipeSide, clickedZone) {
   tl.to(hingeElements, {
     rotation: (index, target) => target._rot,
     duration: 1.2, stagger: 0.15, ease: "bounce.out",
-    onStart: () => haptic(40)
+    onStart: () => haptic(40),
+    onUpdate: () => syncThreeBlocks(document.body)
   });
 }
 
@@ -1392,6 +2042,7 @@ function beginUnspool(){
       const hProg=Math.max(0,Math.min(1,(progress-US.starts[i])/US.windowSize));
       hw.style.transform=`rotate(${rot*(1-hProg)}deg)`;
     });
+    syncThreeBlocks(document.body);
     if(US.startZoom<S.fZoom){
       const dragZoom=US.startZoom+(S.fZoom-US.startZoom)*progress;
       zoomEl.style.transition='none';
@@ -1532,9 +2183,11 @@ function renderGrid(){
 // ════════════════════════════════════════
 function renderFT() {
   const tray=document.getElementById('ft');tray.innerHTML='';
+  clearThreeOverlay('fa');
   const n=S.fNum;if(!n)return;
   allFactors(n).forEach(f=>{
     const s=document.createElement('div');s.className='fs';
+    s.dataset.units = '1';
     const txt=document.createElement('div');txt.textContent=f;
     if(f===1){
       s.classList.add('mirror','mirror-cube');
@@ -1554,6 +2207,13 @@ function renderFT() {
     }
     if(f===n&&!isPrime(n)&&!S.fDisc.has(f))txt.textContent='';
     tray.appendChild(s);
+    if (!s.classList.contains('empty')) {
+      const forceComposite = !(f === 1 || isPrime(f));
+      s._mesh = createThreeBlockMesh(1, WORLD_UNIT, WORLD_UNIT, forceComposite);
+      s._meshBase = { w: WORLD_UNIT, h: WORLD_UNIT };
+      attachBlockLabel(s._mesh, f, WORLD_UNIT, WORLD_UNIT, false, forceComposite);
+      syncThreeBlock(s);
+    }
   });
 }
 
@@ -1562,6 +2222,10 @@ function renderFT() {
 // ════════════════════════════════════════
 function enterBuild(n){
   syncCSSUnit();
+  if (window.THREE) {
+    initThreeRoom('ba', 'three-canvas-ba');
+    clearThreeOverlay('ba');
+  }
   S.bNum=n;S.bStack=[];S.bProduct=0;S.bAnimating=false;
   const numEl=document.getElementById('build-numeral');
   numEl.textContent=n; numEl.classList.remove('solved','celebrate');
@@ -1591,6 +2255,7 @@ function enterBuild(n){
 
 function renderBuildStage(){
   const stage=document.getElementById('bo');stage.innerHTML='';
+  clearThreeStage('ba');
   if(S.bProduct===0)return;
   const uH=S.bUnitH,uW=S.bUnitW, h=S.bProduct*uH;
   const el=makeBlock(S.bProduct,uW,h);
@@ -1606,6 +2271,7 @@ function renderBuildStage(){
     }
   }
   stage.appendChild(el);
+  syncThreeBlock(el);
 }
 
 function renderBuildTray(){
@@ -1698,6 +2364,19 @@ function placeBuildPrime(p){
   if(S.bAnimating)return;
   const n=S.bNum, prevProduct=S.bProduct, newProduct=prevProduct===0?p:prevProduct*p;
   S.bStack.push({p,prevProduct}); S.bProduct=newProduct;
+
+  if(p === 1) {
+    S.bAnimating = true;
+    animateStackingOnes(p, n, S.bUnitH, S.bUnitW, () => {
+      S.bAnimating = false;
+      renderBuildStage(); renderBuildTray(); renderBuildLedger();
+      if(newProduct === n) checkBuildSolved();
+    }, () => {
+      S.bStack.pop(); S.bProduct = prevProduct; S.bAnimating = false;
+      renderBuildStage(); renderBuildTray(); renderBuildLedger();
+    });
+    return;
+  }
   
   if(prevProduct === 0) {
     if(newProduct > n) {
@@ -1725,6 +2404,7 @@ function placeBuildPrime(p){
 function animateStackingOnes(p, target, uH, uW, onComplete, onShatter) {
     const stage = document.getElementById('bo');
     stage.innerHTML = '';
+    clearThreeStage('ba');
     const blocks = [];
     let hitIndex = -1;
     
@@ -1736,6 +2416,7 @@ function animateStackingOnes(p, target, uH, uW, onComplete, onShatter) {
       blk.style.left = '50%';
       stage.appendChild(blk);
       blocks.push(blk);
+      syncThreeBlock(blk);
       
       if (i >= target && hitIndex === -1) hitIndex = i;
       gsap.set(blk, { y: -600, x: '-50%', opacity: 0 }); 
@@ -1743,15 +2424,24 @@ function animateStackingOnes(p, target, uH, uW, onComplete, onShatter) {
     
     let tl = gsap.timeline();
     blocks.forEach((blk, i) => {
+        const mesh = blk._mesh;
+        const pos = getDirectBlockPosition(blk);
+        blk.dataset.animating = '1';
+        mesh.position.set(pos.x, pos.y + 600, 150);
         if (hitIndex !== -1 && i > hitIndex) return; 
         
         if (i === hitIndex) {
+            tl.to(mesh.position, {
+                y: pos.y + ((i - target) * uH),
+                duration: 0.2, ease: "power1.in", onUpdate: requestThreeRender,
+                onComplete: () => { delete blk.dataset.animating; triggerShatter(blk); onShatter(); }
+            });
             tl.to(blk, {
                 y: -((i - target)*uH), 
                 x: '-50%', opacity: 1, duration: 0.2, ease: "power1.in",
-                onComplete: () => { triggerShatter(blk); onShatter(); }
             });
         } else {
+            tl.to(mesh.position, { y: pos.y, duration: 0.3, ease: "bounce.out", onStart: () => haptic(15), onUpdate: requestThreeRender }, i * 0.15);
             tl.to(blk, { y: 0, x: '-50%', opacity: 1, duration: 0.3, ease: "bounce.out", onStart: () => haptic(15) }, i * 0.15);
         }
     });
@@ -1770,9 +2460,12 @@ function animateBuildHinge(prevH, p, finalH, target, cb){
   const stage = document.getElementById('bo'), altar = document.getElementById('ba'), uH = S.bUnitH, uW = S.bUnitW, segH = prevH * uH;
   stage.style.visibility = 'hidden';
   const overlay = document.createElement('div');
+  overlay.className = 'three-proxy-layer';
   overlay.style.cssText = `position:absolute;bottom:128px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
+  clearThreeOverlay('ba');
   const base = makeBlock(prevH, uW, segH); base.style.position = 'absolute'; base.style.bottom = '0'; base.style.left = '0'; base.style.zIndex = '10'; overlay.appendChild(base);
+  syncThreeBlock(base);
   
   const copies = p - 1, phaseDur = 500, pause = 80;
   const arms = [];
@@ -1783,11 +2476,26 @@ function animateBuildHinge(prevH, p, finalH, target, cb){
     const blk = makeBlock(prevH, uW, segH, false, true);
     blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
     hw.appendChild(blk); overlay.appendChild(hw); arms.push({hw, blk});
+    syncThreeBlock(blk);
   }
-  arms.forEach(({hw},i) => { setTimeout(() => { hw.style.transition = `transform ${phaseDur}ms var(--ease-heavy)`; hw.style.transform = 'rotate(0deg)'; haptic(20); }, i * (phaseDur+pause)); });
+  arms.forEach(({hw, blk},i) => {
+    const mesh = blk._mesh;
+    const pos = getDirectBlockPosition(blk);
+    blk.dataset.animating = '1';
+    mesh.position.set(pos.x, pos.y + segH * 0.35, 150);
+    mesh.rotation.z = Math.PI;
+    setTimeout(() => {
+      hw.style.transition = `transform ${phaseDur}ms var(--ease-heavy)`;
+      hw.style.transform = 'rotate(0deg)';
+      gsap.to(mesh.position, { y: pos.y, duration: phaseDur / 1000, ease: "power2.out", onUpdate: () => syncThreeBlocks(document.body) });
+      gsap.to(mesh.rotation, { z: 0, duration: phaseDur / 1000, ease: "power2.inOut", onUpdate: () => syncThreeBlocks(document.body) });
+      haptic(20);
+    }, i * (phaseDur+pause));
+  });
   const allLandedTime = copies*(phaseDur+pause)+200;
   setTimeout(() => {
     arms.forEach(({blk},i) => {
+      delete blk.dataset.animating;
       const p2 = isPrime(prevH);
       const num = document.createElement('div');
       num.className = p2 ? 'n-glow' : 'n-stamp';
@@ -1797,6 +2505,7 @@ function animateBuildHinge(prevH, p, finalH, target, cb){
       gsap.to(num, {opacity:1, duration:0.25, delay:i*0.08});
     });
     setTimeout(() => {
+      clearThreeOverlay('ba');
       overlay.remove(); stage.style.visibility = 'visible'; renderBuildStage(); cb&&cb();
     }, 300);
   }, allLandedTime);
@@ -1805,6 +2514,7 @@ function animateBuildHinge(prevH, p, finalH, target, cb){
 function animateBuildOvershoot(prevH, p, finalH, target, cb){
   const stage = document.getElementById('bo'), altar = document.getElementById('ba'), uH = S.bUnitH, uW = S.bUnitW, segH = prevH * uH, ceilPx = target * uH;
   stage.style.visibility = 'hidden';
+  clearThreeOverlay('ba');
   
   const overlay = document.createElement('div');
   overlay.style.cssText = `position:absolute;bottom:128px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
@@ -1821,6 +2531,7 @@ function animateBuildOvershoot(prevH, p, finalH, target, cb){
     const blk = makeBlock(prevH, uW, segH, false, true);
     blk.style.position = 'absolute'; blk.style.bottom = '0'; blk.style.left = '0';
     hw.appendChild(blk); overlay.appendChild(hw); arms.push(hw);
+    syncThreeBlock(blk);
   }
   
   let collisionArm = -1, collisionAngle = 0;
@@ -1834,19 +2545,38 @@ function animateBuildOvershoot(prevH, p, finalH, target, cb){
   }
   const safeCount = collisionArm >= 0 ? collisionArm : copies;
   
-  arms.forEach((hw,i) => { if(i < safeCount) setTimeout(() => { hw.style.transition = `transform ${phaseDur}ms var(--ease-heavy)`; hw.style.transform = 'rotate(0deg)'; haptic(20); }, i * (phaseDur+pause)); });
+  arms.forEach((hw,i) => {
+    if(i < safeCount) setTimeout(() => {
+      gsap.to(hw, {
+        rotation: 0,
+        duration: phaseDur / 1000,
+        ease: "power2.inOut",
+        overwrite: 'auto',
+        onStart: () => haptic(20),
+        onUpdate: () => syncThreeBlocks(document.body)
+      });
+    }, i * (phaseDur+pause));
+  });
   
   if(collisionArm >= 0){
     const fraction = (180 - collisionAngle) / 180;
     const collisionDur = Math.max(120, Math.round(phaseDur * fraction));
     setTimeout(() => {
-      const hw = arms[collisionArm]; hw.style.transition = `transform ${collisionDur}ms var(--ease-heavy)`; hw.style.transform = `rotate(${collisionAngle}deg)`; haptic(20);
+      const hw = arms[collisionArm];
+      gsap.to(hw, {
+        rotation: collisionAngle,
+        duration: collisionDur / 1000,
+        ease: "power2.inOut",
+        overwrite: 'auto',
+        onStart: () => haptic(20),
+        onUpdate: () => syncThreeBlocks(document.body)
+      });
       setTimeout(() => {
         arms.forEach(a => { a.style.display = 'none'; });
         const ceilEl = document.getElementById('bceil');
         const contactY = ceilEl ? ceilEl.getBoundingClientRect().top : undefined;
         triggerShatter(overlay, contactY);
-        setTimeout(() => { overlay.remove(); stage.style.visibility = 'visible'; cb&&cb(); }, 400);
+        setTimeout(() => { clearThreeOverlay('ba'); overlay.remove(); stage.style.visibility = 'visible'; cb&&cb(); }, 400);
       }, collisionDur + 30);
     }, collisionArm * (phaseDur + pause));
   }
@@ -1859,6 +2589,7 @@ function undoBuild(){
   S.bAnimating=true; haptic(20);
   const stage=document.getElementById('bo'), altar=document.getElementById('ba'), uH=S.bUnitH, uW=S.bUnitW, segH=prevProduct*uH;
   stage.style.visibility='hidden';
+  clearThreeOverlay('ba');
   const overlay=document.createElement('div');
   overlay.style.cssText=`position:absolute;bottom:128px;left:50%;transform-origin:bottom center;transform:translateX(-50%) scale(${S.bZoom});z-index:50;pointer-events:none;width:${uW}px;overflow:visible;`;
   altar.appendChild(overlay);
@@ -1871,10 +2602,22 @@ function undoBuild(){
     hw.style.cssText=`position:absolute;bottom:${pivotBottom}px;left:0;width:${uW}px;height:0;transform-origin:50% 0%;transform:rotate(0deg);`;
     const blk=makeBlock(prevProduct,uW,segH,false,false); blk.style.position='absolute';blk.style.bottom='0';blk.style.left='0';
     hw.appendChild(blk); overlay.appendChild(hw); arms.push(hw);
+    syncThreeBlock(blk);
   }
   const reversedArms=[...arms].reverse();
-  reversedArms.forEach((hw,i)=>{ setTimeout(()=>{ hw.style.transition=`transform ${phaseDur}ms var(--ease-heavy)`; hw.style.transform='rotate(180deg)'; haptic(15); },i*(phaseDur+pause)); });
-  setTimeout(()=>{ overlay.remove(); S.bStack.pop(); S.bProduct=prevProduct; stage.style.visibility='visible'; S.bAnimating=false; renderBuildStage();renderBuildTray();renderBuildLedger(); }, reversedArms.length*(phaseDur+pause)+150);
+  reversedArms.forEach((hw,i)=>{
+    setTimeout(()=>{
+      gsap.to(hw, {
+        rotation: 180,
+        duration: phaseDur / 1000,
+        ease: "power2.inOut",
+        overwrite: 'auto',
+        onStart: () => haptic(15),
+        onUpdate: () => syncThreeBlocks(document.body)
+      });
+    },i*(phaseDur+pause));
+  });
+  setTimeout(()=>{ clearThreeOverlay('ba'); overlay.remove(); S.bStack.pop(); S.bProduct=prevProduct; stage.style.visibility='visible'; S.bAnimating=false; renderBuildStage();renderBuildTray();renderBuildLedger(); }, reversedArms.length*(phaseDur+pause)+150);
 }
 
 function checkBuildSolved(){
@@ -1887,7 +2630,8 @@ function checkBuildSolved(){
 }
 
 // INIT
-S.fDone.add(1); buildDex('altar-dex-vp'); buildDex('grid-vp'); enterAltar(12);
+S.fDone.add(1); buildDex('altar-dex-vp'); buildDex('grid-vp');
+if (window.THREE) { enterAltar(12); }
 
 </script>
 </body>
